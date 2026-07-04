@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load cart_extras %}
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Your Cart</h2>
+
+{% if products %}
+<table class="table align-middle">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>${{ product.price }}</td>
+            <td>
+                <form action="{% url 'homepage' %}" method="POST" class="d-inline">
+                    {% csrf_token %}
+                    <input type="hidden" name="product" value="{{ product.id }}">
+                    <input type="hidden" name="remove" value="True">
+                    <button class="btn btn-sm btn-outline-secondary">−</button>
+                </form>
+                <span class="mx-2">{{ request.session.cart|get_item:product.id }}</span>
+                <form action="{% url 'homepage' %}" method="POST" class="d-inline">
+                    {% csrf_token %}
+                    <input type="hidden" name="product" value="{{ product.id }}">
+                    <button class="btn btn-sm btn-outline-secondary">+</button>
+                </form>
+            </td>
+            <td>${{ request.session.cart|get_item:product.id|mul:product.price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<hr>
+<h4>Checkout</h4>
+{% if request.session.customer %}
+    <form action="{% url 'checkout' %}" method="POST" class="col-md-6">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Shipping Address</label>
+            <input type="text" name="address" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Phone</label>
+            <input type="text" name="phone" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success">Place Order</button>
+    </form>
+{% else %}
+    <p>Please <a href="{% url 'login' %}?return_url=/cart/">log in</a> to place your order.</p>
+{% endif %}
+
+{% else %}
+    <p>Your cart is empty. <a href="{% url 'store' %}">Browse products</a>.</p>
+{% endif %}
+{% endblock %}

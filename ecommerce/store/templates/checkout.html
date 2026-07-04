@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+{# The CheckOut view only handles POST (from the form on the cart page) and #}
+{# redirects back to the cart, so this template is a fallback landing page.  #}
+<div class="text-center py-5">
+    <h2>Checkout</h2>
+    <p>Review and place your order from your cart.</p>
+    <a href="{% url 'cart' %}" class="btn btn-primary">Go to Cart</a>
+</div>
+{% endblock %}

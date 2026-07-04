@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Store{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="list-group">
+            <a href="{% url 'store' %}"
+               class="list-group-item list-group-item-action fw-bold">All Products</a>
+            {% for category in categories %}
+                <a href="{% url 'store' %}?category={{ category.id }}"
+                   class="list-group-item list-group-item-action">{{ category.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for product in products %}
+                <div class="col">
+                    <div class="card h-100">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" class="card-img-top"
+                                 alt="{{ product.name }}" style="height:180px;object-fit:cover;">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text text-muted">{{ product.description }}</p>
+                            <p class="fw-bold">${{ product.price }}</p>
+                            <form action="{% url 'homepage' %}" method="POST" class="mt-auto">
+                                {% csrf_token %}
+                                <input type="hidden" name="product" value="{{ product.id }}">
+                                <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No products yet. Add some from the <a href="/admin/">admin page</a>.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
