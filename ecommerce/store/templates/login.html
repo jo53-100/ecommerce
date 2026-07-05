@@ -103,6 +103,7 @@
 
             <form method="POST">
                 {% csrf_token %}
+                <input type="hidden" name="return_url" value="{{ return_url }}">
                 <div class="form-group">
                     <label class="form-label">{% trans "EMAIL" %}</label>
                     <input type="email" name="email" class="form-control" placeholder="operator@unit.mil" required>

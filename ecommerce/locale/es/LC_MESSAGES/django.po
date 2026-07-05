@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-05 06:45+0000\n"
+"POT-Creation-Date: 2026-07-05 20:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,6 +40,9 @@ msgstr "Descuento de Escuadrón"
 
 msgid "Missions"
 msgstr "Misiones"
+
+msgid "Account"
+msgstr "Cuenta"
 
 msgid "Sign Out"
 msgstr "Cerrar Sesión"
@@ -157,11 +160,41 @@ msgstr "LISTO"
 msgid "SHIPPING ADDRESS"
 msgstr "DIRECCIÓN DE ENVÍO"
 
-msgid "Delivery coordinates"
-msgstr "Coordenadas de entrega"
+msgid "RECIPIENT"
+msgstr "DESTINATARIO"
+
+msgid "Full name"
+msgstr "Nombre completo"
+
+msgid "STREET ADDRESS"
+msgstr "CALLE Y NÚMERO"
+
+msgid "123 Main St"
+msgstr "Calle Principal 123"
+
+msgid "APT / SUITE / UNIT"
+msgstr "APTO / SUITE / UNIDAD"
+
+msgid "Optional"
+msgstr "Opcional"
+
+msgid "CITY"
+msgstr "CIUDAD"
+
+msgid "STATE / PROVINCE"
+msgstr "ESTADO / PROVINCIA"
+
+msgid "ZIP / POSTAL CODE"
+msgstr "CÓDIGO POSTAL"
+
+msgid "COUNTRY"
+msgstr "PAÍS"
 
 msgid "CONTACT PHONE"
 msgstr "TELÉFONO DE CONTACTO"
+
+msgid "Save this address to my profile"
+msgstr "Guardar esta dirección en mi perfil"
 
 msgid "DEPLOY ORDER"
 msgstr "DESPLEGAR PEDIDO"
@@ -469,6 +502,42 @@ msgstr ""
 msgid "Head to the Arsenal"
 msgstr "Ir al Arsenal"
 
+msgid "My Account"
+msgstr "Mi Cuenta"
+
+msgid "// OPERATOR FILE"
+msgstr "// FICHA DE OPERADOR"
+
+msgid "MY ACCOUNT"
+msgstr "MI CUENTA"
+
+msgid "Your operator profile, saved shipping address, and mission history."
+msgstr "Tu perfil de operador, dirección de envío guardada e historial de misiones."
+
+msgid "IDENTITY"
+msgstr "IDENTIDAD"
+
+msgid "FIRST NAME"
+msgstr "NOMBRE"
+
+msgid "LAST NAME"
+msgstr "APELLIDO"
+
+msgid "SAVED SHIPPING ADDRESS"
+msgstr "DIRECCIÓN DE ENVÍO GUARDADA"
+
+msgid "SAVE CHANGES"
+msgstr "GUARDAR CAMBIOS"
+
+msgid "RECENT MISSIONS"
+msgstr "MISIONES RECIENTES"
+
+msgid "No orders yet."
+msgstr "Aún no hay pedidos."
+
+msgid "View all missions"
+msgstr "Ver todas las misiones"
+
 msgid "Enlist"
 msgstr "Alistarse"
 
@@ -513,12 +582,6 @@ msgstr "CREAR CUENTA"
 msgid "Fill out your operator profile below. Takes under a minute."
 msgstr "Completa tu perfil de operador. Toma menos de un minuto."
 
-msgid "FIRST NAME"
-msgstr "NOMBRE"
-
-msgid "LAST NAME"
-msgstr "APELLIDO"
-
 msgid "PHONE"
 msgstr "TELÉFONO"
 
@@ -530,3 +593,12 @@ msgstr "ALISTARSE AHORA"
 
 msgid "ALREADY ENLISTED?"
 msgstr "¿YA ESTÁS ALISTADO?"
+
+msgid "First and last name are required."
+msgstr "El nombre y el apellido son obligatorios."
+
+msgid "Your account has been updated."
+msgstr "Tu cuenta ha sido actualizada."
+
+#~ msgid "Delivery coordinates"
+#~ msgstr "Coordenadas de entrega"

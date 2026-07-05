@@ -10,22 +10,39 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+def _env_bool(name, default):
+    return os.environ.get(name, str(default)).strip().lower() in ('1', 'true', 'yes', 'on')
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-b=)*#6-kxqv#t#y56=&c(*ur^^s)cc4nstnjv%3q_h5ez(2(vm'
+# In production set DJANGO_SECRET_KEY in the environment (see README).
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-b=)*#6-kxqv#t#y56=&c(*ur^^s)cc4nstnjv%3q_h5ez(2(vm',
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Defaults to True for local development; set DJANGO_DEBUG=False on the server.
+DEBUG = _env_bool('DJANGO_DEBUG', True)
 
-ALLOWED_HOSTS = []
+# Comma-separated list, e.g. DJANGO_ALLOWED_HOSTS="ironhold.example,www.ironhold.example"
+ALLOWED_HOSTS = [h.strip() for h in os.environ.get(
+    'DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') if h.strip()]
+
+# Needed for HTTPS POSTs (login, language switch) behind a proxy.
+# e.g. DJANGO_CSRF_TRUSTED_ORIGINS="https://ironhold.example,https://www.ironhold.example"
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.environ.get(
+    'DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if o.strip()]
 
 
 # Application definition
@@ -42,6 +59,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # WhiteNoise serves static files in production; harmless in development.
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -125,7 +144,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+# `collectstatic` gathers everything here for the server to serve.
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# In production, let WhiteNoise compress + fingerprint static files.
+# Left as the default in DEBUG so runserver/admin work without collectstatic.
+if not DEBUG:
+    STORAGES = {
+        'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+        'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
+    }
 
 # Media files (user-uploaded content, e.g. product images)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# --- Security hardening (only enforced when DEBUG is off) ---
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = _env_bool('DJANGO_SECURE_SSL_REDIRECT', True)
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 60 * 60 * 24 * 30  # 30 days
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True

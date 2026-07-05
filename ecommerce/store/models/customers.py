@@ -1,12 +1,17 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password
+from .address import AddressMixin
 
-class Customer(models.Model):
+class Customer(AddressMixin):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=10)
+    phone = models.CharField(max_length=20)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}".strip()
 
     # Save customer
     def register(self):

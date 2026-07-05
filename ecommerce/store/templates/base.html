@@ -360,6 +360,7 @@
             <li><a href="#">{% trans "Squad Discount" %}</a></li>
             {% if request.session.customer %}
                 <li><a href="{% url 'orders' %}">{% trans "Missions" %}</a></li>
+                <li><a href="{% url 'profile' %}">{% trans "Account" %}</a></li>
                 <li><a href="{% url 'logout' %}">{% trans "Sign Out" %}</a></li>
             {% else %}
                 <li><a href="{% url 'login' %}">{% trans "Sign In" %}</a></li>

@@ -88,7 +88,10 @@
             <td data-label="{% trans 'UNIT' %}">{{ order.product.name }}</td>
             <td data-label="{% trans 'QTY' %}" class="mono">×{{ order.quantity }}</td>
             <td data-label="{% trans 'PRICE' %}" class="mono">${{ order.price }}.00</td>
-            <td data-label="{% trans 'DROP LOCATION' %}">{{ order.address }}</td>
+            <td data-label="{% trans 'DROP LOCATION' %}">
+                {{ order.recipient_name }}
+                <span class="mono" style="display:block; font-size:11px; color:var(--text-mute);">{{ order.city_line }}</span>
+            </td>
             <td data-label="{% trans 'DATE' %}" class="mono">{{ order.date }}</td>
             <td data-label="{% trans 'STATUS' %}">
                 {% if order.status == 'delivered' %}

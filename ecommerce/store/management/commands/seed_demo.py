@@ -9,14 +9,28 @@ Usage:
 The command is idempotent: running it twice will not create duplicates.
 Generated product images are written to MEDIA_ROOT/uploads/products/.
 """
+import datetime
 from io import BytesIO
 
+from django.contrib.auth.hashers import make_password
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from store.models.categories import Category
+from store.models.customers import Customer
+from store.models.orders import Order
 from store.models.products import Products
+
+
+# A ready-to-use demo shopper (has a saved address + sample order history).
+DEMO_EMAIL = "demo@ironhold.co"
+DEMO_PASSWORD = "demo12345"
+DEMO_ADDRESS = dict(
+    recipient_name="Demo Operator", street_address="1240 Gunwale Rd",
+    address_line2="Bldg 7, Unit 4", city="Norfolk", state="VA",
+    zip_code="23511", country="United States",
+)
 
 try:
     from PIL import Image, ImageDraw, ImageFont
@@ -161,6 +175,37 @@ class Command(BaseCommand):
                 product.save()
                 created_products += 1
 
+        self._seed_demo_customer()
+
         self.stdout.write(self.style.SUCCESS(
             f"Done. Categories: {Category.objects.count()}, "
-            f"Products: {Products.objects.count()} (+{created_products} new)."))
+            f"Products: {Products.objects.count()} (+{created_products} new), "
+            f"Orders: {Order.objects.count()}. "
+            f"Demo login: {DEMO_EMAIL} / {DEMO_PASSWORD}"))
+
+    def _seed_demo_customer(self):
+        """Ensure a demo shopper exists with a saved address and 3 sample orders."""
+        customer, _ = Customer.objects.get_or_create(
+            email=DEMO_EMAIL,
+            defaults=dict(first_name="Demo", last_name="Operator",
+                          phone="+1 (757) 555-0142"),
+        )
+        customer.password = make_password(DEMO_PASSWORD)  # hashed exactly once
+        for field, value in DEMO_ADDRESS.items():
+            setattr(customer, field, value)
+        customer.save()
+
+        if Order.objects.filter(customer=customer).exists():
+            return
+
+        products = list(Products.objects.all()[:3])
+        statuses = [Order.NEW, Order.SHIPPED, Order.DELIVERED]
+        for product, status in zip(products, statuses):
+            order = Order(
+                customer=customer, product=product, price=product.price,
+                quantity=1, phone=customer.phone, status=status,
+                tracking_number="IH-TRK-88213047" if status == Order.SHIPPED else "",
+                shipped_at=datetime.date.today() if status != Order.NEW else None,
+                **DEMO_ADDRESS,
+            )
+            order.save()

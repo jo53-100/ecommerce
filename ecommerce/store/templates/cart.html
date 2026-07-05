@@ -167,12 +167,47 @@
                     {% csrf_token %}
                     <div class="form-group">
                         <label class="form-label">{% trans "SHIPPING ADDRESS" %}</label>
-                        <input type="text" name="address" class="form-control" placeholder="{% trans 'Delivery coordinates' %}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">{% trans "RECIPIENT" %}</label>
+                        <input type="text" name="recipient_name" class="form-control" value="{{ customer.recipient_name|default:customer.full_name }}" placeholder="{% trans 'Full name' %}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">{% trans "STREET ADDRESS" %}</label>
+                        <input type="text" name="street_address" class="form-control" value="{{ customer.street_address }}" placeholder="{% trans '123 Main St' %}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">{% trans "APT / SUITE / UNIT" %}</label>
+                        <input type="text" name="address_line2" class="form-control" value="{{ customer.address_line2 }}" placeholder="{% trans 'Optional' %}">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">{% trans "CITY" %}</label>
+                            <input type="text" name="city" class="form-control" value="{{ customer.city }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">{% trans "STATE / PROVINCE" %}</label>
+                            <input type="text" name="state" class="form-control" value="{{ customer.state }}" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">{% trans "ZIP / POSTAL CODE" %}</label>
+                            <input type="text" name="zip_code" class="form-control" value="{{ customer.zip_code }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">{% trans "COUNTRY" %}</label>
+                            <input type="text" name="country" class="form-control" value="{{ customer.country|default:'United States' }}" required>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">{% trans "CONTACT PHONE" %}</label>
-                        <input type="text" name="phone" class="form-control" placeholder="+1 (555) 000-0000" required>
+                        <input type="text" name="phone" class="form-control" value="{{ customer.phone }}" placeholder="+1 (555) 000-0000" required>
                     </div>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-dim); margin-bottom:16px; cursor:pointer;">
+                        <input type="checkbox" name="save_address" value="1" checked>
+                        {% trans "Save this address to my profile" %}
+                    </label>
                     <button type="submit" class="btn btn-primary btn-block">{% trans "DEPLOY ORDER" %} →</button>
                 </form>
                 <div style="text-align:center; margin-top: 14px;">

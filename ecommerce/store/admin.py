@@ -27,16 +27,20 @@ class CustomerAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'status_badge', 'product', 'customer', 'quantity',
-        'price', 'tracking_number', 'address', 'date',
+        'price', 'tracking_number', 'ship_to', 'date',
     )
     list_filter = ('status', 'date')
     search_fields = (
         'customer__email', 'customer__first_name', 'customer__last_name',
-        'product__name', 'tracking_number', 'address',
+        'product__name', 'tracking_number', 'city', 'state', 'zip_code',
     )
     list_editable = ('tracking_number',)
     list_per_page = 50
     actions = ('mark_as_shipped', 'mark_as_delivered', 'mark_as_new')
+
+    @admin.display(description='Ship to')
+    def ship_to(self, obj):
+        return obj.city_line or obj.recipient_name or '—'
 
     @admin.display(description='Status', ordering='status')
     def status_badge(self, obj):
