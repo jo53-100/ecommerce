@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% block title %}Sign In{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Sign In" %}{% endblock %}
 
 {% block extra_css %}
 .auth-wrap { min-height: calc(100vh - 200px); display: grid; grid-template-columns: 1fr 1fr; }
@@ -78,23 +79,23 @@
 <section class="auth-wrap">
     <div class="auth-visual">
         <div>
-            <div class="top-code">// SECURE.ACCESS.PROTOCOL</div>
-            <h2>ACCESS THE<br><span class="accent">ARMORY.</span></h2>
-            <p>Sign in to your operator account. Track missions in transit, save loadouts, and unlock unit pricing.</p>
+            <div class="top-code">{% trans "// SECURE.ACCESS.PROTOCOL" %}</div>
+            <h2>{% trans "ACCESS THE" %}<br><span class="accent">{% trans "ARMORY." %}</span></h2>
+            <p>{% trans "Sign in to your operator account. Track missions in transit, save loadouts, and unlock unit pricing." %}</p>
         </div>
         <div class="grid-code">
-            <div>NODE · <strong>NORFOLK-01</strong></div>
-            <div>ENCRYPTION · <strong>AES-256</strong></div>
-            <div>UPTIME · <strong>99.99%</strong></div>
-            <div>STATUS · <strong>ONLINE</strong></div>
+            <div>{% trans "NODE" %} · <strong>NORFOLK-01</strong></div>
+            <div>{% trans "ENCRYPTION" %} · <strong>AES-256</strong></div>
+            <div>{% trans "UPTIME" %} · <strong>99.99%</strong></div>
+            <div>{% trans "STATUS" %} · <strong>{% trans "ONLINE" %}</strong></div>
         </div>
     </div>
 
     <div class="auth-form-side">
         <div class="auth-form-box">
-            <span class="lbl">// AUTHENTICATION</span>
-            <h1>SIGN IN</h1>
-            <p class="sub">Welcome back, operator. Enter your credentials to continue.</p>
+            <span class="lbl">{% trans "// AUTHENTICATION" %}</span>
+            <h1>{% trans "SIGN IN" %}</h1>
+            <p class="sub">{% trans "Welcome back, operator. Enter your credentials to continue." %}</p>
 
             {% if error %}
                 <div class="alert alert-danger">{{ error }}</div>
@@ -103,19 +104,19 @@
             <form method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label class="form-label">EMAIL</label>
+                    <label class="form-label">{% trans "EMAIL" %}</label>
                     <input type="email" name="email" class="form-control" placeholder="operator@unit.mil" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">PASSWORD</label>
+                    <label class="form-label">{% trans "PASSWORD" %}</label>
                     <input type="password" name="password" class="form-control" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">AUTHENTICATE →</button>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">{% trans "AUTHENTICATE" %} →</button>
             </form>
 
-            <div class="divider-alt">— OR —</div>
+            <div class="divider-alt">— {% trans "OR" %} —</div>
 
-            <a href="{% url 'signup' %}" class="btn btn-outline btn-block">CREATE NEW ACCOUNT</a>
+            <a href="{% url 'signup' %}" class="btn btn-outline btn-block">{% trans "CREATE NEW ACCOUNT" %}</a>
         </div>
     </div>
 </section>

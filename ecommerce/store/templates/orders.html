@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% block title %}Missions{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Missions" %}{% endblock %}
 
 {% block extra_css %}
 .orders-wrap { padding: 60px 0; }
@@ -60,38 +61,38 @@
 <section class="orders-wrap">
     <div class="container">
         <div class="page-head">
-            <span class="lbl">// MISSION LOG</span>
-            <h1>YOUR MISSIONS</h1>
-            <p>Every deployment on record. Track status, view history, request re-supply.</p>
+            <span class="lbl">{% trans "// MISSION LOG" %}</span>
+            <h1>{% trans "YOUR MISSIONS" %}</h1>
+            <p>{% trans "Every deployment on record. Track status, view history, request re-supply." %}</p>
         </div>
 
 {% if orders %}
 <table class="orders-table">
     <thead>
         <tr>
-            <th>MISSION ID</th>
-            <th>UNIT</th>
-            <th>QTY</th>
-            <th>PRICE</th>
-            <th>DROP LOCATION</th>
-            <th>DATE</th>
-            <th>STATUS</th>
+            <th>{% trans "MISSION ID" %}</th>
+            <th>{% trans "UNIT" %}</th>
+            <th>{% trans "QTY" %}</th>
+            <th>{% trans "PRICE" %}</th>
+            <th>{% trans "DROP LOCATION" %}</th>
+            <th>{% trans "DATE" %}</th>
+            <th>{% trans "STATUS" %}</th>
         </tr>
     </thead>
     <tbody>
         {% for order in orders %}
         <tr>
-            <td data-label="MISSION ID"><span class="mission-id">M-{{ order.id|stringformat:"05d" }}</span></td>
-            <td data-label="UNIT">{{ order.product.name }}</td>
-            <td data-label="QTY" class="mono">×{{ order.quantity }}</td>
-            <td data-label="PRICE" class="mono">${{ order.price }}.00</td>
-            <td data-label="DROP LOCATION">{{ order.address }}</td>
-            <td data-label="DATE" class="mono">{{ order.date }}</td>
-            <td data-label="STATUS">
+            <td data-label="{% trans 'MISSION ID' %}"><span class="mission-id">M-{{ order.id|stringformat:"05d" }}</span></td>
+            <td data-label="{% trans 'UNIT' %}">{{ order.product.name }}</td>
+            <td data-label="{% trans 'QTY' %}" class="mono">×{{ order.quantity }}</td>
+            <td data-label="{% trans 'PRICE' %}" class="mono">${{ order.price }}.00</td>
+            <td data-label="{% trans 'DROP LOCATION' %}">{{ order.address }}</td>
+            <td data-label="{% trans 'DATE' %}" class="mono">{{ order.date }}</td>
+            <td data-label="{% trans 'STATUS' %}">
                 {% if order.status %}
-                    <span class="status-badge status-delivered"><span class="status-dot-tiny"></span>DELIVERED</span>
+                    <span class="status-badge status-delivered"><span class="status-dot-tiny"></span>{% trans "DELIVERED" %}</span>
                 {% else %}
-                    <span class="status-badge status-pending"><span class="status-dot-tiny"></span>IN TRANSIT</span>
+                    <span class="status-badge status-pending"><span class="status-dot-tiny"></span>{% trans "IN TRANSIT" %}</span>
                 {% endif %}
             </td>
         </tr>
@@ -100,10 +101,10 @@
 </table>
 {% else %}
 <div class="empty-state">
-    <span class="mono-tag">NO MISSIONS ON FILE</span>
-    <h3>YOU HAVEN'T DEPLOYED YET</h3>
-    <p class="text-dim">Once you place an order, it'll show up here with tracking status.</p>
-    <a href="{% url 'store' %}" class="btn btn-primary" style="margin-top: 20px;">Head to the Arsenal →</a>
+    <span class="mono-tag">{% trans "NO MISSIONS ON FILE" %}</span>
+    <h3>{% trans "YOU HAVEN'T DEPLOYED YET" %}</h3>
+    <p class="text-dim">{% trans "Once you place an order, it'll show up here with tracking status." %}</p>
+    <a href="{% url 'store' %}" class="btn btn-primary" style="margin-top: 20px;">{% trans "Head to the Arsenal" %} →</a>
 </div>
 {% endif %}
 

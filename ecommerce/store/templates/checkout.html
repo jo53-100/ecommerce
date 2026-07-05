@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
-{% block title %}Checkout{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Checkout" %}{% endblock %}
 
 {% block content %}
 <section style="padding: 100px 0;">
     <div class="container" style="max-width: 640px; text-align:center;">
-        <span class="mono-tag">// STANDBY</span>
-        <h1 style="margin-top: 16px;">DEPLOY YOUR ORDER</h1>
-        <p class="text-dim" style="margin-bottom: 32px;">Review the loadout in your kit and confirm the deployment on the cart screen.</p>
-        <a href="{% url 'cart' %}" class="btn btn-primary">Go to Kit →</a>
+        <span class="mono-tag">{% trans "// STANDBY" %}</span>
+        <h1 style="margin-top: 16px;">{% trans "DEPLOY YOUR ORDER" %}</h1>
+        <p class="text-dim" style="margin-bottom: 32px;">{% trans "Review the loadout in your kit and confirm the deployment on the cart screen." %}</p>
+        <a href="{% url 'cart' %}" class="btn btn-primary">{% trans "Go to Kit" %} →</a>
     </div>
 </section>
 {% endblock %}

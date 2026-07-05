@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
-{% load cart_extras %}
-{% block title %}Kit · Cart{% endblock %}
+{% load cart_extras i18n %}
+{% block title %}{% trans "Kit · Cart" %}{% endblock %}
 
 {% block extra_css %}
 .cart-wrap { padding: 60px 0 40px; }
@@ -93,9 +93,9 @@
 <section class="cart-wrap">
     <div class="container">
         <div class="page-head">
-            <span class="lbl">// LOADOUT SUMMARY</span>
-            <h1>YOUR KIT</h1>
-            <p>Review your loadout. Adjust quantities. Deploy the order.</p>
+            <span class="lbl">{% trans "// LOADOUT SUMMARY" %}</span>
+            <h1>{% trans "YOUR KIT" %}</h1>
+            <p>{% trans "Review your loadout. Adjust quantities. Deploy the order." %}</p>
         </div>
 
 {% if products %}
@@ -104,10 +104,10 @@
         <table class="cart-table">
             <thead>
                 <tr>
-                    <th>UNIT</th>
-                    <th>UNIT PRICE</th>
-                    <th>QTY</th>
-                    <th style="text-align:right;">SUBTOTAL</th>
+                    <th>{% trans "UNIT" %}</th>
+                    <th>{% trans "UNIT PRICE" %}</th>
+                    <th>{% trans "QTY" %}</th>
+                    <th style="text-align:right;">{% trans "SUBTOTAL" %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -155,35 +155,35 @@
     </div>
 
     <aside class="summary-panel">
-        <div class="head">▎ORDER SUMMARY</div>
+        <div class="head">▎{% trans "ORDER SUMMARY" %}</div>
         <div class="body">
-            <div class="summary-row"><span>Items</span><span class="mono">{{ products|length }}</span></div>
-            <div class="summary-row"><span>Shipping</span><span class="text-olive">FREE</span></div>
-            <div class="summary-row"><span>Insured Transit</span><span>Included</span></div>
-            <div class="summary-row total"><span>TOTAL</span><span class="num">READY</span></div>
+            <div class="summary-row"><span>{% trans "Items" %}</span><span class="mono">{{ products|length }}</span></div>
+            <div class="summary-row"><span>{% trans "Shipping" %}</span><span class="text-olive">{% trans "FREE" %}</span></div>
+            <div class="summary-row"><span>{% trans "Insured Transit" %}</span><span>{% trans "Included" %}</span></div>
+            <div class="summary-row total"><span>{% trans "TOTAL" %}</span><span class="num">{% trans "READY" %}</span></div>
 
             {% if request.session.customer %}
                 <form action="{% url 'checkout' %}" method="POST" style="margin-top: 20px;">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label class="form-label">SHIPPING ADDRESS</label>
-                        <input type="text" name="address" class="form-control" placeholder="Delivery coordinates" required>
+                        <label class="form-label">{% trans "SHIPPING ADDRESS" %}</label>
+                        <input type="text" name="address" class="form-control" placeholder="{% trans 'Delivery coordinates' %}" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">CONTACT PHONE</label>
+                        <label class="form-label">{% trans "CONTACT PHONE" %}</label>
                         <input type="text" name="phone" class="form-control" placeholder="+1 (555) 000-0000" required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">DEPLOY ORDER →</button>
+                    <button type="submit" class="btn btn-primary btn-block">{% trans "DEPLOY ORDER" %} →</button>
                 </form>
                 <div style="text-align:center; margin-top: 14px;">
                     <span class="mono" style="font-size:10px; color:var(--text-mute); letter-spacing:0.15em;">
-                        🔒 SECURE · SSL · 256-BIT
+                        🔒 {% trans "SECURE · SSL · 256-BIT" %}
                     </span>
                 </div>
             {% else %}
                 <div class="auth-notice">
-                    Authentication required to deploy this order.
-                    <br><a href="{% url 'login' %}?return_url=/cart/">Sign in →</a>
+                    {% trans "Authentication required to deploy this order." %}
+                    <br><a href="{% url 'login' %}?return_url=/cart/">{% trans "Sign in" %} →</a>
                 </div>
             {% endif %}
         </div>
@@ -191,10 +191,10 @@
 </div>
 {% else %}
 <div class="empty-cart">
-    <div class="icon">[ EMPTY ]</div>
-    <h3>NO UNITS IN LOADOUT</h3>
-    <p class="text-dim">Your kit is empty. Head to the arsenal to gear up.</p>
-    <a href="{% url 'store' %}" class="btn btn-primary" style="margin-top: 20px;">Browse Arsenal →</a>
+    <div class="icon">[ {% trans "EMPTY" %} ]</div>
+    <h3>{% trans "NO UNITS IN LOADOUT" %}</h3>
+    <p class="text-dim">{% trans "Your kit is empty. Head to the arsenal to gear up." %}</p>
+    <a href="{% url 'store' %}" class="btn btn-primary" style="margin-top: 20px;">{% trans "Browse Arsenal" %} →</a>
 </div>
 {% endif %}
 

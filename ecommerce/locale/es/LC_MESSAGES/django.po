@@ -1,0 +1,654 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-05 05:41+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: store/templates/base.html:8
+msgid "Mission-Ready Gear"
+msgstr "Equipo Listo Para La Misión"
+
+#: store/templates/base.html:331
+msgid "OPERATIONAL — SHIPPING WORLDWIDE FROM NORFOLK, VA"
+msgstr "OPERATIVO — ENVÍOS A TODO EL MUNDO DESDE NORFOLK, VA"
+
+#: store/templates/base.html:333 store/templates/base.html:406
+msgid "SUPPORT"
+msgstr "SOPORTE"
+
+#: store/templates/base.html:354 store/templates/base.html:387
+msgid "SUPPLY CO. · EST. 2019"
+msgstr "COMPAÑÍA DE SUMINISTROS · EST. 2019"
+
+#: store/templates/base.html:358 store/templates/index.html:3
+msgid "Arsenal"
+msgstr "Arsenal"
+
+#: store/templates/base.html:359
+msgid "Field Guide"
+msgstr "Manual de Campo"
+
+#: store/templates/base.html:360
+msgid "Squad Discount"
+msgstr "Descuento de Escuadrón"
+
+#: store/templates/base.html:362 store/templates/orders.html:3
+msgid "Missions"
+msgstr "Misiones"
+
+#: store/templates/base.html:363
+msgid "Sign Out"
+msgstr "Cerrar Sesión"
+
+#: store/templates/base.html:365 store/templates/login.html:3
+msgid "Sign In"
+msgstr "Iniciar Sesión"
+
+#: store/templates/base.html:369
+msgid "Kit"
+msgstr "Kit"
+
+#: store/templates/base.html:389
+msgid ""
+"Mission-ready equipment for service members, veterans, first responders, and "
+"civilians who demand mil-spec reliability. Field-tested. No compromises."
+msgstr "Equipo listo para la misión para militares, veteranos, socorristas y civiles que exigen confiabilidad de grado militar. Probado en el campo. Sin compromisos."
+
+#: store/templates/base.html:391
+msgid "MIL-SPEC"
+msgstr "GRADO MILITAR"
+
+#: store/templates/base.html:393
+msgid "BERRY COMPLIANT"
+msgstr "CERT. BERRY"
+
+#: store/templates/base.html:397
+msgid "SHOP"
+msgstr "TIENDA"
+
+#: store/templates/base.html:399 store/templates/index.html:326
+msgid "All Gear"
+msgstr "Todo el Equipo"
+
+#: store/templates/base.html:400
+msgid "New Drops"
+msgstr "Nuevos Lanzamientos"
+
+#: store/templates/base.html:401
+msgid "Loadouts"
+msgstr "Configuraciones"
+
+#: store/templates/base.html:402
+msgid "Clearance"
+msgstr "Liquidación"
+
+#: store/templates/base.html:408 store/templates/cart.html:161
+msgid "Shipping"
+msgstr "Envíos"
+
+#: store/templates/base.html:409
+msgid "Returns"
+msgstr "Devoluciones"
+
+#: store/templates/base.html:410
+msgid "Warranty"
+msgstr "Garantía"
+
+#: store/templates/base.html:411
+msgid "Contact HQ"
+msgstr "Contactar Cuartel"
+
+#: store/templates/base.html:415
+msgid "PROGRAMS"
+msgstr "PROGRAMAS"
+
+#: store/templates/base.html:417
+msgid "Active Duty"
+msgstr "Servicio Activo"
+
+#: store/templates/base.html:418
+msgid "Veterans"
+msgstr "Veteranos"
+
+#: store/templates/base.html:419
+msgid "First Responders"
+msgstr "Socorristas"
+
+#: store/templates/base.html:420
+msgid "Unit Contracts"
+msgstr "Contratos de Unidad"
+
+#: store/templates/base.html:425
+msgid "© 2026 IRONHOLD TACTICAL SUPPLY CO. — ALL RIGHTS RESERVED"
+msgstr "© 2026 IRONHOLD TACTICAL SUPPLY CO. — TODOS LOS DERECHOS RESERVADOS"
+
+#: store/templates/cart.html:3
+msgid "Kit · Cart"
+msgstr "Kit · Carrito"
+
+#: store/templates/cart.html:96
+msgid "// LOADOUT SUMMARY"
+msgstr "// RESUMEN DE CONFIGURACIÓN"
+
+#: store/templates/cart.html:97
+msgid "YOUR KIT"
+msgstr "TU KIT"
+
+#: store/templates/cart.html:98
+msgid "Review your loadout. Adjust quantities. Deploy the order."
+msgstr "Revisa tu configuración. Ajusta cantidades. Despliega el pedido."
+
+#: store/templates/cart.html:107 store/templates/orders.html:74
+#: store/templates/orders.html:86
+msgid "UNIT"
+msgstr "UNIDAD"
+
+#: store/templates/cart.html:108
+msgid "UNIT PRICE"
+msgstr "PRECIO UNITARIO"
+
+#: store/templates/cart.html:109 store/templates/orders.html:75
+#: store/templates/orders.html:87
+msgid "QTY"
+msgstr "CANT"
+
+#: store/templates/cart.html:110
+msgid "SUBTOTAL"
+msgstr "SUBTOTAL"
+
+#: store/templates/cart.html:158
+msgid "ORDER SUMMARY"
+msgstr "RESUMEN DEL PEDIDO"
+
+#: store/templates/cart.html:160
+msgid "Items"
+msgstr "Artículos"
+
+#: store/templates/cart.html:161
+msgid "FREE"
+msgstr "GRATIS"
+
+#: store/templates/cart.html:162
+msgid "Insured Transit"
+msgstr "Tránsito Asegurado"
+
+#: store/templates/cart.html:162
+msgid "Included"
+msgstr "Incluido"
+
+#: store/templates/cart.html:163
+msgid "TOTAL"
+msgstr "TOTAL"
+
+#: store/templates/cart.html:163
+msgid "READY"
+msgstr "LISTO"
+
+#: store/templates/cart.html:169
+msgid "SHIPPING ADDRESS"
+msgstr "DIRECCIÓN DE ENVÍO"
+
+#: store/templates/cart.html:170
+msgid "Delivery coordinates"
+msgstr "Coordenadas de entrega"
+
+#: store/templates/cart.html:173
+msgid "CONTACT PHONE"
+msgstr "TELÉFONO DE CONTACTO"
+
+#: store/templates/cart.html:176
+msgid "DEPLOY ORDER"
+msgstr "DESPLEGAR PEDIDO"
+
+#: store/templates/cart.html:180
+msgid "SECURE · SSL · 256-BIT"
+msgstr "SEGURO · SSL · 256-BIT"
+
+#: store/templates/cart.html:185
+msgid "Authentication required to deploy this order."
+msgstr "Se requiere autenticación para desplegar este pedido."
+
+#: store/templates/cart.html:186
+msgid "Sign in"
+msgstr "Iniciar sesión"
+
+#: store/templates/cart.html:194
+msgid "EMPTY"
+msgstr "VACÍO"
+
+#: store/templates/cart.html:195
+msgid "NO UNITS IN LOADOUT"
+msgstr "NO HAY UNIDADES EN LA CONFIGURACIÓN"
+
+#: store/templates/cart.html:196
+msgid "Your kit is empty. Head to the arsenal to gear up."
+msgstr "Tu kit está vacío. Dirígete al arsenal para equiparte."
+
+#: store/templates/cart.html:197
+msgid "Browse Arsenal"
+msgstr "Explorar Arsenal"
+
+#: store/templates/checkout.html:3
+msgid "Checkout"
+msgstr "Pagar"
+
+#: store/templates/checkout.html:8
+msgid "// STANDBY"
+msgstr "// EN ESPERA"
+
+#: store/templates/checkout.html:9
+msgid "DEPLOY YOUR ORDER"
+msgstr "DESPLEGAR TU PEDIDO"
+
+#: store/templates/checkout.html:10
+msgid ""
+"Review the loadout in your kit and confirm the deployment on the cart screen."
+msgstr "Revisa la configuración en tu kit y confirma el despliegue en la pantalla del carrito."
+
+#: store/templates/checkout.html:11
+msgid "Go to Kit"
+msgstr "Ir al Kit"
+
+#: store/templates/index.html:252
+msgid "NEW DROP · 07.2026 SEASONAL LOADOUT"
+msgstr "NUEVO LANZAMIENTO · CONFIGURACIÓN DE TEMPORADA 07.2026"
+
+#: store/templates/index.html:254
+msgid "MISSION-READY GEAR."
+msgstr "EQUIPO LISTO PARA LA MISIÓN."
+
+#: store/templates/index.html:254
+msgid "NO COMPROMISES."
+msgstr "SIN COMPROMISOS."
+
+#: store/templates/index.html:255
+msgid ""
+"Combat-grade tactical equipment engineered for professionals who operate at "
+"the edge. Built to mil-spec. Tested in the field. Trusted by units in 40+ "
+"countries."
+msgstr "Equipo táctico de grado militar diseñado para profesionales que operan al límite. Fabricado con especificación militar. Probado en el campo. Confiado por unidades en más de 40 países."
+
+#: store/templates/index.html:257
+msgid "Shop the Arsenal"
+msgstr "Comprar el Arsenal"
+
+#: store/templates/index.html:258
+msgid "View Loadouts"
+msgstr "Ver Configuraciones"
+
+#: store/templates/index.html:263
+msgid "Operators Equipped"
+msgstr "Operadores Equipados"
+
+#: store/templates/index.html:267
+msgid "Field Approval Rate"
+msgstr "Tasa de Aprobación en Campo"
+
+#: store/templates/index.html:271
+msgid "Support Line"
+msgstr "Línea de Soporte"
+
+#: store/templates/index.html:281 store/templates/login.html:90
+#: store/templates/orders.html:79 store/templates/orders.html:91
+msgid "STATUS"
+msgstr "ESTADO"
+
+#: store/templates/index.html:281
+msgid "ACTIVE"
+msgstr "ACTIVO"
+
+#: store/templates/index.html:291
+msgid "MIL-SPEC BUILT"
+msgstr "CONSTRUCCIÓN MILITAR"
+
+#: store/templates/index.html:291
+msgid "Certified materials"
+msgstr "Materiales certificados"
+
+#: store/templates/index.html:295
+msgid "FREE SHIPPING"
+msgstr "ENVÍO GRATIS"
+
+#: store/templates/index.html:295
+msgid "Orders over $150"
+msgstr "Pedidos superiores a $150"
+
+#: store/templates/index.html:299
+msgid "30-DAY RETURNS"
+msgstr "DEVOLUCIONES 30 DÍAS"
+
+#: store/templates/index.html:299
+msgid "No questions asked"
+msgstr "Sin preguntas"
+
+#: store/templates/index.html:303
+#, python-format
+msgid "10%% MIL DISCOUNT"
+msgstr "10%% DESCUENTO MILITAR"
+
+#: store/templates/index.html:303
+msgid "Verified active duty"
+msgstr "Servicio activo verificado"
+
+#: store/templates/index.html:312
+msgid "// SECTION 001 · INVENTORY"
+msgstr "// SECCIÓN 001 · INVENTARIO"
+
+#: store/templates/index.html:313
+msgid "THE ARSENAL"
+msgstr "EL ARSENAL"
+
+#: store/templates/index.html:315
+#, python-format
+msgid "SHOWING %(count)s UNITS →"
+msgstr "MOSTRANDO %(count)s UNIDADES →"
+
+#: store/templates/index.html:321
+msgid "CATEGORIES"
+msgstr "CATEGORÍAS"
+
+#: store/templates/index.html:351
+msgid "NEW"
+msgstr "NUEVO"
+
+#: store/templates/index.html:357
+msgid ""
+"Field-grade equipment engineered for sustained deployment. Rugged. Reliable. "
+"Ready."
+msgstr "Equipo de campo diseñado para despliegue sostenido. Resistente. Confiable. Listo."
+
+#: store/templates/index.html:365
+msgid "Add"
+msgstr "Añadir"
+
+#: store/templates/index.html:372
+msgid "INVENTORY EMPTY"
+msgstr "INVENTARIO VACÍO"
+
+#: store/templates/index.html:373
+msgid "NO UNITS IN INVENTORY"
+msgstr "NO HAY UNIDADES EN INVENTARIO"
+
+#: store/templates/index.html:374
+msgid ""
+"Load your first products from the <a href=\"/admin/\">command console</a>."
+msgstr ""
+
+#: store/templates/index.html:386
+msgid "ENLIST"
+msgstr "ALISTAMIENTO"
+
+#: store/templates/index.html:387
+#, python-format
+msgid "ACTIVE DUTY? GET 10%% OFF FOR LIFE."
+msgstr "¿SERVICIO ACTIVO? OBTÉN 10%% DE DESCUENTO DE POR VIDA."
+
+#: store/templates/index.html:388
+msgid ""
+"Verified service members and first responders receive automatic pricing on "
+"every order."
+msgstr "Militares verificados y socorristas reciben precios automáticos en cada pedido."
+
+#: store/templates/index.html:391
+msgid "Verify Status"
+msgstr "Verificar Estado"
+
+#: store/templates/index.html:401
+msgid "// SECTION 002 · WHY IRONHOLD"
+msgstr "// SECCIÓN 002 · POR QUÉ IRONHOLD"
+
+#: store/templates/index.html:402
+msgid "BUILT FOR THE MISSION"
+msgstr "CONSTRUIDO PARA LA MISIÓN"
+
+#: store/templates/index.html:407
+msgid "// 01 · SPEC"
+msgstr "// 01 · ESPECIFICACIÓN"
+
+#: store/templates/index.html:408
+msgid "MIL-SPEC MATERIALS"
+msgstr "MATERIALES MILITARES"
+
+#: store/templates/index.html:409
+msgid ""
+"Every fiber, every buckle, every stitch tested against MIL-STD-810H. If it "
+"can't survive drop, dust, and salt fog — it doesn't ship."
+msgstr "Cada fibra, cada hebilla, cada puntada probada contra MIL-STD-810H. Si no sobrevive caídas, polvo y niebla salina — no se envía."
+
+#: store/templates/index.html:412
+msgid "// 02 · FIELD"
+msgstr "// 02 · CAMPO"
+
+#: store/templates/index.html:413
+msgid "TESTED IN THEATER"
+msgstr "PROBADO EN TEATRO DE OPERACIONES"
+
+#: store/templates/index.html:414
+msgid ""
+"Prototyped with active operators from three continents. Redesigned until it "
+"survives a full rotation without failure."
+msgstr "Prototipado con operadores activos de tres continentes. Rediseñado hasta que sobrevive una rotación completa sin fallas."
+
+#: store/templates/index.html:417
+msgid "// 03 · WARRANTY"
+msgstr "// 03 · GARANTÍA"
+
+#: store/templates/index.html:418
+msgid "LIFETIME GUARANTEE"
+msgstr "GARANTÍA DE POR VIDA"
+
+#: store/templates/index.html:419
+msgid ""
+"If our gear fails during service — we replace it. No forms, no fine print. "
+"Send it back, get a new one."
+msgstr "Si nuestro equipo falla durante el servicio — lo reemplazamos. Sin formularios, sin letra pequeña. Devuélvelo, recibe uno nuevo."
+
+#: store/templates/login.html:82
+msgid "// SECURE.ACCESS.PROTOCOL"
+msgstr "// PROTOCOLO.ACCESO.SEGURO"
+
+#: store/templates/login.html:83
+msgid "ACCESS THE"
+msgstr "ACCEDE AL"
+
+#: store/templates/login.html:83
+msgid "ARMORY."
+msgstr "ARMERÍA."
+
+#: store/templates/login.html:84
+msgid ""
+"Sign in to your operator account. Track missions in transit, save loadouts, "
+"and unlock unit pricing."
+msgstr "Inicia sesión en tu cuenta de operador. Rastrea misiones en tránsito, guarda configuraciones y desbloquea precios de unidad."
+
+#: store/templates/login.html:87
+msgid "NODE"
+msgstr "NODO"
+
+#: store/templates/login.html:88
+msgid "ENCRYPTION"
+msgstr "ENCRIPTACIÓN"
+
+#: store/templates/login.html:89
+msgid "UPTIME"
+msgstr "TIEMPO ACTIVO"
+
+#: store/templates/login.html:90
+msgid "ONLINE"
+msgstr "EN LÍNEA"
+
+#: store/templates/login.html:96
+msgid "// AUTHENTICATION"
+msgstr "// AUTENTICACIÓN"
+
+#: store/templates/login.html:97 store/templates/signup.html:129
+msgid "SIGN IN"
+msgstr "INICIAR SESIÓN"
+
+#: store/templates/login.html:98
+msgid "Welcome back, operator. Enter your credentials to continue."
+msgstr "Bienvenido de nuevo, operador. Ingresa tus credenciales para continuar."
+
+#: store/templates/login.html:107 store/templates/signup.html:118
+msgid "EMAIL"
+msgstr "CORREO"
+
+#: store/templates/login.html:111 store/templates/signup.html:122
+msgid "PASSWORD"
+msgstr "CONTRASEÑA"
+
+#: store/templates/login.html:114
+msgid "AUTHENTICATE"
+msgstr "AUTENTICAR"
+
+#: store/templates/login.html:117
+msgid "OR"
+msgstr "O"
+
+#: store/templates/login.html:119
+msgid "CREATE NEW ACCOUNT"
+msgstr "CREAR CUENTA NUEVA"
+
+#: store/templates/orders.html:64
+msgid "// MISSION LOG"
+msgstr "// REGISTRO DE MISIONES"
+
+#: store/templates/orders.html:65
+msgid "YOUR MISSIONS"
+msgstr "TUS MISIONES"
+
+#: store/templates/orders.html:66
+msgid ""
+"Every deployment on record. Track status, view history, request re-supply."
+msgstr "Cada despliegue registrado. Rastrea estado, revisa historial, solicita reabastecimiento."
+
+#: store/templates/orders.html:73 store/templates/orders.html:85
+msgid "MISSION ID"
+msgstr "ID DE MISIÓN"
+
+#: store/templates/orders.html:76 store/templates/orders.html:88
+msgid "PRICE"
+msgstr "PRECIO"
+
+#: store/templates/orders.html:77 store/templates/orders.html:89
+msgid "DROP LOCATION"
+msgstr "UBICACIÓN DE ENTREGA"
+
+#: store/templates/orders.html:78 store/templates/orders.html:90
+msgid "DATE"
+msgstr "FECHA"
+
+#: store/templates/orders.html:93
+msgid "DELIVERED"
+msgstr "ENTREGADO"
+
+#: store/templates/orders.html:95
+msgid "IN TRANSIT"
+msgstr "EN TRÁNSITO"
+
+#: store/templates/orders.html:104
+msgid "NO MISSIONS ON FILE"
+msgstr "SIN MISIONES REGISTRADAS"
+
+#: store/templates/orders.html:105
+msgid "YOU HAVEN'T DEPLOYED YET"
+msgstr "AÚN NO HAS DESPLEGADO"
+
+#: store/templates/orders.html:106
+msgid "Once you place an order, it'll show up here with tracking status."
+msgstr "Una vez que hagas un pedido, aparecerá aquí con el estado de seguimiento."
+
+#: store/templates/orders.html:107
+msgid "Head to the Arsenal"
+msgstr "Ir al Arsenal"
+
+#: store/templates/signup.html:3
+msgid "Enlist"
+msgstr "Alistarse"
+
+#: store/templates/signup.html:76
+msgid "// OPERATOR.ENLISTMENT"
+msgstr "// ALISTAMIENTO.DE.OPERADOR"
+
+#: store/templates/signup.html:77
+msgid "JOIN THE"
+msgstr "ÚNETE AL"
+
+#: store/templates/signup.html:77
+msgid "ROSTER."
+msgstr "ROSTER."
+
+#: store/templates/signup.html:78
+#, python-format
+msgid ""
+"Create your Ironhold account and gear up. Verified service members and first "
+"responders unlock a 10%% permanent discount."
+msgstr ""
+
+#: store/templates/signup.html:80
+msgid "<strong>Priority shipping</strong> on every order."
+msgstr "<strong>Envío prioritario</strong> en cada pedido."
+
+#: store/templates/signup.html:81
+msgid "<strong>Save loadouts</strong> for quick re-supply."
+msgstr "<strong>Guarda configuraciones</strong> para reabastecimiento rápido."
+
+#: store/templates/signup.html:82
+msgid "<strong>Squad discount</strong> for 5+ unit orders."
+msgstr "<strong>Descuento de escuadrón</strong> para pedidos de 5+ unidades."
+
+#: store/templates/signup.html:83
+msgid "<strong>Field intel</strong> — early access to new drops."
+msgstr "<strong>Inteligencia de campo</strong> — acceso anticipado a nuevos lanzamientos."
+
+#: store/templates/signup.html:87
+msgid "SECURE ENROLLMENT · ENCRYPTED · GDPR + CCPA COMPLIANT"
+msgstr "ALISTAMIENTO SEGURO · ENCRIPTADO · CUMPLE GDPR + CCPA"
+
+#: store/templates/signup.html:93
+msgid "// ENLISTMENT FORM"
+msgstr "// FORMULARIO DE ALISTAMIENTO"
+
+#: store/templates/signup.html:94
+msgid "CREATE ACCOUNT"
+msgstr "CREAR CUENTA"
+
+#: store/templates/signup.html:95
+msgid "Fill out your operator profile below. Takes under a minute."
+msgstr "Completa tu perfil de operador. Toma menos de un minuto."
+
+#: store/templates/signup.html:105
+msgid "FIRST NAME"
+msgstr "NOMBRE"
+
+#: store/templates/signup.html:109
+msgid "LAST NAME"
+msgstr "APELLIDO"
+
+#: store/templates/signup.html:114
+msgid "PHONE"
+msgstr "TELÉFONO"
+
+#: store/templates/signup.html:123
+msgid "Minimum 8 characters"
+msgstr "Mínimo 8 caracteres"
+
+#: store/templates/signup.html:125
+msgid "ENLIST NOW"
+msgstr "ALISTARSE AHORA"
+
+#: store/templates/signup.html:129
+msgid "ALREADY ENLISTED?"
+msgstr "¿YA ESTÁS ALISTADO?"

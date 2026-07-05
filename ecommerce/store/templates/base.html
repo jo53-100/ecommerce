@@ -1,10 +1,11 @@
-{% load static %}
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}IRONHOLD TACTICAL{% endblock %} — Mission-Ready Gear</title>
+    <title>{% block title %}IRONHOLD TACTICAL{% endblock %} — {% trans "Mission-Ready Gear" %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -301,6 +302,25 @@
             .topstrip .container span:first-child { display: none; }
         }
 
+        /* Language switcher */
+        .lang-switch {
+            display: inline-flex; align-items: center;
+            border: 1px solid var(--border);
+            border-radius: 2px; overflow: hidden;
+            margin-left: 12px;
+        }
+        .lang-switch button {
+            background: transparent; border: 0;
+            color: var(--text-mute);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; letter-spacing: 0.15em;
+            padding: 4px 10px; cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.15s;
+        }
+        .lang-switch button:hover { color: var(--text); }
+        .lang-switch button.active { background: var(--olive); color: var(--bg-0); font-weight: 600; }
+
         {% block extra_css %}{% endblock %}
     </style>
 </head>
@@ -308,8 +328,20 @@
 
 <div class="topstrip">
     <div class="container">
-        <span><span class="status-dot"></span>OPERATIONAL — SHIPPING WORLDWIDE FROM NORFOLK, VA</span>
-        <span>SUPPORT: +1 (800) 555-0139 · OPS@IRONHOLD.CO</span>
+        <span><span class="status-dot"></span>{% trans "OPERATIONAL — SHIPPING WORLDWIDE FROM NORFOLK, VA" %}</span>
+        <span style="display:flex; align-items:center;">
+            {% trans "SUPPORT" %}: +1 (800) 555-0139 · OPS@IRONHOLD.CO
+            <span class="lang-switch">
+                {% for code, name in LANGUAGES %}
+                    <form action="{% url 'set_language' %}" method="post" style="margin:0; display:inline;">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                        <input name="language" type="hidden" value="{{ code }}">
+                        <button type="submit" class="{% if code == LANGUAGE_CODE %}active{% endif %}">{{ code }}</button>
+                    </form>
+                {% endfor %}
+            </span>
+        </span>
     </div>
 </div>
 
@@ -319,22 +351,22 @@
             <span class="brand-mark">IH</span>
             <span>
                 IRONHOLD TACTICAL
-                <small>SUPPLY CO. · EST. 2019</small>
+                <small>{% trans "SUPPLY CO. · EST. 2019" %}</small>
             </span>
         </a>
         <ul class="nav-links">
-            <li><a href="{% url 'store' %}">Arsenal</a></li>
-            <li><a href="#">Field Guide</a></li>
-            <li><a href="#">Squad Discount</a></li>
+            <li><a href="{% url 'store' %}">{% trans "Arsenal" %}</a></li>
+            <li><a href="#">{% trans "Field Guide" %}</a></li>
+            <li><a href="#">{% trans "Squad Discount" %}</a></li>
             {% if request.session.customer %}
-                <li><a href="{% url 'orders' %}">Missions</a></li>
-                <li><a href="{% url 'logout' %}">Sign Out</a></li>
+                <li><a href="{% url 'orders' %}">{% trans "Missions" %}</a></li>
+                <li><a href="{% url 'logout' %}">{% trans "Sign Out" %}</a></li>
             {% else %}
-                <li><a href="{% url 'login' %}">Sign In</a></li>
+                <li><a href="{% url 'login' %}">{% trans "Sign In" %}</a></li>
             {% endif %}
             <li>
                 <a href="{% url 'cart' %}" class="cta-cart">
-                    Kit
+                    {% trans "Kit" %}
                     <span class="badge">{{ request.session.cart|length|default:0 }}</span>
                 </a>
             </li>
@@ -352,45 +384,45 @@
             <div class="footer-col">
                 <a href="{% url 'store' %}" class="brand">
                     <span class="brand-mark">IH</span>
-                    <span>IRONHOLD TACTICAL<small>SUPPLY CO. · EST. 2019</small></span>
+                    <span>IRONHOLD TACTICAL<small>{% trans "SUPPLY CO. · EST. 2019" %}</small></span>
                 </a>
-                <p>Mission-ready equipment for service members, veterans, first responders, and civilians who demand mil-spec reliability. Field-tested. No compromises.</p>
+                <p>{% trans "Mission-ready equipment for service members, veterans, first responders, and civilians who demand mil-spec reliability. Field-tested. No compromises." %}</p>
                 <div class="row-flex" style="margin-top: 16px;">
-                    <span class="mono-tag">MIL-SPEC</span>
+                    <span class="mono-tag">{% trans "MIL-SPEC" %}</span>
                     <span class="mono-tag">ISO-9001</span>
-                    <span class="mono-tag">BERRY COMPLIANT</span>
+                    <span class="mono-tag">{% trans "BERRY COMPLIANT" %}</span>
                 </div>
             </div>
             <div class="footer-col">
-                <h5>SHOP</h5>
+                <h5>{% trans "SHOP" %}</h5>
                 <ul>
-                    <li><a href="{% url 'store' %}">All Gear</a></li>
-                    <li><a href="#">New Drops</a></li>
-                    <li><a href="#">Loadouts</a></li>
-                    <li><a href="#">Clearance</a></li>
+                    <li><a href="{% url 'store' %}">{% trans "All Gear" %}</a></li>
+                    <li><a href="#">{% trans "New Drops" %}</a></li>
+                    <li><a href="#">{% trans "Loadouts" %}</a></li>
+                    <li><a href="#">{% trans "Clearance" %}</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h5>SUPPORT</h5>
+                <h5>{% trans "SUPPORT" %}</h5>
                 <ul>
-                    <li><a href="#">Shipping</a></li>
-                    <li><a href="#">Returns</a></li>
-                    <li><a href="#">Warranty</a></li>
-                    <li><a href="#">Contact HQ</a></li>
+                    <li><a href="#">{% trans "Shipping" %}</a></li>
+                    <li><a href="#">{% trans "Returns" %}</a></li>
+                    <li><a href="#">{% trans "Warranty" %}</a></li>
+                    <li><a href="#">{% trans "Contact HQ" %}</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h5>PROGRAMS</h5>
+                <h5>{% trans "PROGRAMS" %}</h5>
                 <ul>
-                    <li><a href="#">Active Duty</a></li>
-                    <li><a href="#">Veterans</a></li>
-                    <li><a href="#">First Responders</a></li>
-                    <li><a href="#">Unit Contracts</a></li>
+                    <li><a href="#">{% trans "Active Duty" %}</a></li>
+                    <li><a href="#">{% trans "Veterans" %}</a></li>
+                    <li><a href="#">{% trans "First Responders" %}</a></li>
+                    <li><a href="#">{% trans "Unit Contracts" %}</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <span>© 2026 IRONHOLD TACTICAL SUPPLY CO. — ALL RIGHTS RESERVED</span>
+            <span>{% blocktrans %}© 2026 IRONHOLD TACTICAL SUPPLY CO. — ALL RIGHTS RESERVED{% endblocktrans %}</span>
             <span>SKU://IH-DIV-01 · BUILD 4.7.2</span>
         </div>
     </div>

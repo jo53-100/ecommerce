@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% block title %}Arsenal{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Arsenal" %}{% endblock %}
 
 {% block extra_css %}
 .hero {
@@ -248,26 +249,26 @@
         <div>
             <div class="hero-tag">
                 <span class="dot"></span>
-                <span class="txt">NEW DROP · 07.2026 SEASONAL LOADOUT</span>
+                <span class="txt">{% trans "NEW DROP · 07.2026 SEASONAL LOADOUT" %}</span>
             </div>
-            <h1>MISSION-READY GEAR.<br><span class="accent">NO COMPROMISES.</span></h1>
-            <p class="lede">Combat-grade tactical equipment engineered for professionals who operate at the edge. Built to mil-spec. Tested in the field. Trusted by units in 40+ countries.</p>
+            <h1>{% trans "MISSION-READY GEAR." %}<br><span class="accent">{% trans "NO COMPROMISES." %}</span></h1>
+            <p class="lede">{% trans "Combat-grade tactical equipment engineered for professionals who operate at the edge. Built to mil-spec. Tested in the field. Trusted by units in 40+ countries." %}</p>
             <div class="hero-cta">
-                <a href="#arsenal" class="btn btn-primary">Shop the Arsenal →</a>
-                <a href="#" class="btn btn-outline">View Loadouts</a>
+                <a href="#arsenal" class="btn btn-primary">{% trans "Shop the Arsenal" %} →</a>
+                <a href="#" class="btn btn-outline">{% trans "View Loadouts" %}</a>
             </div>
             <div class="hero-stats">
                 <div>
                     <div class="stat-num">40K+</div>
-                    <div class="stat-lbl">Operators Equipped</div>
+                    <div class="stat-lbl">{% trans "Operators Equipped" %}</div>
                 </div>
                 <div>
                     <div class="stat-num">99.6%</div>
-                    <div class="stat-lbl">Field Approval Rate</div>
+                    <div class="stat-lbl">{% trans "Field Approval Rate" %}</div>
                 </div>
                 <div>
                     <div class="stat-num">24/7</div>
-                    <div class="stat-lbl">Support Line</div>
+                    <div class="stat-lbl">{% trans "Support Line" %}</div>
                 </div>
             </div>
         </div>
@@ -277,7 +278,7 @@
             <div class="hero-visual-content">
                 <div class="hero-visual-shield"></div>
                 <div class="hero-visual-code">UNIT-04.EAST // GRID 34.05N 118.24W</div>
-                <div class="hero-visual-code" style="margin-top:6px;">STATUS: <span style="color:var(--olive-hi)">ACTIVE</span></div>
+                <div class="hero-visual-code" style="margin-top:6px;">{% trans "STATUS" %}: <span style="color:var(--olive-hi)">{% trans "ACTIVE" %}</span></div>
             </div>
         </div>
     </div>
@@ -287,19 +288,19 @@
     <div class="container">
         <div class="trust-item">
             <div class="trust-icon">◆</div>
-            <div><strong>MIL-SPEC BUILT</strong><br>Certified materials</div>
+            <div><strong>{% trans "MIL-SPEC BUILT" %}</strong><br>{% trans "Certified materials" %}</div>
         </div>
         <div class="trust-item">
             <div class="trust-icon">▲</div>
-            <div><strong>FREE SHIPPING</strong><br>Orders over $150</div>
+            <div><strong>{% trans "FREE SHIPPING" %}</strong><br>{% trans "Orders over $150" %}</div>
         </div>
         <div class="trust-item">
             <div class="trust-icon">●</div>
-            <div><strong>30-DAY RETURNS</strong><br>No questions asked</div>
+            <div><strong>{% trans "30-DAY RETURNS" %}</strong><br>{% trans "No questions asked" %}</div>
         </div>
         <div class="trust-item">
             <div class="trust-icon">✚</div>
-            <div><strong>10% MIL DISCOUNT</strong><br>Verified active duty</div>
+            <div><strong>{% trans "10% MIL DISCOUNT" %}</strong><br>{% trans "Verified active duty" %}</div>
         </div>
     </div>
 </div>
@@ -308,21 +309,21 @@
     <div class="container">
         <div class="section-title">
             <div>
-                <span class="lbl">// SECTION 001 · INVENTORY</span>
-                <h2>THE ARSENAL</h2>
+                <span class="lbl">{% trans "// SECTION 001 · INVENTORY" %}</span>
+                <h2>{% trans "THE ARSENAL" %}</h2>
             </div>
-            <span class="link">SHOWING {{ products|length }} UNITS →</span>
+            <span class="link">{% blocktrans with count=products|length %}SHOWING {{ count }} UNITS →{% endblocktrans %}</span>
         </div>
 
         <div class="store-layout">
             <aside class="filter-panel">
                 <div class="head">
-                    <span>CATEGORIES</span>
+                    <span>{% trans "CATEGORIES" %}</span>
                     <span class="mono">[{{ categories|length|add:1 }}]</span>
                 </div>
                 {% with current=request.GET.category %}
                 <a href="{% url 'store' %}" class="cat-item {% if not current %}active{% endif %}" style="text-decoration:none;">
-                    <span>All Gear</span>
+                    <span>{% trans "All Gear" %}</span>
                     <span class="count">{{ products|length }}</span>
                 </a>
                 {% for category in categories %}
@@ -347,13 +348,13 @@
                             {% endif %}
                             <span class="product-sku">SKU · IH-{{ product.id|stringformat:"04d" }}</span>
                             {% if forloop.counter0|divisibleby:5 %}
-                                <span class="product-tag">NEW</span>
+                                <span class="product-tag">{% trans "NEW" %}</span>
                             {% endif %}
                         </div>
                         <div class="product-body">
                             <span class="product-cat">{{ product.category.name|default:"UNCATEGORIZED" }}</span>
                             <h3 class="product-name">{{ product.name }}</h3>
-                            <p class="product-desc">{{ product.description|default:"Field-grade equipment engineered for sustained deployment. Rugged. Reliable. Ready." }}</p>
+                            <p class="product-desc">{{ product.description|default:_("Field-grade equipment engineered for sustained deployment. Rugged. Reliable. Ready.") }}</p>
                             <div class="product-foot">
                                 <div class="product-price">
                                     ${{ product.price }}<span class="cents">.00</span>
@@ -361,16 +362,16 @@
                                 <form action="{% url 'homepage' %}" method="POST" style="margin:0;">
                                     {% csrf_token %}
                                     <input type="hidden" name="product" value="{{ product.id }}">
-                                    <button type="submit" class="add-btn">Add +</button>
+                                    <button type="submit" class="add-btn">{% trans "Add" %} +</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 {% empty %}
                     <div style="grid-column: 1 / -1; text-align:center; padding: 80px 0; background: var(--panel); border: 1px dashed var(--border); border-radius: 2px;">
-                        <span class="mono-tag">INVENTORY EMPTY</span>
-                        <h3 style="margin-top:20px;">NO UNITS IN INVENTORY</h3>
-                        <p class="text-dim">Load your first products from the <a href="/admin/">command console</a>.</p>
+                        <span class="mono-tag">{% trans "INVENTORY EMPTY" %}</span>
+                        <h3 style="margin-top:20px;">{% trans "NO UNITS IN INVENTORY" %}</h3>
+                        <p class="text-dim">{% blocktrans %}Load your first products from the <a href="/admin/">command console</a>.{% endblocktrans %}</p>
                     </div>
                 {% endfor %}
             </div>
@@ -382,12 +383,12 @@
     <div class="container">
         <div class="cta-banner">
             <div>
-                <span class="mono-tag">ENLIST</span>
-                <h2 style="margin-top:12px;">ACTIVE DUTY? GET 10% OFF FOR LIFE.</h2>
-                <p>Verified service members and first responders receive automatic pricing on every order.</p>
+                <span class="mono-tag">{% trans "ENLIST" %}</span>
+                <h2 style="margin-top:12px;">{% trans "ACTIVE DUTY? GET 10% OFF FOR LIFE." %}</h2>
+                <p>{% trans "Verified service members and first responders receive automatic pricing on every order." %}</p>
             </div>
             <div>
-                <a href="{% url 'signup' %}" class="btn btn-tan">Verify Status →</a>
+                <a href="{% url 'signup' %}" class="btn btn-tan">{% trans "Verify Status" %} →</a>
             </div>
         </div>
     </div>
@@ -397,25 +398,25 @@
     <div class="container">
         <div class="section-title">
             <div>
-                <span class="lbl">// SECTION 002 · WHY IRONHOLD</span>
-                <h2>BUILT FOR THE MISSION</h2>
+                <span class="lbl">{% trans "// SECTION 002 · WHY IRONHOLD" %}</span>
+                <h2>{% trans "BUILT FOR THE MISSION" %}</h2>
             </div>
         </div>
         <div class="features-grid">
             <div class="feature-card">
-                <div class="feature-num">// 01 · SPEC</div>
-                <h3>MIL-SPEC MATERIALS</h3>
-                <p>Every fiber, every buckle, every stitch tested against MIL-STD-810H. If it can't survive drop, dust, and salt fog — it doesn't ship.</p>
+                <div class="feature-num">{% trans "// 01 · SPEC" %}</div>
+                <h3>{% trans "MIL-SPEC MATERIALS" %}</h3>
+                <p>{% trans "Every fiber, every buckle, every stitch tested against MIL-STD-810H. If it can't survive drop, dust, and salt fog — it doesn't ship." %}</p>
             </div>
             <div class="feature-card">
-                <div class="feature-num">// 02 · FIELD</div>
-                <h3>TESTED IN THEATER</h3>
-                <p>Prototyped with active operators from three continents. Redesigned until it survives a full rotation without failure.</p>
+                <div class="feature-num">{% trans "// 02 · FIELD" %}</div>
+                <h3>{% trans "TESTED IN THEATER" %}</h3>
+                <p>{% trans "Prototyped with active operators from three continents. Redesigned until it survives a full rotation without failure." %}</p>
             </div>
             <div class="feature-card">
-                <div class="feature-num">// 03 · WARRANTY</div>
-                <h3>LIFETIME GUARANTEE</h3>
-                <p>If our gear fails during service — we replace it. No forms, no fine print. Send it back, get a new one.</p>
+                <div class="feature-num">{% trans "// 03 · WARRANTY" %}</div>
+                <h3>{% trans "LIFETIME GUARANTEE" %}</h3>
+                <p>{% trans "If our gear fails during service — we replace it. No forms, no fine print. Send it back, get a new one." %}</p>
             </div>
         </div>
     </div>
