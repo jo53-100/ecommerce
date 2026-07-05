@@ -31,8 +31,10 @@
     font-weight: 600;
 }
 .status-delivered { background: rgba(99, 160, 90, 0.12); color: var(--success); border: 1px solid rgba(99, 160, 90, 0.3); }
+.status-shipped { background: rgba(59, 130, 196, 0.12); color: #6db3e6; border: 1px solid rgba(59, 130, 196, 0.3); }
 .status-pending { background: rgba(212, 160, 23, 0.12); color: var(--amber); border: 1px solid rgba(212, 160, 23, 0.3); }
 .status-dot-tiny { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.tracking-no { display: block; margin-top: 6px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-mute); letter-spacing: 0.1em; }
 
 .mission-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--olive-hi); letter-spacing: 0.15em; }
 
@@ -89,10 +91,13 @@
             <td data-label="{% trans 'DROP LOCATION' %}">{{ order.address }}</td>
             <td data-label="{% trans 'DATE' %}" class="mono">{{ order.date }}</td>
             <td data-label="{% trans 'STATUS' %}">
-                {% if order.status %}
+                {% if order.status == 'delivered' %}
                     <span class="status-badge status-delivered"><span class="status-dot-tiny"></span>{% trans "DELIVERED" %}</span>
+                {% elif order.status == 'shipped' %}
+                    <span class="status-badge status-shipped"><span class="status-dot-tiny"></span>{% trans "IN TRANSIT" %}</span>
+                    {% if order.tracking_number %}<span class="tracking-no">{% trans "TRACKING" %}: {{ order.tracking_number }}</span>{% endif %}
                 {% else %}
-                    <span class="status-badge status-pending"><span class="status-dot-tiny"></span>{% trans "IN TRANSIT" %}</span>
+                    <span class="status-badge status-pending"><span class="status-dot-tiny"></span>{% trans "PROCESSING" %}</span>
                 {% endif %}
             </td>
         </tr>

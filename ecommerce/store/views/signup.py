@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.hashers import make_password
 from store.models.customers import Customer
 from django.views import View
 
@@ -32,8 +31,8 @@ class Signup (View):
         error_message = self.validateCustomer(customer)
 
         if not error_message:
-            print(first_name, last_name, phone, email, password)
-            customer.password = make_password(customer.password)
+            # register() hashes the password once; do NOT hash here as well,
+            # or the stored value becomes hash(hash(password)) and login fails.
             customer.register()
             return redirect('homepage')
         else:

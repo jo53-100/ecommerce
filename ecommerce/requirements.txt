@@ -1,0 +1,8 @@
+asgiref==3.11.1
+Django==6.0.6
+pillow==12.3.0
+sqlparse==0.5.5
+
+# --- Production serving (used by the VPS deploy) ---
+gunicorn==23.0.0
+whitenoise==6.9.0
