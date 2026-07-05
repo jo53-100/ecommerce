@@ -1,44 +1,133 @@
 {% extends 'base.html' %}
-{% block title %}Sign Up{% endblock %}
+{% block title %}Enlist{% endblock %}
+
+{% block extra_css %}
+.auth-wrap { min-height: calc(100vh - 200px); display: grid; grid-template-columns: 1fr 1fr; }
+
+.auth-visual {
+    background:
+        linear-gradient(180deg, rgba(11,13,10,0.5), rgba(11,13,10,0.9)),
+        repeating-linear-gradient(-45deg, rgba(196,168,130,0.06) 0 2px, transparent 2px 22px),
+        radial-gradient(ellipse at 70% 30%, rgba(196,168,130,0.2), transparent 60%),
+        var(--bg-1);
+    border-right: 1px solid var(--border);
+    padding: 60px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+.auth-visual::after {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+.auth-visual > * { position: relative; z-index: 1; }
+
+.auth-visual .top-code {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--tan); letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 20px;
+}
+.auth-visual h2 { font-size: 3.4rem; line-height: 1.05; margin-bottom: 20px; }
+.auth-visual h2 .accent { color: var(--tan); }
+.auth-visual p { color: var(--text-dim); max-width: 400px; font-size: 15px; }
+
+.perk-list { list-style: none; padding: 0; margin: 32px 0 0; display: flex; flex-direction: column; gap: 14px; max-width: 400px; }
+.perk-list li { display: flex; gap: 14px; align-items: flex-start; color: var(--text-dim); font-size: 14px; }
+.perk-list li::before {
+    content: "▸"; color: var(--tan); font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; flex-shrink: 0;
+}
+.perk-list strong { color: var(--text); font-weight: 600; }
+
+.auth-form-side {
+    padding: 60px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg-0);
+}
+.auth-form-box { width: 100%; max-width: 480px; }
+.auth-form-box .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--tan); text-transform: uppercase; }
+.auth-form-box h1 { font-size: 2.6rem; margin: 10px 0 8px; }
+.auth-form-box p.sub { color: var(--text-dim); margin-bottom: 32px; font-size: 14px; }
+
+.auth-form-box .switch {
+    text-align: center; margin-top: 20px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--text-mute); letter-spacing: 0.15em; text-transform: uppercase;
+}
+.auth-form-box .switch a { color: var(--tan); }
+
+@media (max-width: 900px) {
+    .auth-wrap { grid-template-columns: 1fr; min-height: auto; }
+    .auth-visual { padding: 40px 24px; }
+    .auth-visual h2 { font-size: 2.2rem; }
+    .auth-form-side { padding: 40px 24px; }
+}
+{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <h2 class="mb-4">Create Account</h2>
-        {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
-        {% endif %}
-        <form method="POST">
-            {% csrf_token %}
-            <div class="row">
-                <div class="col mb-3">
-                    <label class="form-label">First Name</label>
-                    <input type="text" name="firstname" class="form-control"
-                           value="{{ values.first_name }}" required>
-                </div>
-                <div class="col mb-3">
-                    <label class="form-label">Last Name</label>
-                    <input type="text" name="lastname" class="form-control"
-                           value="{{ values.last_name }}" required>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Phone</label>
-                <input type="text" name="phone" class="form-control"
-                       value="{{ values.phone }}" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control"
-                       value="{{ values.email }}" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Sign Up</button>
-            <a href="{% url 'login' %}" class="btn btn-link">Already have an account?</a>
-        </form>
+<section class="auth-wrap">
+    <div class="auth-visual">
+        <div>
+            <div class="top-code">// OPERATOR.ENLISTMENT</div>
+            <h2>JOIN THE<br><span class="accent">ROSTER.</span></h2>
+            <p>Create your Ironhold account and gear up. Verified service members and first responders unlock a 10% permanent discount.</p>
+            <ul class="perk-list">
+                <li><span><strong>Priority shipping</strong> on every order.</span></li>
+                <li><span><strong>Save loadouts</strong> for quick re-supply.</span></li>
+                <li><span><strong>Squad discount</strong> for 5+ unit orders.</span></li>
+                <li><span><strong>Field intel</strong> — early access to new drops.</span></li>
+            </ul>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--text-mute); text-transform: uppercase; margin-top: 40px;">
+            SECURE ENROLLMENT · ENCRYPTED · GDPR + CCPA COMPLIANT
+        </div>
     </div>
-</div>
+
+    <div class="auth-form-side">
+        <div class="auth-form-box">
+            <span class="lbl">// ENLISTMENT FORM</span>
+            <h1>CREATE ACCOUNT</h1>
+            <p class="sub">Fill out your operator profile below. Takes under a minute.</p>
+
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">FIRST NAME</label>
+                        <input type="text" name="firstname" class="form-control" value="{{ values.first_name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">LAST NAME</label>
+                        <input type="text" name="lastname" class="form-control" value="{{ values.last_name }}" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">PHONE</label>
+                    <input type="text" name="phone" class="form-control" value="{{ values.phone }}" placeholder="+1 (555) 000-0000" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">EMAIL</label>
+                    <input type="email" name="email" class="form-control" value="{{ values.email }}" placeholder="operator@unit.mil" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">PASSWORD</label>
+                    <input type="password" name="password" class="form-control" placeholder="Minimum 8 characters" required>
+                </div>
+                <button type="submit" class="btn btn-tan btn-block" style="margin-top: 8px;">ENLIST NOW →</button>
+            </form>
+
+            <div class="switch">
+                ALREADY ENLISTED? <a href="{% url 'login' %}">SIGN IN →</a>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

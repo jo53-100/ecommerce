@@ -4,40 +4,397 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Store{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>{% block title %}IRONHOLD TACTICAL{% endblock %} — Mission-Ready Gear</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-0: #0b0d0a;
+            --bg-1: #121412;
+            --bg-2: #181b17;
+            --panel: #1c1f1a;
+            --panel-2: #21241f;
+            --border: #2b2f27;
+            --border-hi: #3b4034;
+            --text: #ecebe4;
+            --text-dim: #8f9084;
+            --text-mute: #5f6157;
+            --olive: #6b7a3a;
+            --olive-hi: #8ea54a;
+            --tan: #c4a882;
+            --tan-hi: #d9be97;
+            --rust: #b45a2b;
+            --amber: #d4a017;
+            --danger: #c53f3f;
+            --success: #63a05a;
+        }
+
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg-0);
+            color: var(--text);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-size: 15px;
+            line-height: 1.55;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image:
+                radial-gradient(ellipse at 20% -10%, rgba(107, 122, 58, 0.08), transparent 55%),
+                radial-gradient(ellipse at 90% 10%, rgba(196, 168, 130, 0.05), transparent 50%);
+        }
+
+        a { color: var(--tan); text-decoration: none; }
+        a:hover { color: var(--tan-hi); }
+
+        h1, h2, h3, h4, h5 { font-family: 'Bebas Neue', 'Oswald', sans-serif; letter-spacing: 0.04em; font-weight: 400; margin: 0 0 12px; color: var(--text); }
+        h1 { font-size: 3.4rem; line-height: 1.05; }
+        h2 { font-size: 2.2rem; }
+        h3 { font-size: 1.4rem; }
+
+        .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+        /* ---- Top strip ---- */
+        .topstrip {
+            background: #0a0c09;
+            border-bottom: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+        .topstrip .container { display: flex; justify-content: space-between; padding: 8px 24px; }
+        .topstrip .status-dot {
+            display: inline-block; width: 6px; height: 6px; background: var(--olive-hi);
+            border-radius: 50%; margin-right: 8px; box-shadow: 0 0 8px var(--olive-hi);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* ---- Nav ---- */
+        .navbar {
+            background: rgba(11, 13, 10, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .navbar .container {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 24px;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 12px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem; letter-spacing: 0.12em;
+            color: var(--text) !important;
+        }
+        .brand-mark {
+            width: 32px; height: 32px;
+            background: linear-gradient(135deg, var(--olive) 0%, var(--olive-hi) 100%);
+            display: grid; place-items: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem; color: var(--bg-0);
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 70% 100%, 0 100%);
+        }
+        .brand small { font-size: 0.6rem; color: var(--olive-hi); letter-spacing: 0.25em; display: block; line-height: 1; margin-top: 2px; }
+
+        .nav-links { display: flex; align-items: center; gap: 8px; list-style: none; margin: 0; padding: 0; }
+        .nav-links a {
+            color: var(--text-dim); font-size: 13px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            padding: 8px 14px; border-radius: 2px;
+            transition: all 0.15s;
+        }
+        .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+        .nav-links a.cta-cart {
+            background: transparent;
+            border: 1px solid var(--border-hi);
+            color: var(--text);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .nav-links a.cta-cart:hover { border-color: var(--olive-hi); color: var(--olive-hi); }
+        .nav-links .badge {
+            background: var(--olive); color: var(--bg-0);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; font-weight: 600;
+            padding: 1px 6px; border-radius: 2px; min-width: 20px; text-align: center;
+        }
+
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+        main { flex: 1; }
+
+        /* ---- Buttons ---- */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 22px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem; letter-spacing: 0.14em;
+            text-transform: uppercase;
+            border: 1px solid transparent;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--olive);
+            color: var(--bg-0);
+        }
+        .btn-primary:hover { background: var(--olive-hi); color: var(--bg-0); }
+        .btn-outline {
+            background: transparent; color: var(--text);
+            border-color: var(--border-hi);
+        }
+        .btn-outline:hover { border-color: var(--olive-hi); color: var(--olive-hi); }
+        .btn-tan {
+            background: var(--tan); color: var(--bg-0);
+        }
+        .btn-tan:hover { background: var(--tan-hi); }
+        .btn-danger {
+            background: transparent; color: var(--danger); border-color: rgba(197, 63, 63, 0.4);
+        }
+        .btn-danger:hover { background: rgba(197, 63, 63, 0.1); }
+        .btn-block { width: 100%; }
+        .btn-sm { padding: 6px 12px; font-size: 0.75rem; }
+
+        /* ---- Forms ---- */
+        .form-label {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; letter-spacing: 0.15em;
+            color: var(--text-dim); text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .form-control {
+            width: 100%;
+            background: var(--bg-1);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 12px 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            border-radius: 2px;
+            transition: border 0.15s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--olive);
+            box-shadow: 0 0 0 3px rgba(107, 122, 58, 0.15);
+        }
+        .form-group { margin-bottom: 18px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        /* ---- Panels/Cards ---- */
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+        }
+        .panel-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--text-dim);
+        }
+        .panel-body { padding: 24px; }
+
+        /* ---- Alerts ---- */
+        .alert {
+            padding: 14px 18px;
+            border-radius: 2px;
+            border-left: 3px solid;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .alert-danger { background: rgba(197, 63, 63, 0.08); border-color: var(--danger); color: #ffb3b3; }
+        .alert-success { background: rgba(99, 160, 90, 0.08); border-color: var(--success); color: #b3e0b3; }
+
+        /* ---- Footer ---- */
+        footer.site-footer {
+            background: var(--bg-1);
+            border-top: 1px solid var(--border);
+            padding: 60px 0 24px;
+            margin-top: 80px;
+        }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+        .footer-col h5 { font-size: 0.9rem; letter-spacing: 0.2em; color: var(--text); margin-bottom: 16px; }
+        .footer-col ul { list-style: none; padding: 0; margin: 0; }
+        .footer-col li { margin-bottom: 8px; }
+        .footer-col a { color: var(--text-dim); font-size: 13px; }
+        .footer-col a:hover { color: var(--olive-hi); }
+        .footer-col p { color: var(--text-dim); font-size: 13px; margin-top: 8px; }
+        .footer-bottom {
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; color: var(--text-mute); letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* ---- Trust strip ---- */
+        .trust-strip {
+            background: var(--bg-1);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .trust-strip .container {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            padding: 20px 24px;
+            gap: 24px;
+        }
+        .trust-item {
+            display: flex; align-items: center; gap: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--text-dim);
+        }
+        .trust-item strong { color: var(--text); font-weight: 600; }
+        .trust-icon {
+            width: 32px; height: 32px; display: grid; place-items: center;
+            background: var(--bg-2); border: 1px solid var(--border);
+            color: var(--olive-hi); border-radius: 2px;
+        }
+
+        /* ---- Utility ---- */
+        .text-dim { color: var(--text-dim); }
+        .text-tan { color: var(--tan); }
+        .text-olive { color: var(--olive-hi); }
+        .text-center { text-align: center; }
+        .mono-tag {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; letter-spacing: 0.15em;
+            color: var(--olive-hi);
+            padding: 4px 10px;
+            border: 1px solid rgba(142, 165, 74, 0.3);
+            border-radius: 2px;
+            text-transform: uppercase;
+        }
+        .divider { height: 1px; background: var(--border); margin: 24px 0; border: 0; }
+        .stack { display: flex; flex-direction: column; gap: 12px; }
+        .row-flex { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .mt-4 { margin-top: 24px; } .mb-4 { margin-bottom: 24px; }
+        .my-5 { margin-top: 48px; margin-bottom: 48px; }
+        .py-5 { padding-top: 48px; padding-bottom: 48px; }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 900px) {
+            h1 { font-size: 2.4rem; }
+            .navbar .container { padding: 12px 16px; }
+            .nav-links { gap: 2px; }
+            .nav-links a { padding: 6px 8px; font-size: 11px; }
+            .topstrip .container { padding: 6px 16px; font-size: 10px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+            .trust-strip .container { grid-template-columns: 1fr 1fr; gap: 16px; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 560px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            .trust-strip .container { grid-template-columns: 1fr; }
+            .topstrip .container span:first-child { display: none; }
+        }
+
+        {% block extra_css %}{% endblock %}
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+<div class="topstrip">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'store' %}">🛒 My Store</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="nav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{% url 'store' %}">Store</a></li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cart' %}">
-                        Cart <span class="badge bg-primary">{{ request.session.cart|length }}</span>
-                    </a>
-                </li>
-                {% if request.session.customer %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'orders' %}">My Orders</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-                {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Signup</a></li>
-                {% endif %}
-            </ul>
-        </div>
+        <span><span class="status-dot"></span>OPERATIONAL — SHIPPING WORLDWIDE FROM NORFOLK, VA</span>
+        <span>SUPPORT: +1 (800) 555-0139 · OPS@IRONHOLD.CO</span>
+    </div>
+</div>
+
+<nav class="navbar">
+    <div class="container">
+        <a href="{% url 'store' %}" class="brand">
+            <span class="brand-mark">IH</span>
+            <span>
+                IRONHOLD TACTICAL
+                <small>SUPPLY CO. · EST. 2019</small>
+            </span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="{% url 'store' %}">Arsenal</a></li>
+            <li><a href="#">Field Guide</a></li>
+            <li><a href="#">Squad Discount</a></li>
+            {% if request.session.customer %}
+                <li><a href="{% url 'orders' %}">Missions</a></li>
+                <li><a href="{% url 'logout' %}">Sign Out</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Sign In</a></li>
+            {% endif %}
+            <li>
+                <a href="{% url 'cart' %}" class="cta-cart">
+                    Kit
+                    <span class="badge">{{ request.session.cart|length|default:0 }}</span>
+                </a>
+            </li>
+        </ul>
     </div>
 </nav>
 
-<main class="container my-4">
+<main>
     {% block content %}{% endblock %}
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <a href="{% url 'store' %}" class="brand">
+                    <span class="brand-mark">IH</span>
+                    <span>IRONHOLD TACTICAL<small>SUPPLY CO. · EST. 2019</small></span>
+                </a>
+                <p>Mission-ready equipment for service members, veterans, first responders, and civilians who demand mil-spec reliability. Field-tested. No compromises.</p>
+                <div class="row-flex" style="margin-top: 16px;">
+                    <span class="mono-tag">MIL-SPEC</span>
+                    <span class="mono-tag">ISO-9001</span>
+                    <span class="mono-tag">BERRY COMPLIANT</span>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>SHOP</h5>
+                <ul>
+                    <li><a href="{% url 'store' %}">All Gear</a></li>
+                    <li><a href="#">New Drops</a></li>
+                    <li><a href="#">Loadouts</a></li>
+                    <li><a href="#">Clearance</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>SUPPORT</h5>
+                <ul>
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Warranty</a></li>
+                    <li><a href="#">Contact HQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>PROGRAMS</h5>
+                <ul>
+                    <li><a href="#">Active Duty</a></li>
+                    <li><a href="#">Veterans</a></li>
+                    <li><a href="#">First Responders</a></li>
+                    <li><a href="#">Unit Contracts</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 IRONHOLD TACTICAL SUPPLY CO. — ALL RIGHTS RESERVED</span>
+            <span>SKU://IH-DIV-01 · BUILD 4.7.2</span>
+        </div>
+    </div>
+</footer>
+
 </body>
 </html>

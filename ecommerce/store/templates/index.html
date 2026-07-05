@@ -1,44 +1,423 @@
 {% extends 'base.html' %}
-{% block title %}Store{% endblock %}
+{% block title %}Arsenal{% endblock %}
+
+{% block extra_css %}
+.hero {
+    position: relative;
+    padding: 96px 0 80px;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    background:
+        linear-gradient(180deg, rgba(11,13,10,0) 0%, rgba(11,13,10,0.8) 100%),
+        repeating-linear-gradient(45deg, rgba(107,122,58,0.03) 0 2px, transparent 2px 22px),
+        radial-gradient(ellipse at 70% 30%, rgba(107,122,58,0.18), transparent 60%),
+        var(--bg-1);
+}
+.hero::after {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+.hero .container { position: relative; z-index: 1; display: grid; grid-template-columns: 1.4fr 1fr; gap: 60px; align-items: center; }
+.hero-tag { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.hero-tag .dot { width: 6px; height: 6px; background: var(--olive-hi); border-radius: 50%; box-shadow: 0 0 10px var(--olive-hi); }
+.hero-tag .txt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--olive-hi); text-transform: uppercase; }
+.hero h1 { font-size: 4.2rem; line-height: 0.95; margin-bottom: 20px; }
+.hero h1 .accent { color: var(--olive-hi); }
+.hero p.lede { font-size: 1.05rem; color: var(--text-dim); max-width: 500px; margin-bottom: 32px; }
+.hero-cta { display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
+.hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 520px; padding-top: 32px; border-top: 1px solid var(--border); }
+.stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: var(--text); line-height: 1; }
+.stat-lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--text-dim); text-transform: uppercase; margin-top: 6px; }
+
+.hero-visual {
+    aspect-ratio: 4/5;
+    background:
+        linear-gradient(135deg, rgba(107,122,58,0.15) 0%, transparent 60%),
+        var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    position: relative;
+    display: grid; place-items: center;
+    overflow: hidden;
+}
+.hero-visual::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 40px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 40px);
+}
+.hero-visual-content { position: relative; text-align: center; padding: 40px; }
+.hero-visual-shield {
+    width: 180px; height: 200px; margin: 0 auto 20px;
+    background: linear-gradient(180deg, var(--olive) 0%, #4a5528 100%);
+    clip-path: polygon(50% 0%, 100% 15%, 100% 65%, 50% 100%, 0 65%, 0 15%);
+    display: grid; place-items: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 40px rgba(107,122,58,0.3);
+    position: relative;
+}
+.hero-visual-shield::before {
+    content: "IH"; font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: var(--bg-0); letter-spacing: 0.05em;
+}
+.hero-visual-code { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); letter-spacing: 0.2em; }
+.hero-corner { position: absolute; width: 24px; height: 24px; border: 2px solid var(--olive-hi); }
+.hero-corner.tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; }
+.hero-corner.tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; }
+.hero-corner.bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; }
+.hero-corner.br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; }
+
+/* section titles */
+.section-title { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+.section-title h2 { margin: 0; font-size: 2rem; }
+.section-title .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--olive-hi); letter-spacing: 0.25em; text-transform: uppercase; display: block; margin-bottom: 6px; }
+.section-title .link { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
+
+.section { padding: 72px 0; }
+
+/* layout: sidebar + products */
+.store-layout { display: grid; grid-template-columns: 260px 1fr; gap: 32px; }
+
+.filter-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 4px;
+    border-radius: 2px;
+    position: sticky; top: 96px;
+    align-self: start;
+}
+.filter-panel .head {
+    padding: 14px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.filter-panel .head::before { content: "▎"; color: var(--olive-hi); margin-right: 4px; }
+.cat-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px;
+    color: var(--text-dim);
+    font-size: 14px; font-weight: 500;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    cursor: pointer;
+}
+.cat-item:hover { background: var(--panel-2); color: var(--text); }
+.cat-item.active {
+    background: rgba(107,122,58,0.08);
+    color: var(--olive-hi);
+    border-left-color: var(--olive-hi);
+}
+.cat-item .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mute);
+}
+
+/* product grid */
+.product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.product-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    display: flex; flex-direction: column;
+    transition: border 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+.product-card:hover { border-color: var(--border-hi); transform: translateY(-2px); }
+.product-card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--olive-hi), transparent);
+    opacity: 0; transition: opacity 0.2s;
+}
+.product-card:hover::before { opacity: 1; }
+
+.product-media {
+    aspect-ratio: 1 / 1;
+    background: var(--bg-2);
+    display: grid; place-items: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+}
+.product-media img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.4s;
+}
+.product-card:hover .product-media img { transform: scale(1.04); }
+.product-media .placeholder {
+    font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem;
+    color: var(--border-hi); letter-spacing: 0.1em;
+}
+.product-sku {
+    position: absolute; top: 12px; left: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    color: var(--text-dim);
+    background: rgba(11, 13, 10, 0.7);
+    padding: 4px 8px; border-radius: 2px;
+    text-transform: uppercase;
+}
+.product-tag {
+    position: absolute; top: 12px; right: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    background: var(--olive); color: var(--bg-0);
+    padding: 4px 8px; border-radius: 2px;
+    text-transform: uppercase; font-weight: 600;
+}
+
+.product-body { padding: 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.product-cat { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--olive-hi); text-transform: uppercase; }
+.product-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.05em; color: var(--text); margin: 0; line-height: 1.1; }
+.product-desc { font-size: 13px; color: var(--text-dim); line-height: 1.5; margin: 0; }
+.product-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; margin-top: auto; border-top: 1px solid var(--border); }
+.product-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem;
+    color: var(--text);
+    letter-spacing: 0.03em;
+}
+.product-price .cents { font-size: 0.9rem; color: var(--text-dim); }
+.add-btn {
+    background: transparent; border: 1px solid var(--border-hi);
+    color: var(--text);
+    padding: 8px 14px; border-radius: 2px;
+    font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 0.15em;
+    cursor: pointer; text-transform: uppercase;
+    transition: all 0.15s;
+}
+.add-btn:hover { background: var(--olive); border-color: var(--olive); color: var(--bg-0); }
+
+/* CTA banner */
+.cta-banner {
+    background:
+        linear-gradient(90deg, rgba(11,13,10,0.85), rgba(11,13,10,0.4)),
+        repeating-linear-gradient(-45deg, var(--olive) 0 20px, #4a5528 20px 40px);
+    padding: 60px 48px;
+    border-radius: 2px;
+    display: flex; justify-content: space-between; align-items: center; gap: 32px;
+    flex-wrap: wrap;
+}
+.cta-banner h2 { font-size: 2.5rem; margin: 0 0 8px; }
+.cta-banner p { color: var(--text-dim); margin: 0; }
+
+/* features */
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.feature-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 32px 28px;
+    border-radius: 2px;
+}
+.feature-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--olive-hi);
+    letter-spacing: 0.2em; margin-bottom: 20px;
+}
+.feature-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
+.feature-card p { color: var(--text-dim); font-size: 14px; margin: 0; }
+
+@media (max-width: 900px) {
+    .hero { padding: 48px 0; }
+    .hero .container { grid-template-columns: 1fr; gap: 40px; }
+    .hero h1 { font-size: 2.6rem; }
+    .hero-visual { max-width: 400px; margin: 0 auto; }
+    .store-layout { grid-template-columns: 1fr; }
+    .filter-panel { position: static; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .features-grid { grid-template-columns: 1fr; }
+    .cta-banner { padding: 40px 28px; }
+    .cta-banner h2 { font-size: 1.8rem; }
+    .section { padding: 48px 0; }
+}
+@media (max-width: 560px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .hero-stats { grid-template-columns: 1fr 1fr; gap: 16px; }
+}
+{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-3 mb-4">
-        <div class="list-group">
-            <a href="{% url 'store' %}"
-               class="list-group-item list-group-item-action fw-bold">All Products</a>
-            {% for category in categories %}
-                <a href="{% url 'store' %}?category={{ category.id }}"
-                   class="list-group-item list-group-item-action">{{ category.name }}</a>
-            {% endfor %}
+<section class="hero">
+    <div class="container">
+        <div>
+            <div class="hero-tag">
+                <span class="dot"></span>
+                <span class="txt">NEW DROP · 07.2026 SEASONAL LOADOUT</span>
+            </div>
+            <h1>MISSION-READY GEAR.<br><span class="accent">NO COMPROMISES.</span></h1>
+            <p class="lede">Combat-grade tactical equipment engineered for professionals who operate at the edge. Built to mil-spec. Tested in the field. Trusted by units in 40+ countries.</p>
+            <div class="hero-cta">
+                <a href="#arsenal" class="btn btn-primary">Shop the Arsenal →</a>
+                <a href="#" class="btn btn-outline">View Loadouts</a>
+            </div>
+            <div class="hero-stats">
+                <div>
+                    <div class="stat-num">40K+</div>
+                    <div class="stat-lbl">Operators Equipped</div>
+                </div>
+                <div>
+                    <div class="stat-num">99.6%</div>
+                    <div class="stat-lbl">Field Approval Rate</div>
+                </div>
+                <div>
+                    <div class="stat-num">24/7</div>
+                    <div class="stat-lbl">Support Line</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <span class="hero-corner tl"></span><span class="hero-corner tr"></span>
+            <span class="hero-corner bl"></span><span class="hero-corner br"></span>
+            <div class="hero-visual-content">
+                <div class="hero-visual-shield"></div>
+                <div class="hero-visual-code">UNIT-04.EAST // GRID 34.05N 118.24W</div>
+                <div class="hero-visual-code" style="margin-top:6px;">STATUS: <span style="color:var(--olive-hi)">ACTIVE</span></div>
+            </div>
         </div>
     </div>
+</section>
 
-    <div class="col-md-9">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% for product in products %}
-                <div class="col">
-                    <div class="card h-100">
-                        {% if product.image %}
-                            <img src="{{ product.image.url }}" class="card-img-top"
-                                 alt="{{ product.name }}" style="height:180px;object-fit:cover;">
-                        {% endif %}
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text text-muted">{{ product.description }}</p>
-                            <p class="fw-bold">${{ product.price }}</p>
-                            <form action="{% url 'homepage' %}" method="POST" class="mt-auto">
-                                {% csrf_token %}
-                                <input type="hidden" name="product" value="{{ product.id }}">
-                                <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            {% empty %}
-                <p>No products yet. Add some from the <a href="/admin/">admin page</a>.</p>
-            {% endfor %}
+<div class="trust-strip">
+    <div class="container">
+        <div class="trust-item">
+            <div class="trust-icon">◆</div>
+            <div><strong>MIL-SPEC BUILT</strong><br>Certified materials</div>
+        </div>
+        <div class="trust-item">
+            <div class="trust-icon">▲</div>
+            <div><strong>FREE SHIPPING</strong><br>Orders over $150</div>
+        </div>
+        <div class="trust-item">
+            <div class="trust-icon">●</div>
+            <div><strong>30-DAY RETURNS</strong><br>No questions asked</div>
+        </div>
+        <div class="trust-item">
+            <div class="trust-icon">✚</div>
+            <div><strong>10% MIL DISCOUNT</strong><br>Verified active duty</div>
         </div>
     </div>
 </div>
+
+<section class="section" id="arsenal">
+    <div class="container">
+        <div class="section-title">
+            <div>
+                <span class="lbl">// SECTION 001 · INVENTORY</span>
+                <h2>THE ARSENAL</h2>
+            </div>
+            <span class="link">SHOWING {{ products|length }} UNITS →</span>
+        </div>
+
+        <div class="store-layout">
+            <aside class="filter-panel">
+                <div class="head">
+                    <span>CATEGORIES</span>
+                    <span class="mono">[{{ categories|length|add:1 }}]</span>
+                </div>
+                {% with current=request.GET.category %}
+                <a href="{% url 'store' %}" class="cat-item {% if not current %}active{% endif %}" style="text-decoration:none;">
+                    <span>All Gear</span>
+                    <span class="count">{{ products|length }}</span>
+                </a>
+                {% for category in categories %}
+                    <a href="{% url 'store' %}?category={{ category.id }}"
+                       class="cat-item {% if current == category.id|stringformat:'s' %}active{% endif %}"
+                       style="text-decoration:none;">
+                        <span>{{ category.name }}</span>
+                        <span class="count">→</span>
+                    </a>
+                {% endfor %}
+                {% endwith %}
+            </aside>
+
+            <div class="product-grid">
+                {% for product in products %}
+                    <div class="product-card">
+                        <div class="product-media">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                            {% else %}
+                                <span class="placeholder">IH-{{ product.id }}</span>
+                            {% endif %}
+                            <span class="product-sku">SKU · IH-{{ product.id|stringformat:"04d" }}</span>
+                            {% if forloop.counter0|divisibleby:5 %}
+                                <span class="product-tag">NEW</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-body">
+                            <span class="product-cat">{{ product.category.name|default:"UNCATEGORIZED" }}</span>
+                            <h3 class="product-name">{{ product.name }}</h3>
+                            <p class="product-desc">{{ product.description|default:"Field-grade equipment engineered for sustained deployment. Rugged. Reliable. Ready." }}</p>
+                            <div class="product-foot">
+                                <div class="product-price">
+                                    ${{ product.price }}<span class="cents">.00</span>
+                                </div>
+                                <form action="{% url 'homepage' %}" method="POST" style="margin:0;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product" value="{{ product.id }}">
+                                    <button type="submit" class="add-btn">Add +</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div style="grid-column: 1 / -1; text-align:center; padding: 80px 0; background: var(--panel); border: 1px dashed var(--border); border-radius: 2px;">
+                        <span class="mono-tag">INVENTORY EMPTY</span>
+                        <h3 style="margin-top:20px;">NO UNITS IN INVENTORY</h3>
+                        <p class="text-dim">Load your first products from the <a href="/admin/">command console</a>.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+    <div class="container">
+        <div class="cta-banner">
+            <div>
+                <span class="mono-tag">ENLIST</span>
+                <h2 style="margin-top:12px;">ACTIVE DUTY? GET 10% OFF FOR LIFE.</h2>
+                <p>Verified service members and first responders receive automatic pricing on every order.</p>
+            </div>
+            <div>
+                <a href="{% url 'signup' %}" class="btn btn-tan">Verify Status →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+    <div class="container">
+        <div class="section-title">
+            <div>
+                <span class="lbl">// SECTION 002 · WHY IRONHOLD</span>
+                <h2>BUILT FOR THE MISSION</h2>
+            </div>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-num">// 01 · SPEC</div>
+                <h3>MIL-SPEC MATERIALS</h3>
+                <p>Every fiber, every buckle, every stitch tested against MIL-STD-810H. If it can't survive drop, dust, and salt fog — it doesn't ship.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-num">// 02 · FIELD</div>
+                <h3>TESTED IN THEATER</h3>
+                <p>Prototyped with active operators from three continents. Redesigned until it survives a full rotation without failure.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-num">// 03 · WARRANTY</div>
+                <h3>LIFETIME GUARANTEE</h3>
+                <p>If our gear fails during service — we replace it. No forms, no fine print. Send it back, get a new one.</p>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

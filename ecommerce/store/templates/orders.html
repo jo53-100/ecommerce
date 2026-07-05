@@ -1,34 +1,97 @@
 {% extends 'base.html' %}
-{% block title %}My Orders{% endblock %}
+{% block title %}Missions{% endblock %}
+
+{% block extra_css %}
+.orders-wrap { padding: 60px 0; }
+.page-head { margin-bottom: 40px; }
+.page-head .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--olive-hi); text-transform: uppercase; }
+.page-head h1 { font-size: 3rem; margin: 10px 0 6px; }
+.page-head p { color: var(--text-dim); margin: 0; }
+
+.orders-table {
+    width: 100%; border-collapse: collapse;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 2px; overflow: hidden;
+}
+.orders-table th {
+    text-align: left; padding: 14px 18px;
+    background: var(--bg-2);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.2em; color: var(--text-dim); text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+}
+.orders-table td { padding: 18px; border-bottom: 1px solid var(--border); font-size: 14px; }
+.orders-table tr:last-child td { border-bottom: 0; }
+.orders-table .mono { font-family: 'JetBrains Mono', monospace; color: var(--text-dim); font-size: 12px; }
+
+.status-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    font-weight: 600;
+}
+.status-delivered { background: rgba(99, 160, 90, 0.12); color: var(--success); border: 1px solid rgba(99, 160, 90, 0.3); }
+.status-pending { background: rgba(212, 160, 23, 0.12); color: var(--amber); border: 1px solid rgba(212, 160, 23, 0.3); }
+.status-dot-tiny { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+.mission-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--olive-hi); letter-spacing: 0.15em; }
+
+.empty-state {
+    text-align: center; padding: 100px 40px;
+    background: var(--panel); border: 1px dashed var(--border); border-radius: 2px;
+}
+.empty-state h3 { margin-top: 16px; }
+
+@media (max-width: 900px) {
+    .page-head h1 { font-size: 2.2rem; }
+    .orders-table thead { display: none; }
+    .orders-table, .orders-table tbody, .orders-table tr, .orders-table td { display: block; width: 100%; }
+    .orders-table tr { border-bottom: 1px solid var(--border); padding: 12px; }
+    .orders-table td { border-bottom: 0; padding: 6px; }
+    .orders-table td::before {
+        content: attr(data-label); display: block;
+        font-family: 'JetBrains Mono', monospace; font-size: 10px;
+        color: var(--text-mute); letter-spacing: 0.15em;
+        margin-bottom: 2px;
+    }
+}
+{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">My Orders</h2>
+<section class="orders-wrap">
+    <div class="container">
+        <div class="page-head">
+            <span class="lbl">// MISSION LOG</span>
+            <h1>YOUR MISSIONS</h1>
+            <p>Every deployment on record. Track status, view history, request re-supply.</p>
+        </div>
 
 {% if orders %}
-<table class="table">
+<table class="orders-table">
     <thead>
         <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Address</th>
-            <th>Date</th>
-            <th>Status</th>
+            <th>MISSION ID</th>
+            <th>UNIT</th>
+            <th>QTY</th>
+            <th>PRICE</th>
+            <th>DROP LOCATION</th>
+            <th>DATE</th>
+            <th>STATUS</th>
         </tr>
     </thead>
     <tbody>
         {% for order in orders %}
         <tr>
-            <td>{{ order.product.name }}</td>
-            <td>{{ order.quantity }}</td>
-            <td>${{ order.price }}</td>
-            <td>{{ order.address }}</td>
-            <td>{{ order.date }}</td>
-            <td>
+            <td data-label="MISSION ID"><span class="mission-id">M-{{ order.id|stringformat:"05d" }}</span></td>
+            <td data-label="UNIT">{{ order.product.name }}</td>
+            <td data-label="QTY" class="mono">×{{ order.quantity }}</td>
+            <td data-label="PRICE" class="mono">${{ order.price }}.00</td>
+            <td data-label="DROP LOCATION">{{ order.address }}</td>
+            <td data-label="DATE" class="mono">{{ order.date }}</td>
+            <td data-label="STATUS">
                 {% if order.status %}
-                    <span class="badge bg-success">Delivered</span>
+                    <span class="status-badge status-delivered"><span class="status-dot-tiny"></span>DELIVERED</span>
                 {% else %}
-                    <span class="badge bg-warning text-dark">Pending</span>
+                    <span class="status-badge status-pending"><span class="status-dot-tiny"></span>IN TRANSIT</span>
                 {% endif %}
             </td>
         </tr>
@@ -36,6 +99,14 @@
     </tbody>
 </table>
 {% else %}
-    <p>You have no orders yet. <a href="{% url 'store' %}">Start shopping</a>.</p>
+<div class="empty-state">
+    <span class="mono-tag">NO MISSIONS ON FILE</span>
+    <h3>YOU HAVEN'T DEPLOYED YET</h3>
+    <p class="text-dim">Once you place an order, it'll show up here with tracking status.</p>
+    <a href="{% url 'store' %}" class="btn btn-primary" style="margin-top: 20px;">Head to the Arsenal →</a>
+</div>
 {% endif %}
+
+    </div>
+</section>
 {% endblock %}
