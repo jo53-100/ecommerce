@@ -29,17 +29,17 @@
 
 .auth-visual .top-code {
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    color: var(--tan); letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase;
     margin-bottom: 20px;
 }
-.auth-visual h2 { font-size: 3.4rem; line-height: 1.05; margin-bottom: 20px; }
-.auth-visual h2 .accent { color: var(--tan); }
+.auth-visual h2 { font-size: 3.4rem; line-height: 1.05; margin-bottom: 20px; font-family: 'Playfair Display', serif; }
+.auth-visual h2 .accent { color: var(--gold-hi); }
 .auth-visual p { color: var(--text-dim); max-width: 400px; font-size: 15px; }
 
 .perk-list { list-style: none; padding: 0; margin: 32px 0 0; display: flex; flex-direction: column; gap: 14px; max-width: 400px; }
 .perk-list li { display: flex; gap: 14px; align-items: flex-start; color: var(--text-dim); font-size: 14px; }
 .perk-list li::before {
-    content: "▸"; color: var(--tan); font-family: 'JetBrains Mono', monospace;
+    content: "▸"; color: var(--gold-hi); font-family: 'JetBrains Mono', monospace;
     font-weight: 700; flex-shrink: 0;
 }
 .perk-list strong { color: var(--text); font-weight: 600; }
@@ -50,8 +50,8 @@
     background: var(--bg-0);
 }
 .auth-form-box { width: 100%; max-width: 480px; }
-.auth-form-box .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--tan); text-transform: uppercase; }
-.auth-form-box h1 { font-size: 2.6rem; margin: 10px 0 8px; }
+.auth-form-box .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; }
+.auth-form-box h1 { font-size: 2.6rem; margin: 10px 0 8px; font-family: 'Playfair Display', serif; }
 .auth-form-box p.sub { color: var(--text-dim); margin-bottom: 32px; font-size: 14px; }
 
 .auth-form-box .switch {
@@ -59,7 +59,7 @@
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
     color: var(--text-mute); letter-spacing: 0.15em; text-transform: uppercase;
 }
-.auth-form-box .switch a { color: var(--tan); }
+.auth-form-box .switch a { color: var(--gold-hi); }
 
 @media (max-width: 900px) {
     .auth-wrap { grid-template-columns: 1fr; min-height: auto; }
@@ -73,9 +73,9 @@
 <section class="auth-wrap">
     <div class="auth-visual">
         <div>
-            <div class="top-code">{% trans "// OPERATOR.ENLISTMENT" %}</div>
-            <h2>{% trans "JOIN THE" %}<br><span class="accent">{% trans "ROSTER." %}</span></h2>
-            <p>{% trans "Create your Ironhold account and gear up. Verified service members and first responders unlock a 10% permanent discount." %}</p>
+            <div class="top-code">{% trans "// REGISTRO" %}</div>
+            <h2>{% trans "Únete a" %}<br><span class="accent">{% trans "Tienda Naval" %}</span></h2>
+            <p>{% trans "Crea tu cuenta y accede a gorras, insignias y accesorios navales de la más alta calidad." %}</p>
             <ul class="perk-list">
                 <li><span>{% blocktrans %}<strong>Priority shipping</strong> on every order.{% endblocktrans %}</span></li>
                 <li><span>{% blocktrans %}<strong>Save loadouts</strong> for quick re-supply.{% endblocktrans %}</span></li>
@@ -90,9 +90,9 @@
 
     <div class="auth-form-side">
         <div class="auth-form-box">
-            <span class="lbl">{% trans "// ENLISTMENT FORM" %}</span>
-            <h1>{% trans "CREATE ACCOUNT" %}</h1>
-            <p class="sub">{% trans "Fill out your operator profile below. Takes under a minute." %}</p>
+            <span class="lbl">{% trans "// FORMULARIO DE REGISTRO" %}</span>
+            <h1>{% trans "Crear Cuenta" %}</h1>
+            <p class="sub">{% trans "Completa tu perfil. Toma menos de un minuto." %}</p>
 
             {% if error %}
                 <div class="alert alert-danger">{{ error }}</div>
@@ -122,11 +122,11 @@
                     <label class="form-label">{% trans "PASSWORD" %}</label>
                     <input type="password" name="password" class="form-control" placeholder="{% trans 'Minimum 8 characters' %}" required>
                 </div>
-                <button type="submit" class="btn btn-tan btn-block" style="margin-top: 8px;">{% trans "ENLIST NOW" %} →</button>
+                <button type="submit" class="btn btn-gold btn-block" style="margin-top: 8px;">{% trans "Registrarme" %} →</button>
             </form>
 
             <div class="switch">
-                {% trans "ALREADY ENLISTED?" %} <a href="{% url 'login' %}">{% trans "SIGN IN" %} →</a>
+                {% trans "¿YA TIENES CUENTA?" %} <a href="{% url 'login' %}">{% trans "INGRESAR" %} →</a>
             </div>
         </div>
     </div>

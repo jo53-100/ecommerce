@@ -26,9 +26,9 @@ class Login(View):
                     Login.return_url = None
                     return redirect('homepage')
             else:
-                error_message = 'Invalido !!'
+                error_message = 'Contraseña incorrecta. Por favor intenta de nuevo.'
         else:
-            error_message = 'Invalido !!'
+            error_message = 'not_registered'
         return render(request, 'login.html', {'error': error_message})
 
 def logout(request):

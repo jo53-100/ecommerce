@@ -1,117 +1,132 @@
 {% extends 'base.html' %}
-{% load i18n %}
-{% block title %}{% trans "Arsenal" %}{% endblock %}
+{% load static i18n %}
+{% block title %}{% trans "Tienda Naval" %}{% endblock %}
 
 {% block extra_css %}
+/* ---- Hero ---- */
 .hero {
     position: relative;
-    padding: 96px 0 80px;
-    border-bottom: 1px solid var(--border);
+    padding: 100px 0 90px;
     overflow: hidden;
     background:
-        linear-gradient(180deg, rgba(11,13,10,0) 0%, rgba(11,13,10,0.8) 100%),
-        repeating-linear-gradient(45deg, rgba(107,122,58,0.03) 0 2px, transparent 2px 22px),
-        radial-gradient(ellipse at 70% 30%, rgba(107,122,58,0.18), transparent 60%),
-        var(--bg-1);
+        linear-gradient(180deg, rgba(5, 13, 26, 0.5) 0%, rgba(10, 25, 47, 0.92) 100%),
+        radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.08) 0%, transparent 70%),
+        var(--navy-800);
+    color: var(--text-light);
 }
-.hero::after {
+.hero::before {
     content: ""; position: absolute; inset: 0;
     background-image:
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-    background-size: 40px 40px;
+        linear-gradient(rgba(212,175,55,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212,175,55,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
     pointer-events: none;
 }
-.hero .container { position: relative; z-index: 1; display: grid; grid-template-columns: 1.4fr 1fr; gap: 60px; align-items: center; }
-.hero-tag { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-.hero-tag .dot { width: 6px; height: 6px; background: var(--olive-hi); border-radius: 50%; box-shadow: 0 0 10px var(--olive-hi); }
-.hero-tag .txt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--olive-hi); text-transform: uppercase; }
-.hero h1 { font-size: 4.2rem; line-height: 0.95; margin-bottom: 20px; }
-.hero h1 .accent { color: var(--olive-hi); }
-.hero p.lede { font-size: 1.05rem; color: var(--text-dim); max-width: 500px; margin-bottom: 32px; }
-.hero-cta { display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
-.hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 520px; padding-top: 32px; border-top: 1px solid var(--border); }
-.stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: var(--text); line-height: 1; }
-.stat-lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--text-dim); text-transform: uppercase; margin-top: 6px; }
+.hero::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+    background: linear-gradient(to top, var(--bg-0), transparent);
+    pointer-events: none;
+}
+.hero .container {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; max-width: 900px; margin: 0 auto;
+}
+.hero-logo {
+    height: 120px; width: auto; margin-bottom: 28px;
+    filter: drop-shadow(0 8px 32px rgba(212,175,55,0.3));
+    animation: floatLogo 4s ease-in-out infinite;
+}
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+.hero-tag {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    margin-bottom: 20px;
+}
+.hero-tag .dot { width: 6px; height: 6px; background: var(--gold-hi); border-radius: 50%; box-shadow: 0 0 12px var(--gold-hi); }
+.hero-tag .txt {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.25em; color: var(--gold-hi); text-transform: uppercase;
+}
+.hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem; line-height: 1.05; margin-bottom: 24px;
+    color: var(--text-light);
+    text-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+.hero h1 .accent { color: var(--gold-hi); }
+.hero p.lede {
+    font-size: 1.15rem; color: rgba(203,213,225,0.9);
+    max-width: 560px; margin: 0 auto 36px; line-height: 1.7;
+}
+.hero-cta { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
 
-.hero-visual {
-    aspect-ratio: 4/5;
-    background:
-        linear-gradient(135deg, rgba(107,122,58,0.15) 0%, transparent 60%),
-        var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 2px;
+/* ---- Section titles ---- */
+.section-title {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 36px; flex-wrap: wrap; gap: 16px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
     position: relative;
-    display: grid; place-items: center;
-    overflow: hidden;
 }
-.hero-visual::before {
-    content: ""; position: absolute; inset: 0;
-    background-image:
-        repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 40px),
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 40px);
+.section-title::after {
+    content: ''; position: absolute; bottom: -2px; left: 0;
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, var(--gold-hi), var(--gold));
 }
-.hero-visual-content { position: relative; text-align: center; padding: 40px; }
-.hero-visual-shield {
-    width: 180px; height: 200px; margin: 0 auto 20px;
-    background: linear-gradient(180deg, var(--olive) 0%, #4a5528 100%);
-    clip-path: polygon(50% 0%, 100% 15%, 100% 65%, 50% 100%, 0 65%, 0 15%);
-    display: grid; place-items: center;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 40px rgba(107,122,58,0.3);
-    position: relative;
+.section-title h2 { margin: 0; color: var(--navy-800); }
+.section-title .lbl {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase;
+    display: block; margin-bottom: 6px;
 }
-.hero-visual-shield::before {
-    content: "IH"; font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: var(--bg-0); letter-spacing: 0.05em;
+.section-title .link {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-mute); font-weight: 600;
 }
-.hero-visual-code { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); letter-spacing: 0.2em; }
-.hero-corner { position: absolute; width: 24px; height: 24px; border: 2px solid var(--olive-hi); }
-.hero-corner.tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; }
-.hero-corner.tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; }
-.hero-corner.bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; }
-.hero-corner.br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; }
 
-/* section titles */
-.section-title { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
-.section-title h2 { margin: 0; font-size: 2rem; }
-.section-title .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--olive-hi); letter-spacing: 0.25em; text-transform: uppercase; display: block; margin-bottom: 6px; }
-.section-title .link { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
+.section { padding: 80px 0; }
 
-.section { padding: 72px 0; }
-
-/* layout: sidebar + products */
+/* ---- Layout: sidebar + products ---- */
 .store-layout { display: grid; grid-template-columns: 260px 1fr; gap: 32px; }
 
 .filter-panel {
     background: var(--panel);
     border: 1px solid var(--border);
-    padding: 4px;
-    border-radius: 2px;
+    padding: 0;
+    border-radius: 10px;
     position: sticky; top: 96px;
     align-self: start;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
 }
 .filter-panel .head {
-    padding: 14px 18px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--text-dim);
+    padding: 16px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-dim); font-weight: 700;
     border-bottom: 1px solid var(--border);
     display: flex; justify-content: space-between; align-items: center;
+    background: var(--bg-2);
 }
-.filter-panel .head::before { content: "▎"; color: var(--olive-hi); margin-right: 4px; }
 .cat-item {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 18px;
+    padding: 13px 20px;
     color: var(--text-dim);
     font-size: 14px; font-weight: 500;
-    border-left: 2px solid transparent;
-    transition: all 0.15s;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
     cursor: pointer;
 }
-.cat-item:hover { background: var(--panel-2); color: var(--text); }
+.cat-item:hover { background: var(--panel-2); color: var(--text); border-left-color: var(--border-hi); }
 .cat-item.active {
-    background: rgba(107,122,58,0.08);
-    color: var(--olive-hi);
-    border-left-color: var(--olive-hi);
+    background: rgba(212,175,55,0.06);
+    color: var(--gold);
+    border-left-color: var(--gold-hi);
+    font-weight: 600;
 }
 .cat-item .count {
     font-family: 'JetBrains Mono', monospace;
@@ -119,22 +134,28 @@
     color: var(--text-mute);
 }
 
-/* product grid */
-.product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+/* ---- Product grid ---- */
+.product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .product-card {
     background: var(--panel);
     border: 1px solid var(--border);
-    border-radius: 2px;
+    border-radius: 12px;
     display: flex; flex-direction: column;
-    transition: border 0.2s, transform 0.2s;
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
     overflow: hidden;
+    box-shadow: var(--shadow-sm);
 }
-.product-card:hover { border-color: var(--border-hi); transform: translateY(-2px); }
+.product-card:hover {
+    border-color: rgba(212,175,55,0.4);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(5,13,26,0.12), var(--shadow-gold);
+    z-index: 10;
+}
 .product-card::before {
-    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--olive-hi), transparent);
-    opacity: 0; transition: opacity 0.2s;
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-hi), var(--gold));
+    opacity: 0; transition: opacity 0.35s;
 }
 .product-card:hover::before { opacity: 1; }
 
@@ -144,142 +165,150 @@
     display: grid; place-items: center;
     position: relative;
     overflow: hidden;
-    border-bottom: 1px solid var(--border);
 }
 .product-media img {
     width: 100%; height: 100%; object-fit: cover;
-    transition: transform 0.4s;
+    transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
-.product-card:hover .product-media img { transform: scale(1.04); }
+.product-card:hover .product-media img { transform: scale(1.06); }
 .product-media .placeholder {
-    font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem;
-    color: var(--border-hi); letter-spacing: 0.1em;
+    font-family: 'Playfair Display', serif; font-size: 3rem;
+    color: var(--border-hi); letter-spacing: 0.05em;
 }
 .product-sku {
     position: absolute; top: 12px; left: 12px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.15em;
-    color: var(--text-dim);
-    background: rgba(11, 13, 10, 0.7);
-    padding: 4px 8px; border-radius: 2px;
+    font-size: 10px; letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.85);
+    background: rgba(5, 13, 26, 0.65);
+    backdrop-filter: blur(8px);
+    padding: 4px 10px; border-radius: 4px;
     text-transform: uppercase;
 }
 .product-tag {
     position: absolute; top: 12px; right: 12px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.15em;
-    background: var(--olive); color: var(--bg-0);
-    padding: 4px 8px; border-radius: 2px;
-    text-transform: uppercase; font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px; letter-spacing: 0.1em;
+    background: linear-gradient(135deg, var(--gold), var(--gold-hi));
+    color: var(--navy-900); font-weight: 700;
+    padding: 4px 10px; border-radius: 4px;
+    text-transform: uppercase;
 }
 
-.product-body { padding: 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-.product-cat { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--olive-hi); text-transform: uppercase; }
-.product-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.05em; color: var(--text); margin: 0; line-height: 1.1; }
-.product-desc { font-size: 13px; color: var(--text-dim); line-height: 1.5; margin: 0; }
-.product-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; margin-top: auto; border-top: 1px solid var(--border); }
+.product-body { padding: 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.product-cat {
+    font-family: 'Montserrat', sans-serif; font-size: 10px;
+    letter-spacing: 0.18em; color: var(--gold);
+    text-transform: uppercase; font-weight: 700;
+}
+.product-name {
+    font-family: 'Playfair Display', serif; font-size: 1.2rem;
+    color: var(--navy-800); margin: 0; line-height: 1.25; font-weight: 700;
+}
+.product-desc {
+    font-size: 13px; color: var(--text-dim); line-height: 1.55; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.product-foot {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 14px; margin-top: auto;
+    border-top: 1px solid var(--border);
+}
 .product-price {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.7rem;
-    color: var(--text);
-    letter-spacing: 0.03em;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--navy-800);
+    font-weight: 700;
 }
-.product-price .cents { font-size: 0.9rem; color: var(--text-dim); }
-.add-btn {
-    background: transparent; border: 1px solid var(--border-hi);
-    color: var(--text);
-    padding: 8px 14px; border-radius: 2px;
-    font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 0.15em;
-    cursor: pointer; text-transform: uppercase;
-    transition: all 0.15s;
-}
-.add-btn:hover { background: var(--olive); border-color: var(--olive); color: var(--bg-0); }
+.product-price .cents { font-size: 0.85rem; color: var(--text-mute); font-weight: 500; }
 
-/* CTA banner */
+/* ---- CTA banner ---- */
 .cta-banner {
     background:
-        linear-gradient(90deg, rgba(11,13,10,0.85), rgba(11,13,10,0.4)),
-        repeating-linear-gradient(-45deg, var(--olive) 0 20px, #4a5528 20px 40px);
-    padding: 60px 48px;
-    border-radius: 2px;
-    display: flex; justify-content: space-between; align-items: center; gap: 32px;
+        linear-gradient(135deg, rgba(10,25,47,0.95), rgba(15,34,64,0.9)),
+        radial-gradient(ellipse at 80% 50%, rgba(212,175,55,0.15), transparent 60%);
+    padding: 64px 56px;
+    border-radius: 16px;
+    display: flex; justify-content: space-between; align-items: center; gap: 40px;
     flex-wrap: wrap;
+    color: var(--text-light);
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
 }
-.cta-banner h2 { font-size: 2.5rem; margin: 0 0 8px; }
-.cta-banner p { color: var(--text-dim); margin: 0; }
+.cta-banner::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold-hi), transparent);
+}
+.cta-banner h2 { font-size: 2.4rem; margin: 0 0 10px; color: var(--text-light); }
+.cta-banner p { color: rgba(203,213,225,0.8); margin: 0; font-size: 15px; }
 
-/* features */
-.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+/* ---- Features ---- */
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .feature-card {
     background: var(--panel);
     border: 1px solid var(--border);
-    padding: 32px 28px;
-    border-radius: 2px;
+    padding: 36px 28px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
-.feature-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px; color: var(--olive-hi);
-    letter-spacing: 0.2em; margin-bottom: 20px;
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(212,175,55,0.3);
 }
-.feature-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
-.feature-card p { color: var(--text-dim); font-size: 14px; margin: 0; }
+.feature-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-hi));
+    opacity: 0; transition: opacity 0.3s;
+}
+.feature-card:hover::before { opacity: 1; }
+.feature-icon {
+    width: 48px; height: 48px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--navy-800), var(--navy-700));
+    color: var(--gold-hi); border-radius: 10px;
+    font-size: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-md);
+}
+.feature-card h3 { font-size: 1.3rem; margin-bottom: 10px; color: var(--navy-800); }
+.feature-card p { color: var(--text-dim); font-size: 14px; margin: 0; line-height: 1.6; }
 
+/* ---- Responsive ---- */
 @media (max-width: 900px) {
-    .hero { padding: 48px 0; }
-    .hero .container { grid-template-columns: 1fr; gap: 40px; }
-    .hero h1 { font-size: 2.6rem; }
-    .hero-visual { max-width: 400px; margin: 0 auto; }
+    .hero { padding: 60px 0 60px; }
+    .hero h1 { font-size: 2.8rem; }
+    .hero-logo { height: 80px; }
     .store-layout { grid-template-columns: 1fr; }
     .filter-panel { position: static; }
     .product-grid { grid-template-columns: repeat(2, 1fr); }
     .features-grid { grid-template-columns: 1fr; }
     .cta-banner { padding: 40px 28px; }
     .cta-banner h2 { font-size: 1.8rem; }
-    .section { padding: 48px 0; }
+    .section { padding: 56px 0; }
 }
 @media (max-width: 560px) {
     .product-grid { grid-template-columns: 1fr; }
-    .hero-stats { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .hero h1 { font-size: 2.2rem; }
 }
 {% endblock %}
 
 {% block content %}
 <section class="hero">
     <div class="container">
-        <div>
-            <div class="hero-tag">
-                <span class="dot"></span>
-                <span class="txt">{% trans "NEW DROP · 07.2026 SEASONAL LOADOUT" %}</span>
-            </div>
-            <h1>{% trans "MISSION-READY GEAR." %}<br><span class="accent">{% trans "NO COMPROMISES." %}</span></h1>
-            <p class="lede">{% trans "Combat-grade tactical equipment engineered for professionals who operate at the edge. Built to mil-spec. Tested in the field. Trusted by units in 40+ countries." %}</p>
-            <div class="hero-cta">
-                <a href="#arsenal" class="btn btn-primary">{% trans "Shop the Arsenal" %} →</a>
-                <a href="#" class="btn btn-outline">{% trans "View Loadouts" %}</a>
-            </div>
-            <div class="hero-stats">
-                <div>
-                    <div class="stat-num">40K+</div>
-                    <div class="stat-lbl">{% trans "Operators Equipped" %}</div>
-                </div>
-                <div>
-                    <div class="stat-num">99.6%</div>
-                    <div class="stat-lbl">{% trans "Field Approval Rate" %}</div>
-                </div>
-                <div>
-                    <div class="stat-num">24/7</div>
-                    <div class="stat-lbl">{% trans "Support Line" %}</div>
-                </div>
-            </div>
+        <img src="{% static 'images/logo-naval.jpg' %}" alt="Tienda Naval" class="hero-logo" onerror="this.style.display='none'">
+        <div class="hero-tag">
+            <span class="dot"></span>
+            <span class="txt">{% trans "GORRAS · INSIGNIAS · ACCESORIOS" %}</span>
         </div>
-        <div class="hero-visual">
-            <span class="hero-corner tl"></span><span class="hero-corner tr"></span>
-            <span class="hero-corner bl"></span><span class="hero-corner br"></span>
-            <div class="hero-visual-content">
-                <div class="hero-visual-shield"></div>
-                <div class="hero-visual-code">UNIT-04.EAST // GRID 34.05N 118.24W</div>
-                <div class="hero-visual-code" style="margin-top:6px;">{% trans "STATUS" %}: <span style="color:var(--olive-hi)">{% trans "ACTIVE" %}</span></div>
-            </div>
+        <h1>{% trans "Tienda" %} <span class="accent">Naval</span></h1>
+        <p class="lede">{% trans "Gorras bordadas, insignias, distintivos y accesorios con el auténtico espíritu del océano. Para oficiales, marineros y entusiastas de la navegación." %}</p>
+        <div class="hero-cta">
+            <a href="#arsenal" class="btn btn-gold">{% trans "Ver Catálogo" %} →</a>
+            <a href="{% url 'signup' %}" class="btn btn-outline" style="color: var(--text-light); border-color: rgba(255,255,255,0.3);">{% trans "Crear Cuenta" %}</a>
         </div>
     </div>
 </section>
@@ -287,20 +316,20 @@
 <div class="trust-strip">
     <div class="container">
         <div class="trust-item">
-            <div class="trust-icon">◆</div>
-            <div><strong>{% trans "MIL-SPEC BUILT" %}</strong><br>{% trans "Certified materials" %}</div>
+            <div class="trust-icon">⚓</div>
+            <div><strong>{% trans "Calidad Naval" %}</strong><span>{% trans "Materiales premium" %}</span></div>
         </div>
         <div class="trust-item">
-            <div class="trust-icon">▲</div>
-            <div><strong>{% trans "FREE SHIPPING" %}</strong><br>{% trans "Orders over $150" %}</div>
+            <div class="trust-icon">📦</div>
+            <div><strong>{% trans "Envío Gratis" %}</strong><span>{% trans "Pedidos +$150" %}</span></div>
         </div>
         <div class="trust-item">
-            <div class="trust-icon">●</div>
-            <div><strong>{% trans "30-DAY RETURNS" %}</strong><br>{% trans "No questions asked" %}</div>
+            <div class="trust-icon">🔄</div>
+            <div><strong>{% trans "Devolución 30 Días" %}</strong><span>{% trans "Sin preguntas" %}</span></div>
         </div>
         <div class="trust-item">
-            <div class="trust-icon">✚</div>
-            <div><strong>{% trans "10% MIL DISCOUNT" %}</strong><br>{% trans "Verified active duty" %}</div>
+            <div class="trust-icon">🛡️</div>
+            <div><strong>{% trans "Pago Seguro" %}</strong><span>{% trans "Encriptación SSL" %}</span></div>
         </div>
     </div>
 </div>
@@ -309,21 +338,21 @@
     <div class="container">
         <div class="section-title">
             <div>
-                <span class="lbl">{% trans "// SECTION 001 · INVENTORY" %}</span>
-                <h2>{% trans "THE ARSENAL" %}</h2>
+                <span class="lbl">{% trans "// CATÁLOGO" %}</span>
+                <h2>{% trans "Nuestros Productos" %}</h2>
             </div>
-            <span class="link">{% blocktrans with count=products|length %}SHOWING {{ count }} UNITS →{% endblocktrans %}</span>
+            <span class="link">{% blocktrans with count=products|length %}{{ count }} productos disponibles{% endblocktrans %}</span>
         </div>
 
         <div class="store-layout">
             <aside class="filter-panel">
                 <div class="head">
-                    <span>{% trans "CATEGORIES" %}</span>
-                    <span class="mono">[{{ categories|length|add:1 }}]</span>
+                    <span>{% trans "Categorías" %}</span>
+                    <span class="mono" style="font-size: 11px; color: var(--text-mute);">[{{ categories|length|add:1 }}]</span>
                 </div>
                 {% with current=request.GET.category %}
                 <a href="{% url 'store' %}" class="cat-item {% if not current %}active{% endif %}" style="text-decoration:none;">
-                    <span>{% trans "All Gear" %}</span>
+                    <span>{% trans "Todo" %}</span>
                     <span class="count">{{ products|length }}</span>
                 </a>
                 {% for category in categories %}
@@ -339,39 +368,46 @@
 
             <div class="product-grid">
                 {% for product in products %}
-                    <div class="product-card">
-                        <div class="product-media">
+                    <div class="product-card scan-reveal" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'is-visible' : ''">
+                        <div class="product-media" style="cursor: pointer;" 
+                             @click="quickViewProduct = { id: '{{ product.id }}', name: '{{ product.name|escapejs }}', price: '{{ product.price }}', desc: '{{ product.description|escapejs }}', cat: '{{ product.category.name|default:'SIN CATEGORÍA'|escapejs }}', img: '{% if product.image %}{{ product.image.url }}{% else %}{% endif %}' }; quickViewOpen = true; $dispatch('quickview-opened');">
                             {% if product.image %}
-                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
                             {% else %}
-                                <span class="placeholder">IH-{{ product.id }}</span>
+                                <span class="placeholder">{{ product.name|truncatewords:1 }}</span>
                             {% endif %}
-                            <span class="product-sku">SKU · IH-{{ product.id|stringformat:"04d" }}</span>
+                            <span class="product-sku">SKU · TN-{{ product.id|stringformat:"04d" }}</span>
                             {% if forloop.counter0|divisibleby:5 %}
-                                <span class="product-tag">{% trans "NEW" %}</span>
+                                <span class="product-tag">{% trans "Nuevo" %}</span>
                             {% endif %}
                         </div>
                         <div class="product-body">
-                            <span class="product-cat">{{ product.category.name|default:"UNCATEGORIZED" }}</span>
+                            <span class="product-cat">{{ product.category.name|default:"SIN CATEGORÍA" }}</span>
                             <h3 class="product-name">{{ product.name }}</h3>
-                            <p class="product-desc">{{ product.description|default:_("Field-grade equipment engineered for sustained deployment. Rugged. Reliable. Ready.") }}</p>
+                            <p class="product-desc">{{ product.description|default:_("Artículo naval de alta calidad, elaborado con los mejores materiales.") }}</p>
                             <div class="product-foot">
                                 <div class="product-price">
                                     ${{ product.price }}<span class="cents">.00</span>
                                 </div>
-                                <form action="{% url 'homepage' %}" method="POST" style="margin:0;">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="product" value="{{ product.id }}">
-                                    <button type="submit" class="add-btn">{% trans "Add" %} +</button>
-                                </form>
+                                <div style="display:flex; gap: 8px;">
+                                    <button type="button" class="btn btn-outline btn-sm" aria-label="{% trans 'Vista Rápida' %}"
+                                        @click="quickViewProduct = { id: '{{ product.id }}', name: '{{ product.name|escapejs }}', price: '{{ product.price }}', desc: '{{ product.description|escapejs }}', cat: '{{ product.category.name|default:'SIN CATEGORÍA'|escapejs }}', img: '{% if product.image %}{{ product.image.url }}{% else %}{% endif %}' }; quickViewOpen = true; $dispatch('quickview-opened');">
+                                        👁
+                                    </button>
+                                    <form action="{% url 'homepage' %}" method="POST" style="margin:0;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product" value="{{ product.id }}">
+                                        <button type="submit" class="btn btn-primary btn-sm" aria-label="{% trans 'Agregar al Carrito' %}">{% trans "Agregar" %} +</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 {% empty %}
-                    <div style="grid-column: 1 / -1; text-align:center; padding: 80px 0; background: var(--panel); border: 1px dashed var(--border); border-radius: 2px;">
-                        <span class="mono-tag">{% trans "INVENTORY EMPTY" %}</span>
-                        <h3 style="margin-top:20px;">{% trans "NO UNITS IN INVENTORY" %}</h3>
-                        <p class="text-dim">{% blocktrans %}Load your first products from the <a href="/admin/">command console</a>.{% endblocktrans %}</p>
+                    <div style="grid-column: 1 / -1; text-align:center; padding: 80px 0; background: var(--panel); border: 1px dashed var(--border); border-radius: 12px;">
+                        <span class="mono-tag">{% trans "SIN INVENTARIO" %}</span>
+                        <h3 style="margin-top:20px;">{% trans "NO HAY PRODUCTOS AÚN" %}</h3>
+                        <p class="text-dim">{% blocktrans %}Carga tus primeros productos desde la <a href="/admin/">consola de administración</a>.{% endblocktrans %}</p>
                     </div>
                 {% endfor %}
             </div>
@@ -383,12 +419,12 @@
     <div class="container">
         <div class="cta-banner">
             <div>
-                <span class="mono-tag">{% trans "ENLIST" %}</span>
-                <h2 style="margin-top:12px;">{% trans "ACTIVE DUTY? GET 10% OFF FOR LIFE." %}</h2>
-                <p>{% trans "Verified service members and first responders receive automatic pricing on every order." %}</p>
+                <span class="mono-tag">{% trans "DESCUENTO ESPECIAL" %}</span>
+                <h2 style="margin-top:14px;">{% trans "¿Personal Naval? 10% de Descuento Permanente" %}</h2>
+                <p>{% trans "Miembros verificados de la armada y fuerzas navales reciben precio especial en todos sus pedidos." %}</p>
             </div>
             <div>
-                <a href="{% url 'signup' %}" class="btn btn-tan">{% trans "Verify Status" %} →</a>
+                <a href="{% url 'signup' %}" class="btn btn-gold">{% trans "Verificar Estado" %} →</a>
             </div>
         </div>
     </div>
@@ -398,27 +434,112 @@
     <div class="container">
         <div class="section-title">
             <div>
-                <span class="lbl">{% trans "// SECTION 002 · WHY IRONHOLD" %}</span>
-                <h2>{% trans "BUILT FOR THE MISSION" %}</h2>
+                <span class="lbl">{% trans "// ¿POR QUÉ ELEGIRNOS?" %}</span>
+                <h2>{% trans "La Diferencia Naval" %}</h2>
             </div>
         </div>
         <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-num">{% trans "// 01 · SPEC" %}</div>
-                <h3>{% trans "MIL-SPEC MATERIALS" %}</h3>
-                <p>{% trans "Every fiber, every buckle, every stitch tested against MIL-STD-810H. If it can't survive drop, dust, and salt fog — it doesn't ship." %}</p>
+            <div class="feature-card scan-reveal" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'is-visible' : ''">
+                <div class="feature-icon">⚓</div>
+                <h3>{% trans "Calidad Premium" %}</h3>
+                <p>{% trans "Cada gorra, insignia y accesorio es fabricado con los más altos estándares de calidad. Materiales seleccionados y acabados impecables." %}</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-num">{% trans "// 02 · FIELD" %}</div>
-                <h3>{% trans "TESTED IN THEATER" %}</h3>
-                <p>{% trans "Prototyped with active operators from three continents. Redesigned until it survives a full rotation without failure." %}</p>
+            <div class="feature-card scan-reveal" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'is-visible' : ''" style="transition-delay: 100ms;">
+                <div class="feature-icon">🎖️</div>
+                <h3>{% trans "Bordado Artesanal" %}</h3>
+                <p>{% trans "Nuestros bordados son realizados por artesanos especializados con técnicas tradicionales navales. Cada pieza es una obra de arte." %}</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-num">{% trans "// 03 · WARRANTY" %}</div>
-                <h3>{% trans "LIFETIME GUARANTEE" %}</h3>
-                <p>{% trans "If our gear fails during service — we replace it. No forms, no fine print. Send it back, get a new one." %}</p>
+            <div class="feature-card scan-reveal" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'is-visible' : ''" style="transition-delay: 200ms;">
+                <div class="feature-icon">🚢</div>
+                <h3>{% trans "Tradición Marítima" %}</h3>
+                <p>{% trans "Más de una década vistiendo a oficiales y marineros. Conocemos las tradiciones y protocolos navales de cada rango." %}</p>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Quick View Modal -->
+<template x-teleport="body">
+    <div class="hud-overlay" x-show="quickViewOpen" x-transition.opacity.duration.200ms x-cloak
+         x-data="{ qty: 1, selectedColor: 'navy' }" @quickview-opened.window="qty = 1; selectedColor = 'navy';">
+        <div class="hud-modal" @click.away="quickViewOpen = false"
+             x-show="quickViewOpen" x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+             x-transition:leave-end="opacity-0 scale-95 translate-y-4">
+
+            <button type="button" class="hud-modal-close" aria-label="{% trans 'Cerrar' %}" @click="quickViewOpen = false">✕</button>
+            
+            <div class="hud-modal-media">
+                <template x-if="quickViewProduct && quickViewProduct.img">
+                    <img :src="quickViewProduct.img" :alt="quickViewProduct.name">
+                </template>
+                <template x-if="quickViewProduct && !quickViewProduct.img">
+                    <div style="width: 100%; height: 100%; display: grid; place-items: center; background: var(--bg-2);">
+                        <span class="mono" style="font-size: 2rem; color: var(--border-hi);" x-text="'TN-' + quickViewProduct.id"></span>
+                    </div>
+                </template>
+                <!-- Thumbnail placeholders for future gallery -->
+                <div style="position: absolute; bottom: 20px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px;" x-show="quickViewProduct && quickViewProduct.img">
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 2px var(--panel);"></div>
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4);"></div>
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4);"></div>
+                </div>
+            </div>
+
+            <div class="hud-modal-info">
+                <span class="mono" style="color: var(--gold); font-size: 11px; letter-spacing: 0.18em; font-weight: 600;" x-text="quickViewProduct ? quickViewProduct.cat : ''"></span>
+                <h2 style="font-size: 2rem; margin: 8px 0 16px; line-height: 1.15; font-family: 'Playfair Display', serif;" x-text="quickViewProduct ? quickViewProduct.name : ''"></h2>
+                
+                <div style="font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; line-height: 1; margin-bottom: 24px; color: var(--text);" x-text="quickViewProduct ? '$' + quickViewProduct.price + '.00' : ''"></div>
+                
+                <p style="color: var(--text-dim); font-size: 14px; line-height: 1.65; margin: 0 0 24px;" x-text="quickViewProduct ? quickViewProduct.desc : ''"></p>
+                
+                <!-- Opciones (Solo para Gorras o Ropa) -->
+                <div style="margin-bottom: auto;" x-show="quickViewProduct && (quickViewProduct.cat.toLowerCase().includes('gorra') || quickViewProduct.cat.toLowerCase().includes('ropa'))">
+                    <span style="font-size: 11px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; font-family: 'Montserrat', sans-serif; letter-spacing: 0.1em;">{% trans "Color" %}</span>
+                    <div class="color-swatch-wrap">
+                        <div class="color-swatch" :class="selectedColor === 'navy' ? 'active' : ''" @click="selectedColor = 'navy'" style="--swatch-color: #1a2a40;" title="Navy"></div>
+                        <div class="color-swatch" :class="selectedColor === 'black' ? 'active' : ''" @click="selectedColor = 'black'" style="--swatch-color: #111;" title="Negro"></div>
+                        <div class="color-swatch" :class="selectedColor === 'khaki' ? 'active' : ''" @click="selectedColor = 'khaki'" style="--swatch-color: #c3b091;" title="Caqui"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);">
+                    <form action="{% url 'homepage' %}" method="POST" style="margin:0;">
+                        {% csrf_token %}
+                        <input type="hidden" name="product" :value="quickViewProduct ? quickViewProduct.id : ''">
+                        <input type="hidden" name="qty" :value="qty">
+                        <input type="hidden" name="color" :value="selectedColor">
+                        <input type="hidden" name="buy_now" id="buy_now_flag" value="0">
+                        
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <!-- Selector de Cantidad -->
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <span style="font-size: 11px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; font-family: 'Montserrat', sans-serif; letter-spacing: 0.1em;">{% trans "Cantidad" %}</span>
+                                <div style="display: flex; align-items: center; background: var(--bg-1); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; height: 40px;">
+                                    <button type="button" @click="if(qty > 1) qty--" style="background:transparent; border:none; width: 40px; height:100%; cursor:pointer; font-weight:bold; color:var(--text);">&minus;</button>
+                                    <input type="number" readonly :value="qty" style="width: 40px; border:none; background:transparent; text-align:center; font-weight:600; font-family:'JetBrains Mono', monospace; font-size: 14px; padding:0; pointer-events:none;">
+                                    <button type="button" @click="qty++" style="background:transparent; border:none; width: 40px; height:100%; cursor:pointer; font-weight:bold; color:var(--text);">&plus;</button>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <button type="submit" class="btn btn-outline" aria-label="{% trans 'Agregar al Carrito' %}" @click="document.getElementById('buy_now_flag').value='0'" style="padding: 12px;">
+                                    {% trans "Añadir" %} +
+                                </button>
+                                <button type="submit" class="btn btn-primary" aria-label="{% trans 'Comprar Ahora' %}" @click="document.getElementById('buy_now_flag').value='1'" style="padding: 12px;">
+                                    {% trans "Comprar" %} →
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</template>
 {% endblock %}

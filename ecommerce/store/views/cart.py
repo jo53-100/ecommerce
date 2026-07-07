@@ -5,7 +5,24 @@ from store.models.products import Products
 
 class Cart(View):
     def get(self, request):
-        ids = list(request.session.get('cart').keys())
-        products = Products.get_products_by_id(ids)
-        print(products)
-        return render(request, 'cart.html', {'products': products})
+        cart = request.session.get('cart', {})
+        product_ids = [k.split('_')[0] for k in cart.keys()]
+        products = Products.get_products_by_id(product_ids)
+        
+        products_dict = {str(p.id): p for p in products}
+        cart_items = []
+        for key, qty in cart.items():
+            parts = key.split('_')
+            prod_id = parts[0]
+            color = parts[1] if len(parts) > 1 else None
+            product = products_dict.get(prod_id)
+            if product:
+                cart_items.append({
+                    'cart_key': key,
+                    'product': product,
+                    'color': color,
+                    'qty': qty,
+                    'subtotal': product.price * qty
+                })
+                
+        return render(request, 'cart.html', {'cart_items': cart_items})

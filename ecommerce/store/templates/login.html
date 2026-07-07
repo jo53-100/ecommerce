@@ -29,11 +29,11 @@
 
 .auth-visual .top-code {
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    color: var(--olive-hi); letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase;
     margin-bottom: 20px;
 }
-.auth-visual h2 { font-size: 3.4rem; line-height: 1.05; margin-bottom: 20px; }
-.auth-visual h2 .accent { color: var(--olive-hi); }
+.auth-visual h2 { font-size: 3.4rem; line-height: 1.05; margin-bottom: 20px; font-family: 'Playfair Display', serif; }
+.auth-visual h2 .accent { color: var(--gold-hi); }
 .auth-visual p { color: var(--text-dim); max-width: 400px; font-size: 15px; }
 
 .auth-visual .grid-code {
@@ -44,7 +44,7 @@
     margin-top: auto;
 }
 .auth-visual .grid-code div { padding: 12px 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 2px; }
-.auth-visual .grid-code strong { color: var(--olive-hi); font-weight: 400; }
+.auth-visual .grid-code strong { color: var(--gold-hi); font-weight: 400; }
 
 .auth-form-side {
     padding: 60px;
@@ -52,8 +52,8 @@
     background: var(--bg-0);
 }
 .auth-form-box { width: 100%; max-width: 400px; }
-.auth-form-box .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--olive-hi); text-transform: uppercase; }
-.auth-form-box h1 { font-size: 2.6rem; margin: 10px 0 8px; }
+.auth-form-box .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; }
+.auth-form-box h1 { font-size: 2.6rem; margin: 10px 0 8px; font-family: 'Playfair Display', serif; }
 .auth-form-box p.sub { color: var(--text-dim); margin-bottom: 32px; font-size: 14px; }
 
 .auth-form-box .divider-alt {
@@ -79,9 +79,9 @@
 <section class="auth-wrap">
     <div class="auth-visual">
         <div>
-            <div class="top-code">{% trans "// SECURE.ACCESS.PROTOCOL" %}</div>
-            <h2>{% trans "ACCESS THE" %}<br><span class="accent">{% trans "ARMORY." %}</span></h2>
-            <p>{% trans "Sign in to your operator account. Track missions in transit, save loadouts, and unlock unit pricing." %}</p>
+            <div class="top-code">{% trans "// ACCESO SEGURO" %}</div>
+            <h2>{% trans "Bienvenido a" %}<br><span class="accent">{% trans "Tienda Naval" %}</span></h2>
+            <p>{% trans "Ingresa a tu cuenta para rastrear pedidos, guardar favoritos y obtener precios especiales." %}</p>
         </div>
         <div class="grid-code">
             <div>{% trans "NODE" %} · <strong>NORFOLK-01</strong></div>
@@ -93,11 +93,15 @@
 
     <div class="auth-form-side">
         <div class="auth-form-box">
-            <span class="lbl">{% trans "// AUTHENTICATION" %}</span>
-            <h1>{% trans "SIGN IN" %}</h1>
-            <p class="sub">{% trans "Welcome back, operator. Enter your credentials to continue." %}</p>
+            <span class="lbl">{% trans "// AUTENTICACIÓN" %}</span>
+            <h1>{% trans "Iniciar Sesión" %}</h1>
+            <p class="sub">{% trans "Bienvenido de vuelta. Ingresa tus credenciales para continuar." %}</p>
 
-            {% if error %}
+            {% if error == 'not_registered' %}
+                <div class="alert alert-danger">
+                    Este correo no está registrado. <a href="{% url 'signup' %}" style="font-weight:bold; text-decoration:underline; color:inherit;">Te invitamos a crear una cuenta nueva aquí</a>.
+                </div>
+            {% elif error %}
                 <div class="alert alert-danger">{{ error }}</div>
             {% endif %}
 
@@ -111,12 +115,12 @@
                     <label class="form-label">{% trans "PASSWORD" %}</label>
                     <input type="password" name="password" class="form-control" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">{% trans "AUTHENTICATE" %} →</button>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">{% trans "Ingresar" %} →</button>
             </form>
 
             <div class="divider-alt">— {% trans "OR" %} —</div>
 
-            <a href="{% url 'signup' %}" class="btn btn-outline btn-block">{% trans "CREATE NEW ACCOUNT" %}</a>
+            <a href="{% url 'signup' %}" class="btn btn-outline btn-block">{% trans "Crear Cuenta Nueva" %}</a>
         </div>
     </div>
 </section>
