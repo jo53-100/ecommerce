@@ -47,8 +47,13 @@
 .price-cell { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--text); }
 
 .summary-panel {
-    background: var(--panel); border: 1px solid var(--border); border-radius: 2px;
+    background: var(--panel);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border);
+    border-radius: 12px;
     position: sticky; top: 96px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
 .summary-panel .head {
     padding: 16px 20px; border-bottom: 1px solid var(--border);
@@ -57,12 +62,16 @@
 }
 .summary-panel .body { padding: 24px; }
 .summary-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; color: var(--text-dim); }
-.summary-row.total { border-top: 1px solid var(--border); margin-top: 12px; padding-top: 16px; font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.05em; color: var(--text); }
+.summary-row.total { border-top: 1px solid var(--border); margin-top: 12px; padding-top: 16px; font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.05em; color: var(--text-light); }
 .summary-row.total .num { color: var(--gold-hi); }
 
 .empty-cart {
     text-align: center; padding: 100px 40px;
-    background: var(--panel); border: 1px dashed var(--border); border-radius: 2px;
+    background: var(--panel);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px dashed var(--border-hi); border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
 }
 .empty-cart .icon {
     font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: var(--border-hi);
@@ -100,7 +109,7 @@
 
 {% if cart_items %}
 <div class="cart-layout">
-    <div class="panel" style="padding: 4px;">
+    <div class="panel" style="padding: 4px; overflow-x: auto;">
         <table class="cart-table">
             <thead>
                 <tr>

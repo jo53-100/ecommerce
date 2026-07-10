@@ -8,24 +8,17 @@
     position: relative;
     padding: 100px 0 90px;
     overflow: hidden;
-    background:
-        linear-gradient(180deg, rgba(5, 13, 26, 0.5) 0%, rgba(10, 25, 47, 0.92) 100%),
-        radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.08) 0%, transparent 70%),
-        var(--navy-800);
+    background: transparent; /* Allows body animated ocean to show through */
     color: var(--text-light);
 }
 .hero::before {
     content: ""; position: absolute; inset: 0;
     background-image:
-        linear-gradient(rgba(212,175,55,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(212,175,55,0.03) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
     background-size: 60px 60px;
     pointer-events: none;
-}
-.hero::after {
-    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
-    background: linear-gradient(to top, var(--bg-0), transparent);
-    pointer-events: none;
+    z-index: -1;
 }
 .hero .container {
     position: relative; z-index: 1;
@@ -35,7 +28,8 @@
 .hero-logo {
     height: 120px; width: auto; margin-bottom: 28px;
     filter: drop-shadow(0 8px 32px rgba(212,175,55,0.3));
-    animation: floatLogo 4s ease-in-out infinite;
+    animation: heroFadeScale 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both,
+               floatLogo 4s ease-in-out 1.2s infinite;
 }
 @keyframes floatLogo {
     0%, 100% { transform: translateY(0); }
@@ -95,12 +89,14 @@
 
 .filter-panel {
     background: var(--panel);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--border);
     padding: 0;
-    border-radius: 10px;
+    border-radius: 12px;
     position: sticky; top: 96px;
     align-self: start;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     overflow: hidden;
 }
 .filter-panel .head {
@@ -138,19 +134,22 @@
 .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .product-card {
     background: var(--panel);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--border);
     border-radius: 12px;
     display: flex; flex-direction: column;
-    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: var(--transition-base);
     position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
 }
 .product-card:hover {
-    border-color: rgba(212,175,55,0.4);
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(5,13,26,0.12), var(--shadow-gold);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 30px rgba(8, 145, 178, 0.15);
     z-index: 10;
+    transition: var(--transition-hover);
 }
 .product-card::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
@@ -168,9 +167,8 @@
 }
 .product-media img {
     width: 100%; height: 100%; object-fit: cover;
-    transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: var(--transition-base);
 }
-.product-card:hover .product-media img { transform: scale(1.06); }
 .product-media .placeholder {
     font-family: 'Playfair Display', serif; font-size: 3rem;
     color: var(--border-hi); letter-spacing: 0.05em;
@@ -217,22 +215,29 @@
 .product-price {
     font-family: 'Playfair Display', serif;
     font-size: 1.6rem;
-    color: var(--navy-800);
+    color: var(--text-light);
     font-weight: 700;
 }
 .product-price .cents { font-size: 0.85rem; color: var(--text-mute); font-weight: 500; }
 
+/* Neon Glow on Buy Button Hover */
+.product-card:hover .btn-primary {
+    box-shadow: 0 0 15px var(--cyan-glow), 0 0 5px var(--gold-glow);
+    border: 1px solid rgba(212,175,55,0.5);
+}
+
 /* ---- CTA banner ---- */
 .cta-banner {
-    background:
-        linear-gradient(135deg, rgba(10,25,47,0.95), rgba(15,34,64,0.9)),
-        radial-gradient(ellipse at 80% 50%, rgba(212,175,55,0.15), transparent 60%);
+    background: rgba(8, 51, 68, 0.4);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border-hi);
     padding: 64px 56px;
     border-radius: 16px;
     display: flex; justify-content: space-between; align-items: center; gap: 40px;
     flex-wrap: wrap;
     color: var(--text-light);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
     position: relative;
     overflow: hidden;
 }
@@ -247,18 +252,21 @@
 .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .feature-card {
     background: var(--panel);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--border);
-    padding: 36px 28px;
+    padding: 40px 32px;
     border-radius: 12px;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    transition: var(--transition-base);
     position: relative;
     overflow: hidden;
 }
 .feature-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
-    border-color: rgba(212,175,55,0.3);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    border-color: rgba(255,255,255,0.15);
+    transition: var(--transition-hover);
 }
 .feature-card::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
@@ -268,13 +276,14 @@
 .feature-card:hover::before { opacity: 1; }
 .feature-icon {
     width: 48px; height: 48px; display: grid; place-items: center;
-    background: linear-gradient(135deg, var(--navy-800), var(--navy-700));
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
     color: var(--gold-hi); border-radius: 10px;
     font-size: 20px;
     margin-bottom: 20px;
-    box-shadow: var(--shadow-md);
+    box-shadow: inset 0 0 12px rgba(255,255,255,0.02);
 }
-.feature-card h3 { font-size: 1.3rem; margin-bottom: 10px; color: var(--navy-800); }
+.feature-card h3 { font-size: 1.3rem; margin-bottom: 10px; color: var(--text-light); }
 .feature-card p { color: var(--text-dim); font-size: 14px; margin: 0; line-height: 1.6; }
 
 /* ---- Responsive ---- */
@@ -294,40 +303,134 @@
     .product-grid { grid-template-columns: 1fr; }
     .hero h1 { font-size: 2.2rem; }
 }
+
+/* ---- Radar Sweep ---- */
+.hero-radar {
+    position: absolute; top: 50%; left: 50%;
+    width: 700px; height: 700px;
+    margin: -350px 0 0 -350px;
+    pointer-events: none; z-index: 0; opacity: 0.6;
+}
+.hero-radar-sweep {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0%, rgba(212,175,55,0.08) 5%, transparent 10%);
+    animation: radarSweep 5s linear infinite;
+}
+@keyframes radarSweep { to { transform: rotate(360deg); } }
+.hero-radar-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(212,175,55,0.06);
+}
+.hero-radar-ring-1 { inset: 0; }
+.hero-radar-ring-2 { inset: 22%; }
+.hero-radar-ring-3 { inset: 44%; }
+.hero-radar-crosshair {
+    position: absolute; top: 0; left: 50%; width: 1px; height: 100%;
+    background: rgba(212,175,55,0.04);
+}
+.hero-radar-crosshair-h {
+    position: absolute; top: 50%; left: 0; width: 100%; height: 1px;
+    background: rgba(212,175,55,0.04);
+}
+
+/* ---- Product Card Shimmer ---- */
+.product-card::after {
+    content: '';
+    position: absolute; top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212,175,55,0.06), rgba(255,255,255,0.04), transparent);
+    z-index: 5; pointer-events: none;
+}
+.product-card:hover::after {
+    animation: cardShimmer 0.9s ease-out forwards;
+}
+@keyframes cardShimmer {
+    from { left: -50%; }
+    to { left: 150%; }
+}
+
+/* ---- Sonar Scanner ---- */
+.product-media::after {
+    content: '';
+    position: absolute; left: 0; right: 0; top: -4px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 10%, var(--gold-hi) 50%, transparent 90%);
+    box-shadow: 0 0 12px rgba(212,175,55,0.4);
+    opacity: 0; z-index: 4; pointer-events: none;
+}
+.product-card:hover .product-media::after {
+    animation: sonarScan 1.2s ease-in-out forwards;
+}
+@keyframes sonarScan {
+    0% { top: -4px; opacity: 0; }
+    8% { opacity: 0.7; }
+    100% { top: 100%; opacity: 0; }
+}
+
+/* ---- Hero CTA Scanning Border + Glow ---- */
+.hero .btn-gold {
+    overflow: visible;
+    z-index: 0;
+    animation: glowPulse 3s ease-in-out infinite;
+}
+.hero .btn-gold::before {
+    content: '';
+    position: absolute; inset: -2px;
+    border-radius: inherit; padding: 2px;
+    background: conic-gradient(from var(--border-angle), transparent 25%, var(--gold-hi) 30%, var(--gold) 35%, transparent 40%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: rotateScan 4s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@media (max-width: 900px) {
+    .hero-radar { width: 400px; height: 400px; margin: -200px 0 0 -200px; }
+}
 {% endblock %}
 
 {% block content %}
 <section class="hero">
+    <div class="hero-radar">
+        <div class="hero-radar-sweep"></div>
+        <div class="hero-radar-ring hero-radar-ring-1"></div>
+        <div class="hero-radar-ring hero-radar-ring-2"></div>
+        <div class="hero-radar-ring hero-radar-ring-3"></div>
+        <div class="hero-radar-crosshair"></div>
+        <div class="hero-radar-crosshair-h"></div>
+    </div>
     <div class="container">
         <img src="{% static 'images/logo-naval.jpg' %}" alt="Tienda Naval" class="hero-logo" onerror="this.style.display='none'">
-        <div class="hero-tag">
+        <div class="hero-tag hero-anim-2">
             <span class="dot"></span>
             <span class="txt">{% trans "GORRAS · INSIGNIAS · ACCESORIOS" %}</span>
         </div>
-        <h1>{% trans "Tienda" %} <span class="accent">Naval</span></h1>
-        <p class="lede">{% trans "Gorras bordadas, insignias, distintivos y accesorios con el auténtico espíritu del océano. Para oficiales, marineros y entusiastas de la navegación." %}</p>
-        <div class="hero-cta">
+        <h1 class="hero-anim-3">{% trans "Tienda" %} <span class="accent">Naval</span></h1>
+        <p class="lede hero-anim-4">{% trans "Gorras bordadas, insignias, distintivos y accesorios con el auténtico espíritu del océano. Para oficiales, marineros y entusiastas de la navegación." %}</p>
+        <div class="hero-cta hero-anim-5">
             <a href="#arsenal" class="btn btn-gold">{% trans "Ver Catálogo" %} →</a>
             <a href="{% url 'signup' %}" class="btn btn-outline" style="color: var(--text-light); border-color: rgba(255,255,255,0.3);">{% trans "Crear Cuenta" %}</a>
         </div>
     </div>
 </section>
 
-<div class="trust-strip">
+<div class="trust-strip" x-data="{ vis: false }" x-intersect.once="vis = true">
     <div class="container">
-        <div class="trust-item">
+        <div class="trust-item trust-anim" :class="vis ? 'is-visible' : ''" style="transition-delay: 0ms;">
             <div class="trust-icon">⚓</div>
             <div><strong>{% trans "Calidad Naval" %}</strong><span>{% trans "Materiales premium" %}</span></div>
         </div>
-        <div class="trust-item">
+        <div class="trust-item trust-anim" :class="vis ? 'is-visible' : ''" style="transition-delay: 120ms;">
             <div class="trust-icon">📦</div>
             <div><strong>{% trans "Envío Gratis" %}</strong><span>{% trans "Pedidos +$150" %}</span></div>
         </div>
-        <div class="trust-item">
+        <div class="trust-item trust-anim" :class="vis ? 'is-visible' : ''" style="transition-delay: 240ms;">
             <div class="trust-icon">🔄</div>
             <div><strong>{% trans "Devolución 30 Días" %}</strong><span>{% trans "Sin preguntas" %}</span></div>
         </div>
-        <div class="trust-item">
+        <div class="trust-item trust-anim" :class="vis ? 'is-visible' : ''" style="transition-delay: 360ms;">
             <div class="trust-icon">🛡️</div>
             <div><strong>{% trans "Pago Seguro" %}</strong><span>{% trans "Encriptación SSL" %}</span></div>
         </div>
@@ -345,7 +448,7 @@
         </div>
 
         <div class="store-layout">
-            <aside class="filter-panel">
+            <aside class="filter-panel scan-reveal" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'is-visible' : ''">
                 <div class="head">
                     <span>{% trans "Categorías" %}</span>
                     <span class="mono" style="font-size: 11px; color: var(--text-mute);">[{{ categories|length|add:1 }}]</span>
@@ -368,7 +471,7 @@
 
             <div class="product-grid">
                 {% for product in products %}
-                    <div class="product-card scan-reveal" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'is-visible' : ''">
+                    <div class="product-card scan-reveal" x-data="{ shown: false, tx: 0, ty: 0 }" x-intersect.once="setTimeout(() => shown = true, ({{ forloop.counter0 }} % 3) * 100)" :class="shown ? 'is-visible' : ''" :style="'--tilt-x:' + tx + 'deg; --tilt-y:' + ty + 'deg'" @mousemove.throttle.16ms="let r=$el.getBoundingClientRect(); tx=((($event.clientY-r.top)/r.height)-0.5)*-6; ty=((($event.clientX-r.left)/r.width)-0.5)*6" @mouseleave="tx=0; ty=0">
                         <div class="product-media" style="cursor: pointer;" 
                              @click="quickViewProduct = { id: '{{ product.id }}', name: '{{ product.name|escapejs }}', price: '{{ product.price }}', desc: '{{ product.description|escapejs }}', cat: '{{ product.category.name|default:'SIN CATEGORÍA'|escapejs }}', img: '{% if product.image %}{{ product.image.url }}{% else %}{% endif %}' }; quickViewOpen = true; $dispatch('quickview-opened');">
                             {% if product.image %}
@@ -417,7 +520,7 @@
 
 <section class="section" style="padding-top:0;">
     <div class="container">
-        <div class="cta-banner">
+        <div class="cta-banner cta-reveal" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'is-visible' : ''">
             <div>
                 <span class="mono-tag">{% trans "DESCUENTO ESPECIAL" %}</span>
                 <h2 style="margin-top:14px;">{% trans "¿Personal Naval? 10% de Descuento Permanente" %}</h2>
