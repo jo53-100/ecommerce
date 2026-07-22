@@ -5,7 +5,7 @@
 {% block extra_css %}
 .orders-wrap { padding: 60px 0; }
 .page-head { margin-bottom: 40px; }
-.page-head .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--olive-hi); text-transform: uppercase; }
+.page-head .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; }
 .page-head h1 { font-size: 3rem; margin: 10px 0 6px; }
 .page-head p { color: var(--text-dim); margin: 0; }
 
@@ -36,7 +36,7 @@
 .status-dot-tiny { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .tracking-no { display: block; margin-top: 6px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-mute); letter-spacing: 0.1em; }
 
-.mission-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--olive-hi); letter-spacing: 0.15em; }
+.mission-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--gold); letter-spacing: 0.15em; }
 
 .empty-state {
     text-align: center; padding: 100px 40px;
@@ -63,9 +63,9 @@
 <section class="orders-wrap">
     <div class="container">
         <div class="page-head">
-            <span class="lbl">{% trans "// MISSION LOG" %}</span>
-            <h1>{% trans "YOUR MISSIONS" %}</h1>
-            <p>{% trans "Every deployment on record. Track status, view history, request re-supply." %}</p>
+            <span class="lbl">{% trans "// MIS PEDIDOS" %}</span>
+            <h1>{% trans "Historial de Pedidos" %}</h1>
+            <p>{% trans "Todos tus pedidos registrados. Revisa el estado y solicita nuevos envíos." %}</p>
         </div>
 
 {% if orders %}

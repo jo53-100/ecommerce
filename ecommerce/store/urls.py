@@ -15,7 +15,7 @@ urlpatterns = [
     path('login/', Login.as_view(), name='login'),
     path('logout/', logout, name='logout'),
     path('cart/', auth_middleware(Cart.as_view()), name='cart'),
-    path('check-out/', CheckOut.as_view(), name='checkout'),
+    path('check-out/', auth_middleware(CheckOut.as_view()), name='checkout'),
     path('orders/', auth_middleware(OrderView.as_view()), name='orders'),
     path('account/', auth_middleware(Profile.as_view()), name='profile'),
 ]

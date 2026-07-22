@@ -35,16 +35,20 @@ class Login(View):
         return_url = request.POST.get('return_url') or request.GET.get('return_url')
 
         customer = Customer.get_customer_by_email(email)
-        if customer and check_password(password, customer.password):
-            request.session['customer'] = customer.id
-            safe_url = _safe_redirect_url(request, return_url)
-            return HttpResponseRedirect(safe_url) if safe_url else redirect('homepage')
+        error_message = None
+        if customer:
+            if check_password(password, customer.password):
+                request.session['customer'] = customer.id
+                safe_url = _safe_redirect_url(request, return_url)
+                return HttpResponseRedirect(safe_url) if safe_url else redirect('homepage')
+            error_message = 'Contraseña incorrecta. Por favor intenta de nuevo.'
+        else:
+            error_message = 'not_registered'
 
         return render(request, 'login.html', {
-            'error': 'Invalido !!',
+            'error': error_message,
             'return_url': return_url or '',
         })
-
 
 def logout(request):
     request.session.clear()

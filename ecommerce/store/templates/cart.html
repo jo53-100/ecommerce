@@ -5,7 +5,7 @@
 {% block extra_css %}
 .cart-wrap { padding: 60px 0 40px; }
 .page-head { margin-bottom: 40px; }
-.page-head .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--olive-hi); text-transform: uppercase; }
+.page-head .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; }
 .page-head h1 { font-size: 3rem; margin: 10px 0 6px; }
 .page-head p { color: var(--text-dim); margin: 0; }
 
@@ -47,22 +47,31 @@
 .price-cell { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--text); }
 
 .summary-panel {
-    background: var(--panel); border: 1px solid var(--border); border-radius: 2px;
+    background: var(--panel);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border);
+    border-radius: 12px;
     position: sticky; top: 96px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
 .summary-panel .head {
     padding: 16px 20px; border-bottom: 1px solid var(--border);
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    letter-spacing: 0.2em; color: var(--olive-hi); text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif; font-size: 11px;
+    letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase;
 }
 .summary-panel .body { padding: 24px; }
 .summary-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; color: var(--text-dim); }
-.summary-row.total { border-top: 1px solid var(--border); margin-top: 12px; padding-top: 16px; font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.05em; color: var(--text); }
-.summary-row.total .num { color: var(--olive-hi); }
+.summary-row.total { border-top: 1px solid var(--border); margin-top: 12px; padding-top: 16px; font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.05em; color: var(--text-light); }
+.summary-row.total .num { color: var(--gold-hi); }
 
 .empty-cart {
     text-align: center; padding: 100px 40px;
-    background: var(--panel); border: 1px dashed var(--border); border-radius: 2px;
+    background: var(--panel);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px dashed var(--border-hi); border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
 }
 .empty-cart .icon {
     font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: var(--border-hi);
@@ -93,14 +102,14 @@
 <section class="cart-wrap">
     <div class="container">
         <div class="page-head">
-            <span class="lbl">{% trans "// LOADOUT SUMMARY" %}</span>
-            <h1>{% trans "YOUR KIT" %}</h1>
-            <p>{% trans "Review your loadout. Adjust quantities. Deploy the order." %}</p>
+            <span class="lbl">{% trans "// RESUMEN DE PEDIDO" %}</span>
+            <h1>{% trans "Tu Carrito" %}</h1>
+            <p>{% trans "Revisa tus productos. Ajusta cantidades. Confirma el pedido." %}</p>
         </div>
 
-{% if products %}
+{% if cart_items %}
 <div class="cart-layout">
-    <div class="panel" style="padding: 4px;">
+    <div class="panel" style="padding: 4px; overflow-x: auto;">
         <table class="cart-table">
             <thead>
                 <tr>
@@ -111,42 +120,64 @@
                 </tr>
             </thead>
             <tbody>
-                {% for product in products %}
+                {% for item in cart_items %}
                 <tr>
                     <td>
                         <div class="cart-product">
                             <div class="cart-thumb">
-                                {% if product.image %}
-                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
                                 {% else %}
-                                    <span class="ph">IH-{{ product.id }}</span>
+                                    <span class="ph">IH-{{ item.product.id }}</span>
                                 {% endif %}
                             </div>
                             <div class="cart-info">
-                                <h4>{{ product.name }}</h4>
-                                <div class="sku">SKU · IH-{{ product.id|stringformat:"04d" }}</div>
+                                <h4>{{ item.product.name }}</h4>
+                                <div class="sku">SKU · IH-{{ item.product.id|stringformat:"04d" }}</div>
+                                {% if item.color %}
+                                <div style="display: flex; align-items: center; gap: 6px; margin-top: 6px;">
+                                    <div style="width:12px; height:12px; border-radius:50%; background:{{ item.color|default:'#111'|stringformat:'s'|slice:'' }}; {% if item.color == 'navy' %}background:#1a2a40;{% elif item.color == 'khaki' %}background:#c3b091;{% elif item.color == 'black' %}background:#111;{% endif %} border: 1px solid rgba(255,255,255,0.2);"></div>
+                                    <span style="font-size: 11px; color: var(--text-dim); text-transform: uppercase;">{{ item.color }}</span>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </td>
-                    <td class="price-cell">${{ product.price }}.00</td>
+                    <td class="price-cell">${{ item.product.price }}.00</td>
                     <td>
                         <div class="qty-ctrl">
                             <form action="{% url 'homepage' %}" method="POST" style="margin:0; display:inline;">
                                 {% csrf_token %}
-                                <input type="hidden" name="product" value="{{ product.id }}">
+                                <input type="hidden" name="product" value="{{ item.product.id }}">
+                                <input type="hidden" name="color" value="{{ item.color|default_if_none:'' }}">
+                                <input type="hidden" name="source" value="cart">
                                 <input type="hidden" name="remove" value="True">
                                 <button class="qty-btn" type="submit">−</button>
                             </form>
-                            <span class="qty-num">{{ request.session.cart|get_item:product.id }}</span>
+                            <span class="qty-num">{{ item.qty }}</span>
                             <form action="{% url 'homepage' %}" method="POST" style="margin:0; display:inline;">
                                 {% csrf_token %}
-                                <input type="hidden" name="product" value="{{ product.id }}">
+                                <input type="hidden" name="product" value="{{ item.product.id }}">
+                                <input type="hidden" name="color" value="{{ item.color|default_if_none:'' }}">
+                                <input type="hidden" name="source" value="cart">
                                 <button class="qty-btn" type="submit">+</button>
                             </form>
                         </div>
                     </td>
                     <td class="price-cell" style="text-align:right;">
-                        ${{ request.session.cart|get_item:product.id|mul:product.price }}.00
+                        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 16px;">
+                            <span>${{ item.subtotal }}.00</span>
+                            <form action="{% url 'homepage' %}" method="POST" style="margin:0; display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="product" value="{{ item.product.id }}">
+                                <input type="hidden" name="color" value="{{ item.color|default_if_none:'' }}">
+                                <input type="hidden" name="source" value="cart">
+                                <input type="hidden" name="remove_all" value="True">
+                                <button type="submit" style="background:transparent; border:none; cursor:pointer; font-size:16px; color:var(--text-mute); padding:4px; transition: color 0.15s;" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='var(--text-mute)'" title="Eliminar del carrito">
+                                    🗑️
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 {% endfor %}
@@ -155,61 +186,15 @@
     </div>
 
     <aside class="summary-panel">
-        <div class="head">▎{% trans "ORDER SUMMARY" %}</div>
+        <div class="head">◎ {% trans "RESUMEN" %}</div>
         <div class="body">
-            <div class="summary-row"><span>{% trans "Items" %}</span><span class="mono">{{ products|length }}</span></div>
-            <div class="summary-row"><span>{% trans "Shipping" %}</span><span class="text-olive">{% trans "FREE" %}</span></div>
+            <div class="summary-row"><span>{% trans "Items" %}</span><span class="mono">{{ cart_items|length }}</span></div>
+            <div class="summary-row"><span>{% trans "Shipping" %}</span><span class="text-gold">{% trans "FREE" %}</span></div>
             <div class="summary-row"><span>{% trans "Insured Transit" %}</span><span>{% trans "Included" %}</span></div>
             <div class="summary-row total"><span>{% trans "TOTAL" %}</span><span class="num">{% trans "READY" %}</span></div>
 
             {% if request.session.customer %}
-                <form action="{% url 'checkout' %}" method="POST" style="margin-top: 20px;">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label class="form-label">{% trans "SHIPPING ADDRESS" %}</label>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">{% trans "RECIPIENT" %}</label>
-                        <input type="text" name="recipient_name" class="form-control" value="{{ customer.recipient_name|default:customer.full_name }}" placeholder="{% trans 'Full name' %}" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">{% trans "STREET ADDRESS" %}</label>
-                        <input type="text" name="street_address" class="form-control" value="{{ customer.street_address }}" placeholder="{% trans '123 Main St' %}" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">{% trans "APT / SUITE / UNIT" %}</label>
-                        <input type="text" name="address_line2" class="form-control" value="{{ customer.address_line2 }}" placeholder="{% trans 'Optional' %}">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">{% trans "CITY" %}</label>
-                            <input type="text" name="city" class="form-control" value="{{ customer.city }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">{% trans "STATE / PROVINCE" %}</label>
-                            <input type="text" name="state" class="form-control" value="{{ customer.state }}" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">{% trans "ZIP / POSTAL CODE" %}</label>
-                            <input type="text" name="zip_code" class="form-control" value="{{ customer.zip_code }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">{% trans "COUNTRY" %}</label>
-                            <input type="text" name="country" class="form-control" value="{{ customer.country|default:'United States' }}" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">{% trans "CONTACT PHONE" %}</label>
-                        <input type="text" name="phone" class="form-control" value="{{ customer.phone }}" placeholder="+1 (555) 000-0000" required>
-                    </div>
-                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-dim); margin-bottom:16px; cursor:pointer;">
-                        <input type="checkbox" name="save_address" value="1" checked>
-                        {% trans "Save this address to my profile" %}
-                    </label>
-                    <button type="submit" class="btn btn-primary btn-block">{% trans "DEPLOY ORDER" %} →</button>
-                </form>
+                <a href="{% url 'checkout' %}" class="btn btn-primary btn-block" style="margin-top: 20px;">{% trans "Proceder al Pago" %} →</a>
                 <div style="text-align:center; margin-top: 14px;">
                     <span class="mono" style="font-size:10px; color:var(--text-mute); letter-spacing:0.15em;">
                         🔒 {% trans "SECURE · SSL · 256-BIT" %}
@@ -217,8 +202,8 @@
                 </div>
             {% else %}
                 <div class="auth-notice">
-                    {% trans "Authentication required to deploy this order." %}
-                    <br><a href="{% url 'login' %}?return_url=/cart/">{% trans "Sign in" %} →</a>
+                    {% trans "Se requiere autenticación para proceder." %}
+                    <br><a href="{% url 'login' %}">{% trans "Ingresar" %} →</a>
                 </div>
             {% endif %}
         </div>

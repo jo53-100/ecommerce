@@ -12,6 +12,39 @@ ADDRESS_FIELDS = [
 
 
 class CheckOut(View):
+    def get(self, request):
+        cart = request.session.get('cart', {})
+        if not cart:
+            return redirect('cart')
+        product_ids = [k.split('_')[0] for k in cart.keys()]
+        products = Products.get_products_by_id(product_ids)
+
+        products_dict = {str(p.id): p for p in products}
+        cart_items = []
+        for key, qty in cart.items():
+            parts = key.split('_')
+            prod_id = parts[0]
+            color = parts[1] if len(parts) > 1 else None
+            product = products_dict.get(prod_id)
+            if product:
+                cart_items.append({
+                    'cart_key': key,
+                    'product': product,
+                    'color': color,
+                    'qty': qty,
+                    'subtotal': product.price * qty
+                })
+
+        customer = None
+        customer_id = request.session.get('customer')
+        if customer_id:
+            customer = Customer.objects.filter(id=customer_id).first()
+
+        return render(request, 'checkout.html', {
+            'cart_items': cart_items,
+            'customer': customer,
+        })
+
     def post(self, request):
         customer_id = request.session.get('customer')
         customer = Customer.objects.get(id=customer_id)
@@ -27,17 +60,24 @@ class CheckOut(View):
                 customer.phone = phone
             customer.save()
 
-        cart = request.session.get('cart') or {}
-        products = Products.get_products_by_id(list(cart.keys()))
-        for product in products:
-            Order(
-                customer=customer,
-                product=product,
-                price=product.price,
-                phone=phone,
-                quantity=cart.get(str(product.id)),
-                **address,
-            ).save()
+        cart = request.session.get('cart', {})
+        product_ids = [k.split('_')[0] for k in cart.keys()]
+        products = Products.get_products_by_id(product_ids)
+        products_dict = {str(p.id): p for p in products}
+
+        for key, qty in cart.items():
+            parts = key.split('_')
+            prod_id = parts[0]
+            product = products_dict.get(prod_id)
+            if product:
+                Order(
+                    customer=customer,
+                    product=product,
+                    price=product.price,
+                    phone=phone,
+                    quantity=qty,
+                    **address,
+                ).save()
 
         request.session['cart'] = {}
         return redirect('orders')

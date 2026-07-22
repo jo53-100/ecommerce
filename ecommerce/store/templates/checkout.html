@@ -1,14 +1,165 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load cart_extras i18n %}
 {% block title %}{% trans "Checkout" %}{% endblock %}
 
+{% block extra_css %}
+.checkout-wrap { padding: 60px 0 40px; }
+.page-head { margin-bottom: 40px; }
+.page-head .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; }
+.page-head h1 { font-size: 3rem; margin: 10px 0 6px; }
+
+.checkout-layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px; align-items: start; }
+
+.checkout-panel {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 4px;
+    padding: 32px;
+}
+.checkout-panel h3 { margin: 0 0 24px; font-size: 1.2rem; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; color: var(--gold); border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+
+.summary-panel {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 4px;
+    position: sticky; top: 96px;
+}
+.summary-panel .head {
+    padding: 16px 20px; border-bottom: 1px solid var(--border);
+    font-family: 'Montserrat', sans-serif; font-size: 11px;
+    letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase;
+}
+.summary-panel .body { padding: 24px; }
+.summary-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; color: var(--text-dim); }
+.summary-row.total { border-top: 1px solid var(--border); margin-top: 12px; padding-top: 16px; font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.05em; color: var(--text); }
+.summary-row.total .num { color: var(--gold-hi); }
+
+.item-mini { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
+.item-mini img { width: 48px; height: 48px; object-fit: cover; border-radius: 2px; border: 1px solid var(--border); }
+.item-mini-info h4 { margin: 0 0 2px; font-size: 14px; color: var(--text); }
+.item-mini-info .meta { font-size: 11px; color: var(--text-mute); font-family: 'JetBrains Mono', monospace; }
+
+@media (max-width: 900px) {
+    .checkout-layout { grid-template-columns: 1fr; }
+    .summary-panel { position: static; }
+}
+{% endblock %}
+
 {% block content %}
-<section style="padding: 100px 0;">
-    <div class="container" style="max-width: 640px; text-align:center;">
-        <span class="mono-tag">{% trans "// STANDBY" %}</span>
-        <h1 style="margin-top: 16px;">{% trans "DEPLOY YOUR ORDER" %}</h1>
-        <p class="text-dim" style="margin-bottom: 32px;">{% trans "Review the loadout in your kit and confirm the deployment on the cart screen." %}</p>
-        <a href="{% url 'cart' %}" class="btn btn-primary">{% trans "Go to Kit" %} →</a>
+<section class="checkout-wrap">
+    <div class="container">
+        <div class="page-head">
+            <span class="lbl">{% trans "// SECURE CHECKOUT" %}</span>
+            <h1>{% trans "Proceder al Pago" %}</h1>
+        </div>
+
+        <div class="checkout-layout">
+            <div class="checkout-panel">
+                <form action="{% url 'checkout' %}" method="POST">
+                    {% csrf_token %}
+                    
+                    <h3>{% trans "1. Datos de Envío" %}</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label class="form-label">{% trans "Destinatario" %}</label>
+                            <input type="text" name="recipient_name" class="form-control" value="{{ customer.recipient_name|default:customer.full_name }}" placeholder="{% trans 'Nombre completo' %}" required>
+                        </div>
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label class="form-label">{% trans "Dirección" %}</label>
+                            <input type="text" name="street_address" class="form-control" value="{{ customer.street_address }}" placeholder="{% trans 'Ej: Calle Naval 123' %}" required>
+                        </div>
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label class="form-label">{% trans "Apto / Suite (opcional)" %}</label>
+                            <input type="text" name="address_line2" class="form-control" value="{{ customer.address_line2 }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">{% trans "Ciudad" %}</label>
+                            <input type="text" name="city" class="form-control" value="{{ customer.city }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">{% trans "Estado / Provincia" %}</label>
+                            <input type="text" name="state" class="form-control" value="{{ customer.state }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">{% trans "Código Postal" %}</label>
+                            <input type="text" name="zip_code" class="form-control" value="{{ customer.zip_code }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">{% trans "País" %}</label>
+                            <input type="text" name="country" class="form-control" value="{{ customer.country|default:'México' }}" required>
+                        </div>
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label class="form-label">{% trans "Teléfono de Contacto" %}</label>
+                            <input type="text" name="phone" class="form-control" value="{{ customer.phone }}" placeholder="+52 (555) 000-0000" required>
+                        </div>
+                        <label style="grid-column: span 2; display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-dim); cursor:pointer;">
+                            <input type="checkbox" name="save_address" value="1" checked>
+                            {% trans "Guardar esta dirección en mi perfil" %}
+                        </label>
+                    </div>
+
+                    <h3 style="margin-top: 32px;">{% trans "2. Método de Pago" %}</h3>
+                    <p style="font-size: 13px; color: var(--text-mute); margin-bottom: 16px;">
+                        {% trans "* El procesamiento de tarjetas de crédito se integrará mediante Stripe en la siguiente fase." %}
+                    </p>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 16px; opacity: 0.6; pointer-events: none;">
+                        <div class="form-group">
+                            <label class="form-label">{% trans "Número de Tarjeta" %}</label>
+                            <input type="text" class="form-control" placeholder="XXXX XXXX XXXX XXXX" disabled>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div class="form-group">
+                                <label class="form-label">{% trans "Vencimiento (MM/AA)" %}</label>
+                                <input type="text" class="form-control" placeholder="12/25" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">{% trans "CVV" %}</label>
+                                <input type="text" class="form-control" placeholder="123" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 40px;">
+                        <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 14px;">{% trans "CONFIRMAR PEDIDO" %} →</button>
+                    </div>
+                </form>
+            </div>
+
+            <aside class="summary-panel">
+                <div class="head">◎ {% trans "RESUMEN DEL PEDIDO" %}</div>
+                <div class="body">
+                    {% for item in cart_items %}
+                        <div style="display: flex; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px dashed var(--border);">
+                            <div style="width: 80px; height: 80px; background: var(--bg-1); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; flex-shrink: 0;">
+                                {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                {% else %}
+                                    <div style="width: 100%; height: 100%; display: grid; place-items: center; color: var(--border-hi); font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem;">IH-{{ item.product.id }}</div>
+                                {% endif %}
+                            </div>
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 4px; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.05em;">{{ item.product.name }}</h4>
+                                <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-mute); letter-spacing: 0.15em; margin-bottom: 8px;">SKU · IH-{{ item.product.id|stringformat:"04d" }}</div>
+                                
+                                {% if item.color %}
+                                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                                    <div style="width:12px; height:12px; border-radius:50%; background:{{ item.color|default:'#111'|stringformat:'s'|slice:'' }}; {% if item.color == 'navy' %}background:#1a2a40;{% elif item.color == 'khaki' %}background:#c3b091;{% elif item.color == 'black' %}background:#111;{% endif %} border: 1px solid rgba(255,255,255,0.2);"></div>
+                                    <span style="font-size: 11px; color: var(--text-dim); text-transform: uppercase;">{{ item.color }}</span>
+                                </div>
+                                {% endif %}
+                                
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: var(--text-dim); font-size: 14px;">Cant: <span class="mono" style="color: var(--text);">{{ item.qty }}</span></span>
+                                    <span class="mono" style="color: var(--gold);">${{ item.subtotal }}.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    
+                    <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+                    
+                    <div class="summary-row"><span>{% trans "Subtotal" %}</span><span>...</span></div>
+                    <div class="summary-row"><span>{% trans "Envío" %}</span><span class="text-gold">{% trans "GRATIS" %}</span></div>
+                    <div class="summary-row total"><span>{% trans "TOTAL" %}</span><span class="num">{% trans "CONFIRMAR" %}</span></div>
+                </div>
+            </aside>
+        </div>
     </div>
 </section>
 {% endblock %}
