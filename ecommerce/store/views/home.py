@@ -43,7 +43,6 @@ class Index(View):
                 cart[cart_key] = qty_add
 
         request.session['cart'] = cart
-        print('cart', request.session['cart'])
         
         if buy_now:
             return redirect('checkout')
@@ -73,5 +72,4 @@ def store(request):
     data['products'] = products
     data['categories'] = categories
 
-    print('you are : ', request.session.get('email'))
     return render(request, 'index.html', data)

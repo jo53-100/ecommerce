@@ -26,21 +26,38 @@ class CustomerAdmin(admin.ModelAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'status_badge', 'product', 'customer', 'quantity',
-        'price', 'tracking_number', 'ship_to', 'date',
+        'id', 'payment_badge', 'status_badge', 'product', 'customer',
+        'quantity', 'price', 'tracking_number', 'ship_to', 'date',
     )
-    list_filter = ('status', 'date')
+    list_filter = ('payment_status', 'status', 'date')
     search_fields = (
         'customer__email', 'customer__first_name', 'customer__last_name',
         'product__name', 'tracking_number', 'city', 'state', 'zip_code',
+        'stripe_session_id', 'stripe_payment_intent',
     )
     list_editable = ('tracking_number',)
     list_per_page = 50
     actions = ('mark_as_shipped', 'mark_as_delivered', 'mark_as_new')
+    # Written by Stripe, not by hand — editing them would desync the records.
+    readonly_fields = ('stripe_session_id', 'stripe_payment_intent', 'paid_at')
 
     @admin.display(description='Ship to')
     def ship_to(self, obj):
         return obj.city_line or obj.recipient_name or '—'
+
+    @admin.display(description='Payment', ordering='payment_status')
+    def payment_badge(self, obj):
+        colors = {
+            Order.PAYMENT_PAID: '#63a05a',      # green
+            Order.PAYMENT_PENDING: '#d4a017',   # amber
+            Order.PAYMENT_FAILED: '#ef4444',    # red
+            Order.PAYMENT_REFUNDED: '#888',     # grey
+        }
+        color = colors.get(obj.payment_status, '#888')
+        return format_html(
+            '<b style="color:{}">&#9679; {}</b>',
+            color, obj.get_payment_status_display().split(' — ')[0].upper(),
+        )
 
     @admin.display(description='Status', ordering='status')
     def status_badge(self, obj):

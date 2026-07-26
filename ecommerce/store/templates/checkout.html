@@ -35,9 +35,27 @@
 .item-mini-info h4 { margin: 0 0 2px; font-size: 14px; color: var(--text); }
 .item-mini-info .meta { font-size: 11px; color: var(--text-mute); font-family: 'JetBrains Mono', monospace; }
 
+.stripe-notice {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: rgba(212,175,55,0.06);
+    border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 6px; padding: 16px 18px;
+}
+.stripe-notice.stripe-notice-warn {
+    background: rgba(239,68,68,0.06);
+    border-color: rgba(239,68,68,0.25);
+}
+.stripe-notice .stripe-lock { font-size: 1.2rem; line-height: 1.3; }
+.stripe-notice strong { display: block; color: var(--text); margin-bottom: 4px; font-size: 14px; }
+.stripe-notice p { margin: 0; font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+
 @media (max-width: 900px) {
     .checkout-layout { grid-template-columns: 1fr; }
     .summary-panel { position: static; }
+}
+@media (max-width: 560px) {
+    .checkout-panel { padding: 20px; }
+    .page-head h1 { font-size: 2rem; }
 }
 {% endblock %}
 
@@ -49,11 +67,15 @@
             <h1>{% trans "Proceder al Pago" %}</h1>
         </div>
 
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
         <div class="checkout-layout">
             <div class="checkout-panel">
                 <form action="{% url 'checkout' %}" method="POST">
                     {% csrf_token %}
-                    
+
                     <h3>{% trans "1. Datos de Envío" %}</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                         <div class="form-group" style="grid-column: span 2;">
@@ -95,28 +117,28 @@
                     </div>
 
                     <h3 style="margin-top: 32px;">{% trans "2. Método de Pago" %}</h3>
-                    <p style="font-size: 13px; color: var(--text-mute); margin-bottom: 16px;">
-                        {% trans "* El procesamiento de tarjetas de crédito se integrará mediante Stripe en la siguiente fase." %}
-                    </p>
-                    <div style="display: grid; grid-template-columns: 1fr; gap: 16px; opacity: 0.6; pointer-events: none;">
-                        <div class="form-group">
-                            <label class="form-label">{% trans "Número de Tarjeta" %}</label>
-                            <input type="text" class="form-control" placeholder="XXXX XXXX XXXX XXXX" disabled>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                            <div class="form-group">
-                                <label class="form-label">{% trans "Vencimiento (MM/AA)" %}</label>
-                                <input type="text" class="form-control" placeholder="12/25" disabled>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">{% trans "CVV" %}</label>
-                                <input type="text" class="form-control" placeholder="123" disabled>
+                    {% if stripe_enabled %}
+                        <div class="stripe-notice">
+                            <span class="stripe-lock">🔒</span>
+                            <div>
+                                <strong>{% trans "Pago seguro con Stripe" %}</strong>
+                                <p>{% trans "Al confirmar te llevaremos a la pasarela segura de Stripe para introducir los datos de tu tarjeta. Tus datos bancarios nunca pasan por nuestros servidores." %}</p>
                             </div>
                         </div>
-                    </div>
+                    {% else %}
+                        <div class="stripe-notice stripe-notice-warn">
+                            <span class="stripe-lock">⚠</span>
+                            <div>
+                                <strong>{% trans "Pago en línea no configurado" %}</strong>
+                                <p>{% trans "Tu pedido quedará registrado como pendiente de pago y nos pondremos en contacto contigo para completarlo." %}</p>
+                            </div>
+                        </div>
+                    {% endif %}
 
                     <div style="margin-top: 40px;">
-                        <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 14px;">{% trans "CONFIRMAR PEDIDO" %} →</button>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 14px;">
+                            {% if stripe_enabled %}{% trans "PAGAR CON STRIPE" %}{% else %}{% trans "CONFIRMAR PEDIDO" %}{% endif %} →
+                        </button>
                     </div>
                 </form>
             </div>
@@ -154,9 +176,9 @@
                     
                     <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
                     
-                    <div class="summary-row"><span>{% trans "Subtotal" %}</span><span>...</span></div>
+                    <div class="summary-row"><span>{% trans "Subtotal" %}</span><span class="mono">${{ total }}.00</span></div>
                     <div class="summary-row"><span>{% trans "Envío" %}</span><span class="text-gold">{% trans "GRATIS" %}</span></div>
-                    <div class="summary-row total"><span>{% trans "TOTAL" %}</span><span class="num">{% trans "CONFIRMAR" %}</span></div>
+                    <div class="summary-row total"><span>{% trans "TOTAL" %}</span><span class="num">${{ total }}.00</span></div>
                 </div>
             </aside>
         </div>

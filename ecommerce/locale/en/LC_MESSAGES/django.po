@@ -1,0 +1,915 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-26 03:24+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: store/templates/base.html:8
+msgid "Gorras · Insignias · Accesorios"
+msgstr "Caps · Insignia · Accessories"
+
+#: store/templates/base.html:652
+msgid "TIENDA NAVAL — ENVÍOS A TODA LA REPÚBLICA"
+msgstr "NAVAL STORE — WE SHIP NATIONWIDE"
+
+#: store/templates/base.html:654 store/templates/base.html:728
+msgid "SOPORTE"
+msgstr "SUPPORT"
+
+#: store/templates/base.html:655
+msgid "Language selection"
+msgstr ""
+
+#: store/templates/base.html:661
+msgid "Change language to"
+msgstr ""
+
+#: store/templates/base.html:676
+msgid "Inicio"
+msgstr "Home"
+
+#: store/templates/base.html:677
+msgid "Catálogo"
+msgstr "Catalog"
+
+#: store/templates/base.html:681
+msgid "Mi Cuenta"
+msgstr "My Account"
+
+#: store/templates/base.html:684
+msgid "Mis Pedidos"
+msgstr "My Orders"
+
+#: store/templates/base.html:685
+msgid "Mi Perfil"
+msgstr "My Profile"
+
+#: store/templates/base.html:686
+msgid "Cerrar Sesión"
+msgstr "Sign Out"
+
+#: store/templates/base.html:690 store/templates/cart.html:206
+#: store/templates/login.html:119
+msgid "Ingresar"
+msgstr "Sign In"
+
+#: store/templates/base.html:691 store/templates/index.html:421
+#: store/templates/signup.html:94
+msgid "Crear Cuenta"
+msgstr "Create Account"
+
+#: store/templates/base.html:695
+msgid "Carrito"
+msgstr "Cart"
+
+#: store/templates/base.html:712 store/templates/index.html:418
+msgid ""
+"Gorras bordadas, insignias, distintivos y accesorios con el auténtico "
+"espíritu del océano. Para oficiales, marineros y entusiastas de la "
+"navegación."
+msgstr "Embroidered caps, insignia, badges and accessories with the authentic spirit of the ocean. For officers, sailors and sailing enthusiasts."
+
+#: store/templates/base.html:714
+msgid "CALIDAD NAVAL"
+msgstr "NAVAL QUALITY"
+
+#: store/templates/base.html:715
+msgid "ENVÍO SEGURO"
+msgstr "SECURE SHIPPING"
+
+#: store/templates/base.html:719
+msgid "TIENDA"
+msgstr "STORE"
+
+#: store/templates/base.html:721
+msgid "Todo el Catálogo"
+msgstr "Full Catalog"
+
+#: store/templates/base.html:722
+msgid "Gorras"
+msgstr "Caps"
+
+#: store/templates/base.html:723
+msgid "Insignias"
+msgstr "Insignia"
+
+#: store/templates/base.html:724
+msgid "Accesorios"
+msgstr "Accessories"
+
+#: store/templates/base.html:730
+msgid "Envíos"
+msgstr "Shipping"
+
+#: store/templates/base.html:731
+msgid "Devoluciones"
+msgstr "Returns"
+
+#: store/templates/base.html:732
+msgid "Garantía"
+msgstr "Warranty"
+
+#: store/templates/base.html:733
+msgid "Contacto"
+msgstr "Contact"
+
+#: store/templates/base.html:737
+msgid "EMPRESA"
+msgstr "COMPANY"
+
+#: store/templates/base.html:739
+msgid "Sobre Nosotros"
+msgstr "About Us"
+
+#: store/templates/base.html:740
+msgid "Aviso de Privacidad"
+msgstr "Privacy Policy"
+
+#: store/templates/base.html:741
+msgid "Términos y Condiciones"
+msgstr "Terms & Conditions"
+
+#: store/templates/base.html:746
+msgid "TODOS LOS DERECHOS RESERVADOS"
+msgstr "ALL RIGHTS RESERVED"
+
+#: store/templates/base.html:747
+msgid "GORRAS · INSIGNIAS · ACCESORIOS · DISTINTIVOS"
+msgstr "CAPS · INSIGNIA · ACCESSORIES · BADGES"
+
+#: store/templates/cart.html:3
+msgid "Kit · Cart"
+msgstr ""
+
+#: store/templates/cart.html:105
+msgid "// RESUMEN DE PEDIDO"
+msgstr "// ORDER SUMMARY"
+
+#: store/templates/cart.html:106
+msgid "Tu Carrito"
+msgstr "Your Cart"
+
+#: store/templates/cart.html:107
+msgid "Revisa tus productos. Ajusta cantidades. Confirma el pedido."
+msgstr "Review your items. Adjust quantities. Confirm your order."
+
+#: store/templates/cart.html:116 store/templates/orders.html:77
+#: store/templates/orders.html:90
+msgid "UNIT"
+msgstr ""
+
+#: store/templates/cart.html:117
+msgid "UNIT PRICE"
+msgstr ""
+
+#: store/templates/cart.html:118 store/templates/orders.html:78
+#: store/templates/orders.html:91
+msgid "QTY"
+msgstr ""
+
+#: store/templates/cart.html:119
+msgid "SUBTOTAL"
+msgstr ""
+
+#: store/templates/cart.html:189
+msgid "RESUMEN"
+msgstr "SUMMARY"
+
+#: store/templates/cart.html:191
+msgid "Items"
+msgstr ""
+
+#: store/templates/cart.html:192
+msgid "Shipping"
+msgstr ""
+
+#: store/templates/cart.html:192
+msgid "FREE"
+msgstr ""
+
+#: store/templates/cart.html:193
+msgid "Insured Transit"
+msgstr ""
+
+#: store/templates/cart.html:193
+msgid "Included"
+msgstr ""
+
+#: store/templates/cart.html:194 store/templates/checkout.html:181
+#: store/templates/checkout_success.html:96
+msgid "TOTAL"
+msgstr ""
+
+#: store/templates/cart.html:194
+msgid "READY"
+msgstr ""
+
+#: store/templates/cart.html:197 store/templates/checkout.html:67
+msgid "Proceder al Pago"
+msgstr "Proceed to Checkout"
+
+#: store/templates/cart.html:200
+msgid "SECURE · SSL · 256-BIT"
+msgstr ""
+
+#: store/templates/cart.html:205
+msgid "Se requiere autenticación para proceder."
+msgstr "You need to sign in to continue."
+
+#: store/templates/cart.html:214
+msgid "EMPTY"
+msgstr ""
+
+#: store/templates/cart.html:215
+msgid "NO UNITS IN LOADOUT"
+msgstr ""
+
+#: store/templates/cart.html:216
+msgid "Your kit is empty. Head to the arsenal to gear up."
+msgstr ""
+
+#: store/templates/cart.html:217
+msgid "Browse Arsenal"
+msgstr ""
+
+#: store/templates/checkout.html:3
+msgid "Checkout"
+msgstr ""
+
+#: store/templates/checkout.html:66
+msgid "// SECURE CHECKOUT"
+msgstr "// SECURE CHECKOUT"
+
+#: store/templates/checkout.html:79
+msgid "1. Datos de Envío"
+msgstr "1. Shipping Details"
+
+#: store/templates/checkout.html:82
+msgid "Destinatario"
+msgstr "Recipient"
+
+#: store/templates/checkout.html:83
+msgid "Nombre completo"
+msgstr "Full name"
+
+#: store/templates/checkout.html:86
+msgid "Dirección"
+msgstr "Address"
+
+#: store/templates/checkout.html:87
+msgid "Ej: Calle Naval 123"
+msgstr "e.g. 123 Harbour Street"
+
+#: store/templates/checkout.html:90
+msgid "Apto / Suite (opcional)"
+msgstr "Apt / Suite (optional)"
+
+#: store/templates/checkout.html:94
+msgid "Ciudad"
+msgstr "City"
+
+#: store/templates/checkout.html:98
+msgid "Estado / Provincia"
+msgstr "State / Province"
+
+#: store/templates/checkout.html:102
+msgid "Código Postal"
+msgstr "ZIP / Postal Code"
+
+#: store/templates/checkout.html:106
+msgid "País"
+msgstr "Country"
+
+#: store/templates/checkout.html:110
+msgid "Teléfono de Contacto"
+msgstr "Contact Phone"
+
+#: store/templates/checkout.html:115
+msgid "Guardar esta dirección en mi perfil"
+msgstr "Save this address to my profile"
+
+#: store/templates/checkout.html:119
+msgid "2. Método de Pago"
+msgstr "2. Payment Method"
+
+#: store/templates/checkout.html:124
+msgid "Pago seguro con Stripe"
+msgstr "Secure payment with Stripe"
+
+#: store/templates/checkout.html:125
+msgid ""
+"Al confirmar te llevaremos a la pasarela segura de Stripe para introducir "
+"los datos de tu tarjeta. Tus datos bancarios nunca pasan por nuestros "
+"servidores."
+msgstr "When you confirm, we will take you to Stripe's secure gateway to enter your card details. Your banking data never touches our servers."
+
+#: store/templates/checkout.html:132
+msgid "Pago en línea no configurado"
+msgstr "Online payment not configured"
+
+#: store/templates/checkout.html:133
+msgid ""
+"Tu pedido quedará registrado como pendiente de pago y nos pondremos en "
+"contacto contigo para completarlo."
+msgstr "Your order will be recorded as awaiting payment and we will contact you to complete it."
+
+#: store/templates/checkout.html:140
+msgid "PAGAR CON STRIPE"
+msgstr "PAY WITH STRIPE"
+
+#: store/templates/checkout.html:140
+msgid "CONFIRMAR PEDIDO"
+msgstr "CONFIRM ORDER"
+
+#: store/templates/checkout.html:147
+msgid "RESUMEN DEL PEDIDO"
+msgstr "ORDER SUMMARY"
+
+#: store/templates/checkout.html:179
+msgid "Subtotal"
+msgstr "Subtotal"
+
+#: store/templates/checkout.html:180
+msgid "Envío"
+msgstr "Shipping"
+
+#: store/templates/checkout.html:180
+msgid "GRATIS"
+msgstr "FREE"
+
+#: store/templates/checkout_cancel.html:3
+#: store/templates/checkout_cancel.html:42
+msgid "Pago Cancelado"
+msgstr "Payment Cancelled"
+
+#: store/templates/checkout_cancel.html:43
+msgid ""
+"No se realizó ningún cargo. Tu carrito sigue intacto, así que puedes retomar "
+"la compra cuando quieras."
+msgstr "No charge was made. Your cart is still intact, so you can pick up where you left off whenever you like."
+
+#: store/templates/checkout_cancel.html:45
+msgid "Volver al Carrito"
+msgstr "Back to Cart"
+
+#: store/templates/checkout_cancel.html:46
+#: store/templates/checkout_success.html:104
+msgid "Seguir Comprando"
+msgstr "Continue Shopping"
+
+#: store/templates/checkout_success.html:3
+msgid "Pago Confirmado"
+msgstr "Payment Confirmed"
+
+#: store/templates/checkout_success.html:3
+msgid "Procesando Pago"
+msgstr "Processing Payment"
+
+#: store/templates/checkout_success.html:76
+msgid "¡Pago Confirmado!"
+msgstr "Payment Confirmed!"
+
+#: store/templates/checkout_success.html:77
+msgid ""
+"Gracias por tu compra. Recibirás un correo de confirmación de Stripe con tu "
+"recibo, y prepararemos tu pedido para el envío."
+msgstr "Thank you for your purchase. Stripe will email you a receipt, and we will start preparing your order for shipment."
+
+#: store/templates/checkout_success.html:80
+msgid "Procesando tu pago"
+msgstr "Processing your payment"
+
+#: store/templates/checkout_success.html:81
+msgid ""
+"Tu pago está siendo confirmado. Esto puede tardar unos momentos — actualiza "
+"esta página o revisa tus pedidos en unos minutos."
+msgstr "Your payment is being confirmed. This can take a moment — refresh this page or check your orders in a few minutes."
+
+#: store/templates/checkout_success.html:90
+msgid "Pedido"
+msgstr "Order"
+
+#: store/templates/checkout_success.html:90
+msgid "Cant"
+msgstr "Qty"
+
+#: store/templates/checkout_success.html:103
+msgid "Ver Mis Pedidos"
+msgstr "View My Orders"
+
+#: store/templates/index.html:3 store/templates/login.html:83
+#: store/templates/signup.html:77
+msgid "Tienda Naval"
+msgstr "Naval Store"
+
+#: store/templates/index.html:415
+msgid "GORRAS · INSIGNIAS · ACCESORIOS"
+msgstr "CAPS · INSIGNIA · ACCESSORIES"
+
+#: store/templates/index.html:417
+msgid "Tienda"
+msgstr "Store"
+
+#: store/templates/index.html:420
+msgid "Ver Catálogo"
+msgstr "View Catalog"
+
+#: store/templates/index.html:430
+msgid "Calidad Naval"
+msgstr "Naval Quality"
+
+#: store/templates/index.html:430
+msgid "Materiales premium"
+msgstr "Premium materials"
+
+#: store/templates/index.html:434
+msgid "Envío Gratis"
+msgstr "Free Shipping"
+
+#: store/templates/index.html:434
+msgid "Pedidos +$150"
+msgstr "Orders over $150"
+
+#: store/templates/index.html:438
+msgid "Devolución 30 Días"
+msgstr "30-Day Returns"
+
+#: store/templates/index.html:438
+msgid "Sin preguntas"
+msgstr "No questions asked"
+
+#: store/templates/index.html:442
+msgid "Pago Seguro"
+msgstr "Secure Payment"
+
+#: store/templates/index.html:442
+msgid "Encriptación SSL"
+msgstr "SSL encryption"
+
+#: store/templates/index.html:451
+msgid "// CATÁLOGO"
+msgstr "// CATALOG"
+
+#: store/templates/index.html:452
+msgid "Nuestros Productos"
+msgstr "Our Products"
+
+#: store/templates/index.html:454
+#, python-format
+msgid "%(count)s productos disponibles"
+msgstr "%(count)s products available"
+
+#: store/templates/index.html:460
+msgid "Categorías"
+msgstr "Categories"
+
+#: store/templates/index.html:465
+msgid "Todo"
+msgstr "All"
+
+#: store/templates/index.html:491
+msgid "Nuevo"
+msgstr "New"
+
+#: store/templates/index.html:497
+msgid "Artículo naval de alta calidad, elaborado con los mejores materiales."
+msgstr "High-quality naval item, crafted from the finest materials."
+
+#: store/templates/index.html:503
+msgid "Vista Rápida"
+msgstr "Quick View"
+
+#: store/templates/index.html:510 store/templates/index.html:640
+msgid "Agregar al Carrito"
+msgstr "Add to Cart"
+
+#: store/templates/index.html:510
+msgid "Agregar"
+msgstr "Add"
+
+#: store/templates/index.html:518
+msgid "SIN INVENTARIO"
+msgstr "NO INVENTORY"
+
+#: store/templates/index.html:519
+msgid "NO HAY PRODUCTOS AÚN"
+msgstr "NO PRODUCTS YET"
+
+#: store/templates/index.html:520
+msgid ""
+"Carga tus primeros productos desde la <a href=\"/admin/\">consola de "
+"administración</a>."
+msgstr "Load your first products from the <a href=\"/admin/\">admin console</a>."
+
+#: store/templates/index.html:532
+msgid "DESCUENTO ESPECIAL"
+msgstr "SPECIAL DISCOUNT"
+
+#: store/templates/index.html:533
+#, python-format
+msgid "¿Personal Naval? 10%% de Descuento Permanente"
+msgstr "Naval Personnel? 10%% Off For Life"
+
+#: store/templates/index.html:534
+msgid ""
+"Miembros verificados de la armada y fuerzas navales reciben precio especial "
+"en todos sus pedidos."
+msgstr "Verified navy and naval-force members get special pricing on every order."
+
+#: store/templates/index.html:537
+msgid "Verificar Estado"
+msgstr "Verify Status"
+
+#: store/templates/index.html:547
+msgid "// ¿POR QUÉ ELEGIRNOS?"
+msgstr "// WHY CHOOSE US?"
+
+#: store/templates/index.html:548
+msgid "La Diferencia Naval"
+msgstr "The Naval Difference"
+
+#: store/templates/index.html:554
+msgid "Calidad Premium"
+msgstr "Premium Quality"
+
+#: store/templates/index.html:555
+msgid ""
+"Cada gorra, insignia y accesorio es fabricado con los más altos estándares "
+"de calidad. Materiales seleccionados y acabados impecables."
+msgstr "Every cap, insignia and accessory is made to the highest quality standards. Selected materials and flawless finishes."
+
+#: store/templates/index.html:559
+msgid "Bordado Artesanal"
+msgstr "Artisan Embroidery"
+
+#: store/templates/index.html:560
+msgid ""
+"Nuestros bordados son realizados por artesanos especializados con técnicas "
+"tradicionales navales. Cada pieza es una obra de arte."
+msgstr "Our embroidery is done by specialist artisans using traditional naval techniques. Every piece is a work of art."
+
+#: store/templates/index.html:564
+msgid "Tradición Marítima"
+msgstr "Maritime Tradition"
+
+#: store/templates/index.html:565
+msgid ""
+"Más de una década vistiendo a oficiales y marineros. Conocemos las "
+"tradiciones y protocolos navales de cada rango."
+msgstr "Over a decade outfitting officers and sailors. We know the naval traditions and protocols of every rank."
+
+#: store/templates/index.html:583
+msgid "Cerrar"
+msgstr "Close"
+
+#: store/templates/index.html:612
+msgid "Color"
+msgstr "Colour"
+
+#: store/templates/index.html:631
+msgid "Cantidad"
+msgstr "Quantity"
+
+#: store/templates/index.html:641
+msgid "Añadir"
+msgstr "Add"
+
+#: store/templates/index.html:643
+msgid "Comprar Ahora"
+msgstr "Buy Now"
+
+#: store/templates/index.html:644
+msgid "Comprar"
+msgstr "Buy"
+
+#: store/templates/login.html:3
+msgid "Sign In"
+msgstr ""
+
+#: store/templates/login.html:82
+msgid "// ACCESO SEGURO"
+msgstr "// SECURE ACCESS"
+
+#: store/templates/login.html:83
+msgid "Bienvenido a"
+msgstr "Welcome to"
+
+#: store/templates/login.html:84
+msgid ""
+"Ingresa a tu cuenta para rastrear pedidos, guardar favoritos y obtener "
+"precios especiales."
+msgstr "Sign in to track orders, save favourites and unlock special pricing."
+
+#: store/templates/login.html:87
+msgid "NODE"
+msgstr ""
+
+#: store/templates/login.html:88
+msgid "ENCRYPTION"
+msgstr ""
+
+#: store/templates/login.html:89
+msgid "UPTIME"
+msgstr ""
+
+#: store/templates/login.html:90 store/templates/orders.html:83
+#: store/templates/orders.html:109
+msgid "STATUS"
+msgstr ""
+
+#: store/templates/login.html:90
+msgid "ONLINE"
+msgstr ""
+
+#: store/templates/login.html:96
+msgid "// AUTENTICACIÓN"
+msgstr "// AUTHENTICATION"
+
+#: store/templates/login.html:97
+msgid "Iniciar Sesión"
+msgstr "Sign In"
+
+#: store/templates/login.html:98
+msgid "Bienvenido de vuelta. Ingresa tus credenciales para continuar."
+msgstr "Welcome back. Enter your credentials to continue."
+
+#: store/templates/login.html:112 store/templates/profile.html:96
+#: store/templates/signup.html:118
+msgid "EMAIL"
+msgstr ""
+
+#: store/templates/login.html:116 store/templates/signup.html:122
+msgid "PASSWORD"
+msgstr ""
+
+#: store/templates/login.html:122
+msgid "OR"
+msgstr ""
+
+#: store/templates/login.html:124
+msgid "Crear Cuenta Nueva"
+msgstr "Create New Account"
+
+#: store/templates/orders.html:3
+msgid "Missions"
+msgstr ""
+
+#: store/templates/orders.html:67
+msgid "// MIS PEDIDOS"
+msgstr "// MY ORDERS"
+
+#: store/templates/orders.html:68
+msgid "Historial de Pedidos"
+msgstr "Order History"
+
+#: store/templates/orders.html:69
+msgid ""
+"Todos tus pedidos registrados. Revisa el estado y solicita nuevos envíos."
+msgstr "Every order on record. Track status and request re-supply."
+
+#: store/templates/orders.html:76 store/templates/orders.html:89
+msgid "MISSION ID"
+msgstr ""
+
+#: store/templates/orders.html:79 store/templates/orders.html:92
+msgid "PRICE"
+msgstr ""
+
+#: store/templates/orders.html:80 store/templates/orders.html:93
+msgid "DROP LOCATION"
+msgstr ""
+
+#: store/templates/orders.html:81 store/templates/orders.html:97
+msgid "DATE"
+msgstr ""
+
+#: store/templates/orders.html:82 store/templates/orders.html:98
+msgid "PAYMENT"
+msgstr ""
+
+#: store/templates/orders.html:100
+msgid "PAID"
+msgstr ""
+
+#: store/templates/orders.html:102
+msgid "REFUNDED"
+msgstr ""
+
+#: store/templates/orders.html:104
+msgid "FAILED"
+msgstr ""
+
+#: store/templates/orders.html:106
+msgid "AWAITING PAYMENT"
+msgstr ""
+
+#: store/templates/orders.html:111 store/templates/profile.html:157
+msgid "DELIVERED"
+msgstr ""
+
+#: store/templates/orders.html:113 store/templates/profile.html:159
+msgid "IN TRANSIT"
+msgstr ""
+
+#: store/templates/orders.html:114
+msgid "TRACKING"
+msgstr ""
+
+#: store/templates/orders.html:116 store/templates/profile.html:161
+msgid "PROCESSING"
+msgstr ""
+
+#: store/templates/orders.html:125
+msgid "NO MISSIONS ON FILE"
+msgstr ""
+
+#: store/templates/orders.html:126
+msgid "YOU HAVEN'T DEPLOYED YET"
+msgstr ""
+
+#: store/templates/orders.html:127
+msgid "Once you place an order, it'll show up here with tracking status."
+msgstr ""
+
+#: store/templates/orders.html:128
+msgid "Head to the Arsenal"
+msgstr ""
+
+#: store/templates/profile.html:3
+msgid "My Account"
+msgstr ""
+
+#: store/templates/profile.html:62
+msgid "// OPERATOR FILE"
+msgstr ""
+
+#: store/templates/profile.html:63
+msgid "MY ACCOUNT"
+msgstr ""
+
+#: store/templates/profile.html:64
+msgid "Your operator profile, saved shipping address, and mission history."
+msgstr ""
+
+#: store/templates/profile.html:84
+msgid "IDENTITY"
+msgstr ""
+
+#: store/templates/profile.html:87 store/templates/signup.html:105
+msgid "FIRST NAME"
+msgstr ""
+
+#: store/templates/profile.html:91 store/templates/signup.html:109
+msgid "LAST NAME"
+msgstr ""
+
+#: store/templates/profile.html:100
+msgid "CONTACT PHONE"
+msgstr ""
+
+#: store/templates/profile.html:104
+msgid "SAVED SHIPPING ADDRESS"
+msgstr ""
+
+#: store/templates/profile.html:106
+msgid "RECIPIENT"
+msgstr ""
+
+#: store/templates/profile.html:107
+msgid "Full name"
+msgstr ""
+
+#: store/templates/profile.html:110
+msgid "STREET ADDRESS"
+msgstr ""
+
+#: store/templates/profile.html:111
+msgid "123 Main St"
+msgstr ""
+
+#: store/templates/profile.html:114
+msgid "APT / SUITE / UNIT"
+msgstr ""
+
+#: store/templates/profile.html:115
+msgid "Optional"
+msgstr ""
+
+#: store/templates/profile.html:119
+msgid "CITY"
+msgstr ""
+
+#: store/templates/profile.html:123
+msgid "STATE / PROVINCE"
+msgstr ""
+
+#: store/templates/profile.html:129
+msgid "ZIP / POSTAL CODE"
+msgstr ""
+
+#: store/templates/profile.html:133
+msgid "COUNTRY"
+msgstr ""
+
+#: store/templates/profile.html:138
+msgid "SAVE CHANGES"
+msgstr ""
+
+#: store/templates/profile.html:146
+msgid "RECENT MISSIONS"
+msgstr ""
+
+#: store/templates/profile.html:165
+msgid "No orders yet."
+msgstr ""
+
+#: store/templates/profile.html:169
+msgid "View all missions"
+msgstr ""
+
+#: store/templates/signup.html:3
+msgid "Enlist"
+msgstr ""
+
+#: store/templates/signup.html:76
+msgid "// REGISTRO"
+msgstr "// REGISTRATION"
+
+#: store/templates/signup.html:77
+msgid "Únete a"
+msgstr "Join"
+
+#: store/templates/signup.html:78
+msgid ""
+"Crea tu cuenta y accede a gorras, insignias y accesorios navales de la más "
+"alta calidad."
+msgstr "Create your account and get access to the highest-quality naval caps, insignia and accessories."
+
+#: store/templates/signup.html:80
+msgid "<strong>Priority shipping</strong> on every order."
+msgstr ""
+
+#: store/templates/signup.html:81
+msgid "<strong>Save loadouts</strong> for quick re-supply."
+msgstr ""
+
+#: store/templates/signup.html:82
+msgid "<strong>Squad discount</strong> for 5+ unit orders."
+msgstr ""
+
+#: store/templates/signup.html:83
+msgid "<strong>Field intel</strong> — early access to new drops."
+msgstr ""
+
+#: store/templates/signup.html:87
+msgid "SECURE ENROLLMENT · ENCRYPTED · GDPR + CCPA COMPLIANT"
+msgstr ""
+
+#: store/templates/signup.html:93
+msgid "// FORMULARIO DE REGISTRO"
+msgstr "// REGISTRATION FORM"
+
+#: store/templates/signup.html:95
+msgid "Completa tu perfil. Toma menos de un minuto."
+msgstr "Complete your profile. Takes under a minute."
+
+#: store/templates/signup.html:114
+msgid "PHONE"
+msgstr ""
+
+#: store/templates/signup.html:123
+msgid "Minimum 8 characters"
+msgstr ""
+
+#: store/templates/signup.html:125
+msgid "Registrarme"
+msgstr "Sign Up"
+
+#: store/templates/signup.html:129
+msgid "¿YA TIENES CUENTA?"
+msgstr "ALREADY HAVE AN ACCOUNT?"
+
+#: store/templates/signup.html:129
+msgid "INGRESAR"
+msgstr "SIGN IN"
+
+#: store/views/profile.py:40
+msgid "First and last name are required."
+msgstr ""
+
+#: store/views/profile.py:44
+msgid "Your account has been updated."
+msgstr ""

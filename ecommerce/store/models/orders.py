@@ -14,6 +14,18 @@ class Order(AddressMixin):
         (DELIVERED, 'Delivered'),
     ]
 
+    # Payment lifecycle, tracked separately from fulfillment status above.
+    PAYMENT_PENDING = 'pending'
+    PAYMENT_PAID = 'paid'
+    PAYMENT_FAILED = 'failed'
+    PAYMENT_REFUNDED = 'refunded'
+    PAYMENT_STATUS_CHOICES = [
+        (PAYMENT_PENDING, 'Pending — awaiting payment'),
+        (PAYMENT_PAID, 'Paid'),
+        (PAYMENT_FAILED, 'Failed'),
+        (PAYMENT_REFUNDED, 'Refunded'),
+    ]
+
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
@@ -24,6 +36,25 @@ class Order(AddressMixin):
         max_length=20, choices=STATUS_CHOICES, default=NEW)
     tracking_number = models.CharField(max_length=60, blank=True, default='')
     shipped_at = models.DateField(null=True, blank=True)
+
+    # --- Stripe ---
+    payment_status = models.CharField(
+        max_length=20, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_PENDING)
+    # All orders from one checkout share a session id, so the webhook can find
+    # them again when Stripe confirms the payment.
+    stripe_session_id = models.CharField(
+        max_length=255, blank=True, default='', db_index=True)
+    stripe_payment_intent = models.CharField(
+        max_length=255, blank=True, default='')
+    paid_at = models.DateTimeField(null=True, blank=True)
+
+    @property
+    def is_paid(self):
+        return self.payment_status == self.PAYMENT_PAID
+
+    @property
+    def line_total(self):
+        return self.price * self.quantity
 
     def placeOrder(self):
         self.save()

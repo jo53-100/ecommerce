@@ -6,6 +6,7 @@ from .views.cart import Cart
 from .views.checkout import CheckOut
 from .views.orders import OrderView
 from .views.profile import Profile
+from .views.payments import checkout_success, checkout_cancel, stripe_webhook
 from .middlewares.auth import auth_middleware
 
 urlpatterns = [
@@ -18,4 +19,13 @@ urlpatterns = [
     path('check-out/', auth_middleware(CheckOut.as_view()), name='checkout'),
     path('orders/', auth_middleware(OrderView.as_view()), name='orders'),
     path('account/', auth_middleware(Profile.as_view()), name='profile'),
+
+    # --- Stripe ---
+    # Shoppers return here from the hosted Stripe page.
+    path('checkout/success/', auth_middleware(checkout_success),
+         name='checkout_success'),
+    path('checkout/cancel/', auth_middleware(checkout_cancel),
+         name='checkout_cancel'),
+    # Called by Stripe, not by a browser — must stay unauthenticated.
+    path('stripe/webhook/', stripe_webhook, name='stripe_webhook'),
 ]

@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% if paid %}{% trans "Pago Confirmado" %}{% else %}{% trans "Procesando Pago" %}{% endif %}{% endblock %}
+
+{% block extra_css %}
+.result-wrap { padding: 80px 0; }
+.result-card {
+    max-width: 720px; margin: 0 auto;
+    background: var(--panel);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 48px 40px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+}
+.result-badge {
+    width: 84px; height: 84px; margin: 0 auto 24px;
+    border-radius: 50%; display: grid; place-items: center;
+    font-size: 2.4rem;
+}
+.result-badge.ok {
+    background: rgba(16,185,129,0.12);
+    border: 2px solid var(--success);
+    color: var(--success);
+    box-shadow: 0 0 32px rgba(16,185,129,0.25);
+}
+.result-badge.pending {
+    background: rgba(212,175,55,0.12);
+    border: 2px solid var(--gold-hi);
+    color: var(--gold-hi);
+}
+.result-card h1 { font-size: 2.4rem; margin-bottom: 12px; }
+.result-card > p { color: var(--text-dim); margin: 0 auto 32px; max-width: 480px; }
+
+.order-lines {
+    text-align: left; border-top: 1px solid var(--border);
+    padding-top: 24px; margin-top: 8px;
+}
+.order-line {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; border-bottom: 1px dashed var(--border);
+    font-size: 14px;
+}
+.order-line:last-child { border-bottom: 0; }
+.order-line .name { color: var(--text); }
+.order-line .meta {
+    display: block; font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--text-mute); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-top: 2px;
+}
+.order-line .amount { font-family: 'JetBrains Mono', monospace; color: var(--gold); }
+.order-total {
+    display: flex; justify-content: space-between;
+    padding-top: 18px; margin-top: 6px;
+    border-top: 1px solid var(--border);
+    font-family: 'Playfair Display', serif; font-size: 1.5rem;
+}
+.order-total .num { color: var(--gold-hi); }
+.result-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+
+@media (max-width: 560px) {
+    .result-wrap { padding: 48px 0; }
+    .result-card { padding: 32px 20px; }
+    .result-card h1 { font-size: 1.7rem; }
+    .result-actions .btn { width: 100%; }
+}
+{% endblock %}
+
+{% block content %}
+<section class="result-wrap">
+    <div class="container">
+        <div class="result-card">
+            {% if paid %}
+                <div class="result-badge ok">✓</div>
+                <h1>{% trans "¡Pago Confirmado!" %}</h1>
+                <p>{% trans "Gracias por tu compra. Recibirás un correo de confirmación de Stripe con tu recibo, y prepararemos tu pedido para el envío." %}</p>
+            {% else %}
+                <div class="result-badge pending">⏳</div>
+                <h1>{% trans "Procesando tu pago" %}</h1>
+                <p>{% trans "Tu pago está siendo confirmado. Esto puede tardar unos momentos — actualiza esta página o revisa tus pedidos en unos minutos." %}</p>
+            {% endif %}
+
+            {% if orders %}
+                <div class="order-lines">
+                    {% for order in orders %}
+                        <div class="order-line">
+                            <span class="name">
+                                {{ order.product.name }}
+                                <span class="meta">{% trans "Pedido" %} M-{{ order.id|stringformat:"05d" }} · {% trans "Cant" %} {{ order.quantity }}</span>
+                            </span>
+                            <span class="amount">${{ order.line_total }}.00</span>
+                        </div>
+                    {% endfor %}
+                    <div class="order-total">
+                        <span>{% trans "TOTAL" %}</span>
+                        <span class="num">${{ total }}.00</span>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="result-actions">
+                <a href="{% url 'orders' %}" class="btn btn-primary">{% trans "Ver Mis Pedidos" %} →</a>
+                <a href="{% url 'store' %}" class="btn btn-outline">{% trans "Seguir Comprando" %}</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -6,3 +6,6 @@ sqlparse==0.5.5
 # --- Production serving (used by the VPS deploy) ---
 gunicorn==23.0.0
 whitenoise==6.9.0
+
+# --- Payments ---
+stripe==15.3.1

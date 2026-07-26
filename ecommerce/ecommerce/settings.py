@@ -124,11 +124,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en'
+# Spanish is the source language: the strings written inside {% trans %} in the
+# templates are Spanish, so 'es' needs no catalog — msgids pass through as-is.
+# English is provided by translating those msgids in locale/en/.
+LANGUAGE_CODE = 'es'
 
 LANGUAGES = [
-    ('en', 'English'),
     ('es', 'Español'),
+    ('en', 'English'),
 ]
 
 LOCALE_PATHS = [BASE_DIR / 'locale']
@@ -158,6 +161,23 @@ if not DEBUG:
 # Media files (user-uploaded content, e.g. product images)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# --- Stripe ---
+# Keys come from the Stripe dashboard (Developers → API keys). Test keys start
+# with pk_test_ / sk_test_; live keys with pk_live_ / sk_live_.
+# Never commit a secret key — set these in the environment (see README).
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', '')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
+# From `stripe listen` locally, or the webhook endpoint's signing secret in the
+# dashboard. Without it, incoming webhooks cannot be verified and are rejected.
+STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
+# ISO currency code. Change to 'mxn', 'eur', etc. to match your Stripe account.
+STRIPE_CURRENCY = os.environ.get('STRIPE_CURRENCY', 'usd').lower()
+
+# When no secret key is configured the store falls back to recording orders
+# directly, so the site stays demoable before Stripe is wired up.
+STRIPE_ENABLED = bool(STRIPE_SECRET_KEY)
+
 
 # --- Security hardening (only enforced when DEBUG is off) ---
 if not DEBUG:
