@@ -295,20 +295,24 @@
     .filter-panel { position: static; }
     .product-grid { grid-template-columns: repeat(2, 1fr); }
     .features-grid { grid-template-columns: 1fr; }
-    .cta-banner { padding: 40px 28px; }
+    .cta-banner { padding: 40px 28px; gap: 24px; }
     .cta-banner h2 { font-size: 1.8rem; }
     .section { padding: 56px 0; }
 }
 @media (max-width: 560px) {
     .product-grid { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 2.2rem; }
+    .hero h1 { font-size: 2rem; }
+    .hero p.lede { font-size: 1rem; padding: 0 16px; }
+    .hero-cta { flex-direction: column; width: 100%; padding: 0 16px; }
+    .hero-cta .btn { width: 100%; }
+    .section-title h2 { font-size: 1.6rem; }
 }
 
 /* ---- Radar Sweep ---- */
 .hero-radar {
     position: absolute; top: 50%; left: 50%;
     width: 700px; height: 700px;
-    margin: -350px 0 0 -350px;
+    transform: translate(-50%, -50%);
     pointer-events: none; z-index: 0; opacity: 0.6;
 }
 .hero-radar-sweep {
@@ -387,7 +391,10 @@
 }
 
 @media (max-width: 900px) {
-    .hero-radar { width: 400px; height: 400px; margin: -200px 0 0 -200px; }
+    .hero-radar { width: 400px; height: 400px; }
+}
+@media (max-width: 560px) {
+    .hero-radar { width: 300px; height: 300px; }
 }
 {% endblock %}
 
