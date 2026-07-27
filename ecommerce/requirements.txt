@@ -1,5 +1,7 @@
 asgiref==3.11.1
 Django==6.0.6
+# Reads BASE_DIR/.env into os.environ at startup (see settings.py).
+python-dotenv==1.2.2
 pillow==12.3.0
 sqlparse==0.5.5
 

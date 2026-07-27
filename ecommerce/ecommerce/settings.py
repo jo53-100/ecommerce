@@ -17,6 +17,18 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load BASE_DIR/.env into the environment before anything reads os.environ.
+# Real environment variables always win, so a systemd unit or a `export` in the
+# shell overrides the file rather than the other way round — production sets
+# secrets properly and never needs a .env on disk.
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    # python-dotenv is optional: without it, only real env vars are used.
+    pass
+else:
+    load_dotenv(BASE_DIR / '.env', override=False)
+
 
 def _env_bool(name, default):
     return os.environ.get(name, str(default)).strip().lower() in ('1', 'true', 'yes', 'on')
