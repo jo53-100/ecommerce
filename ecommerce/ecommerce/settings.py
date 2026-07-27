@@ -54,7 +54,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # intcomma / naturaltime, used by the clinic dashboard templates.
+    'django.contrib.humanize',
     'store',
+    # Back-office: finances, payroll and inventory dashboard.
+    'clinic',
 ]
 
 MIDDLEWARE = [

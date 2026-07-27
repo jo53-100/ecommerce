@@ -22,5 +22,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path('admin/', admin.site.urls),
+    # Staff-only back office (dashboard, inventory, expenses). Mounted before
+    # the store so its paths are not swallowed by the catch-all below.
+    path('gestion/', include('clinic.urls')),
     path('', include('store.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

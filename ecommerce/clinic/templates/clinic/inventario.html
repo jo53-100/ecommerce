@@ -1,0 +1,53 @@
+{% extends "clinic/_base.html" %}
+{% load humanize %}
+{% block title %}Inventario · Lovefoot{% endblock %}
+{% block subtitle %}Inventario de productos e insumos{% endblock %}
+{% block content %}
+
+<div class="cols">
+  <div class="panel">
+    <h2>Entrada de stock</h2>
+    <div class="sub">Sumar piezas a un producto que ya existe (compra / reabasto).</div>
+    <form class="entry" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="restock">
+      {{ restock_form.as_p }}
+      <div class="actions"><button class="btn" type="submit">Agregar al stock</button></div>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h2>Nuevo producto / insumo</h2>
+    <div class="sub">Diferencia "para venta" (se cobra al cliente) de "insumo" (uso interno).</div>
+    <form class="entry" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="new">
+      {{ product_form.as_p }}
+      <div class="actions"><button class="btn" type="submit">Crear producto</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Productos en sistema</h2>
+  <table>
+    <thead><tr>
+      <th>Producto</th><th>Tipo</th><th class="r">Costo</th>
+      <th class="r">Precio venta</th><th class="r">Existencia</th>
+    </tr></thead>
+    <tbody>
+      {% for p in products %}
+      <tr class="{% if p.stock <= 0 %}low{% endif %}">
+        <td>{{ p.name }}</td>
+        <td>{% if p.for_sale %}<span class="pill sale">Venta</span>{% else %}<span class="pill use">Insumo</span>{% endif %}</td>
+        <td class="r num">${{ p.unit_cost|floatformat:2|intcomma }}</td>
+        <td class="r num">${{ p.sale_price|floatformat:2|intcomma }}</td>
+        <td class="r num">{{ p.stock|intcomma }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" style="color:var(--muted)">Aun no hay productos. Agrega el primero arriba.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
