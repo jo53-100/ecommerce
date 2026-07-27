@@ -30,7 +30,7 @@
   nav.tabs a.primary{background:#fff;color:var(--accent);font-weight:600;border:0}
   header .controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
   main{padding:22px;max-width:1180px;margin:0 auto}
-  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:22px}
   .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
   .card .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
   .card .value{font-size:26px;font-weight:700;margin-top:6px}
@@ -71,6 +71,11 @@
           <option value="{{ n }}" {% if month == n %}selected{% endif %}>{{ name }}</option>
         {% endfor %}
       </select>
+      <select id="year" name="year" onchange="this.form.submit()">
+        {% for y in year_choices %}
+          <option value="{{ y }}" {% if year == y %}selected{% endif %}>{{ y }}</option>
+        {% endfor %}
+      </select>
     </form>
     <nav class="tabs">
       <a href="{% url 'clinic:movimiento_nuevo' %}">+ Movimiento</a>
@@ -88,6 +93,7 @@
     <div class="card expense"><div class="label">Gastos</div><div class="value num">${{ kpi.expenses|floatformat:0|intcomma }}</div></div>
     <div class="card profit {% if kpi.profit < 0 %}neg{% endif %}"><div class="label">Utilidad</div><div class="value num">${{ kpi.profit|floatformat:0|intcomma }}</div></div>
     <div class="card"><div class="label">Servicios</div><div class="value num">{{ kpi.services|intcomma }}</div></div>
+    <div class="card income"><div class="label">Tienda en linea</div><div class="value num">${{ kpi.online|floatformat:0|intcomma }}</div></div>
   </section>
 
   <section class="grid">
@@ -107,16 +113,16 @@
         <thead><tr><th>Producto</th><th>Tipo</th><th class="r">Existencia</th><th class="r">Venta {{ month|default:"ano" }}</th></tr></thead>
         <tbody>
           {% for p in products %}
-          <tr class="{% if has_stock_data and p.low %}low{% endif %}">
+          <tr class="{% if p.low %}low{% endif %}">
             <td>{{ p.name }}</td>
             <td>{% if p.for_sale %}<span class="pill sale">Venta</span>{% else %}<span class="pill use">Insumo</span>{% endif %}</td>
-            <td class="r num">{% if has_stock_data %}{{ p.stock|floatformat:0 }}{% else %}—{% endif %}</td>
+            <td class="r num">{% if p.tracked %}{{ p.stock|floatformat:0 }}{% else %}—{% endif %}</td>
             <td class="r num">${{ p.sold|floatformat:0|intcomma }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
-      {% if not has_stock_data %}<p class="note">Las existencias se llenan con la captura en vivo / POS; el Excel solo traia ventas, no stock.</p>{% endif %}
+      <p class="note">Existencias y catalogo viven en la tienda (store.Products). Se descuentan solas cuando se cobra un pedido en linea o se captura una venta de mostrador.{% if not has_stock_data %} Marca "controlar existencias" en un producto para empezar a seguirlo.{% endif %}</p>
     </div>
 
     <div class="panel">

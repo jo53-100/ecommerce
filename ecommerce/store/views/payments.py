@@ -23,6 +23,7 @@ from store.payments import (
     get_stripe,
     mark_orders_failed,
     mark_orders_paid,
+    mark_orders_refunded,
 )
 
 
@@ -102,6 +103,10 @@ def stripe_webhook(request):
     elif event_type in ('checkout.session.expired',
                         'checkout.session.async_payment_failed'):
         mark_orders_failed(obj['id'])
+    elif event_type == 'charge.refunded':
+        # A Charge, not a Session — it carries the payment intent, which is the
+        # only handle back to the orders. Refunding returns the stock.
+        mark_orders_refunded(obj.get('payment_intent') or '')
 
     # Any 2xx tells Stripe the event was received; unknown types are ignored.
     return HttpResponse(status=200)

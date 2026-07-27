@@ -480,7 +480,7 @@
                 {% for product in products %}
                     <div class="product-card scan-reveal" x-data="{ shown: false, tx: 0, ty: 0 }" x-intersect.once="setTimeout(() => shown = true, ({{ forloop.counter0 }} % 3) * 100)" :class="shown ? 'is-visible' : ''" :style="'--tilt-x:' + tx + 'deg; --tilt-y:' + ty + 'deg'" @mousemove.throttle.16ms="let r=$el.getBoundingClientRect(); tx=((($event.clientY-r.top)/r.height)-0.5)*-6; ty=((($event.clientX-r.left)/r.width)-0.5)*6" @mouseleave="tx=0; ty=0">
                         <div class="product-media" style="cursor: pointer;" 
-                             @click="quickViewProduct = { id: '{{ product.id }}', name: '{{ product.name|escapejs }}', price: '{{ product.price }}', desc: '{{ product.description|escapejs }}', cat: '{{ product.category.name|default:'SIN CATEGORÍA'|escapejs }}', img: '{% if product.image %}{{ product.image.url }}{% else %}{% endif %}' }; quickViewOpen = true; $dispatch('quickview-opened');">
+                             @click="quickViewProduct = { id: '{{ product.id }}', name: '{{ product.name|escapejs }}', price: '{{ product.price|floatformat:2 }}', desc: '{{ product.description|escapejs }}', cat: '{{ product.category.name|default:'SIN CATEGORÍA'|escapejs }}', img: '{% if product.image %}{{ product.image.url }}{% else %}{% endif %}' }; quickViewOpen = true; $dispatch('quickview-opened');">
                             {% if product.image %}
                                 <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
                             {% else %}
@@ -497,11 +497,11 @@
                             <p class="product-desc">{{ product.description|default:_("Artículo naval de alta calidad, elaborado con los mejores materiales.") }}</p>
                             <div class="product-foot">
                                 <div class="product-price">
-                                    ${{ product.price }}<span class="cents">.00</span>
+                                    ${{ product.price_units }}<span class="cents">.{{ product.price_cents }}</span>
                                 </div>
                                 <div style="display:flex; gap: 8px;">
                                     <button type="button" class="btn btn-outline btn-sm" aria-label="{% trans 'Vista Rápida' %}"
-                                        @click="quickViewProduct = { id: '{{ product.id }}', name: '{{ product.name|escapejs }}', price: '{{ product.price }}', desc: '{{ product.description|escapejs }}', cat: '{{ product.category.name|default:'SIN CATEGORÍA'|escapejs }}', img: '{% if product.image %}{{ product.image.url }}{% else %}{% endif %}' }; quickViewOpen = true; $dispatch('quickview-opened');">
+                                        @click="quickViewProduct = { id: '{{ product.id }}', name: '{{ product.name|escapejs }}', price: '{{ product.price|floatformat:2 }}', desc: '{{ product.description|escapejs }}', cat: '{{ product.category.name|default:'SIN CATEGORÍA'|escapejs }}', img: '{% if product.image %}{{ product.image.url }}{% else %}{% endif %}' }; quickViewOpen = true; $dispatch('quickview-opened');">
                                         👁
                                     </button>
                                     <form action="{% url 'homepage' %}" method="POST" style="margin:0;">
@@ -603,7 +603,7 @@
                 <span class="mono" style="color: var(--gold); font-size: 11px; letter-spacing: 0.18em; font-weight: 600;" x-text="quickViewProduct ? quickViewProduct.cat : ''"></span>
                 <h2 style="font-size: 2rem; margin: 8px 0 16px; line-height: 1.15; font-family: 'Playfair Display', serif;" x-text="quickViewProduct ? quickViewProduct.name : ''"></h2>
                 
-                <div style="font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; line-height: 1; margin-bottom: 24px; color: var(--text);" x-text="quickViewProduct ? '$' + quickViewProduct.price + '.00' : ''"></div>
+                <div style="font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; line-height: 1; margin-bottom: 24px; color: var(--text);" x-text="quickViewProduct ? '$' + quickViewProduct.price : ''"></div>
                 
                 <p style="color: var(--text-dim); font-size: 14px; line-height: 1.65; margin: 0 0 24px;" x-text="quickViewProduct ? quickViewProduct.desc : ''"></p>
                 

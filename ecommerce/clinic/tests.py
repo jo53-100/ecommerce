@@ -10,12 +10,19 @@ from decimal import Decimal
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from clinic.forms import RestockForm, TransactionForm
-from clinic.models import Employee, Expense, Product, ServiceType, Transaction
+from store.models.categories import Category
+from store.models.customers import Customer
+from store.models.orders import Order
+from store.models.products import Products
+from clinic.models import Employee, Expense, ServiceType, Transaction
 
-# The dashboard aggregates a hardcoded year; tests must use it or see zeroes.
-from clinic.views import YEAR
+# The dashboard defaults to the current year; tests must use it or see zeroes.
+from clinic.views import current_year
+
+YEAR = current_year()
 
 
 class StaffPagesTest(TestCase):
@@ -104,13 +111,113 @@ class DashboardNumbersTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class OnlineSalesFeedTheDashboardTest(TestCase):
+    """Stripe revenue must show up here without anything writing to clinic.*
+
+    store.Order is read directly, so an online sale lands in the finances the
+    moment it is paid — no sync step, nothing to fall out of date.
+    """
+
+    def setUp(self):
+        self.staff = User.objects.create_user(
+            'boss', 'boss@example.com', 'pw', is_staff=True)
+        self.client.force_login(self.staff)
+        category = Category.objects.create(name='Gorras')
+        self.product = Products.objects.create(
+            name='Gorra', category=category, price=Decimal('400.00'), stock=10)
+        self.customer = Customer(first_name='Ana', last_name='Marina',
+                                 email='ana@example.com', password='pw')
+        self.customer.register()
+
+    def _order(self, qty=1, status=Order.PAYMENT_PAID, month=3):
+        return Order.objects.create(
+            customer=self.customer, product=self.product,
+            price=Decimal('400.00'), quantity=qty, payment_status=status,
+            paid_at=timezone.make_aware(dt.datetime(YEAR, month, 10, 12, 0)))
+
+    def test_paid_online_orders_count_as_income(self):
+        self._order(qty=2)
+        kpi = self.client.get(reverse('clinic:dashboard')).context['kpi']
+        self.assertEqual(kpi['online'], Decimal('800.00'))
+        self.assertEqual(kpi['income'], Decimal('800.00'))
+
+    def test_unpaid_orders_are_not_income(self):
+        """Money that has not arrived is not revenue."""
+        self._order(status=Order.PAYMENT_PENDING)
+        kpi = self.client.get(reverse('clinic:dashboard')).context['kpi']
+        self.assertEqual(kpi['online'], Decimal('0.00'))
+
+    def test_refunded_orders_are_not_income(self):
+        self._order(status=Order.PAYMENT_REFUNDED)
+        kpi = self.client.get(reverse('clinic:dashboard')).context['kpi']
+        self.assertEqual(kpi['online'], Decimal('0.00'))
+
+    def test_online_and_counter_income_are_added_together(self):
+        self._order()                                     # 400 online
+        service = ServiceType.objects.create(name='Masaje', category='masaje')
+        Transaction.objects.create(date=dt.date(YEAR, 3, 10), kind='service',
+                                   service_type=service, amount=Decimal('600'))
+        kpi = self.client.get(reverse('clinic:dashboard')).context['kpi']
+        self.assertEqual(kpi['counter'], Decimal('600'))
+        self.assertEqual(kpi['online'], Decimal('400.00'))
+        self.assertEqual(kpi['income'], Decimal('1000.00'))
+
+    def test_online_income_respects_the_month_filter(self):
+        self._order(month=1)
+        self._order(month=2, qty=3)
+        kpi = self.client.get(reverse('clinic:dashboard'),
+                              {'month': 2}).context['kpi']
+        self.assertEqual(kpi['online'], Decimal('1200.00'))
+
+    def test_store_stock_is_what_the_inventory_panel_shows(self):
+        response = self.client.get(reverse('clinic:dashboard'))
+        row = next(p for p in response.context['products']
+                   if p['name'] == 'Gorra')
+        self.assertEqual(row['stock'], 10)
+        self.assertTrue(row['tracked'])
+
+
+class DashboardYearTest(TestCase):
+    """The reporting year follows the clock, and can be navigated."""
+
+    def setUp(self):
+        self.staff = User.objects.create_user(
+            'boss', 'boss@example.com', 'pw', is_staff=True)
+        self.client.force_login(self.staff)
+
+    def test_defaults_to_the_current_year(self):
+        response = self.client.get(reverse('clinic:dashboard'))
+        self.assertEqual(response.context['year'], dt.date.today().year)
+
+    def test_an_explicit_year_is_honoured(self):
+        response = self.client.get(reverse('clinic:dashboard'), {'year': 2024})
+        self.assertEqual(response.context['year'], 2024)
+
+    def test_garbage_year_falls_back_to_the_current_one(self):
+        response = self.client.get(reverse('clinic:dashboard'), {'year': 'dos mil'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['year'], dt.date.today().year)
+
+    def test_out_of_range_month_is_ignored(self):
+        response = self.client.get(reverse('clinic:dashboard'), {'month': 99})
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.context['month'])
+
+    def test_a_year_with_no_data_renders_empty_rather_than_failing(self):
+        response = self.client.get(reverse('clinic:dashboard'), {'year': 1999})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['kpi']['income'], Decimal('0.00'))
+
+
 class InventoryMovementTest(TestCase):
     """Stock is the point of the inventory page — verify it actually moves."""
 
     def setUp(self):
-        self.product = Product.objects.create(
-            name='Urea', for_sale=True,
-            unit_cost=Decimal('40'), sale_price=Decimal('120'), stock=10)
+        category = Category.objects.create(name='Podologia')
+        # The catalogue is store.Products — the clinic has no table of its own.
+        self.product = Products.objects.create(
+            name='Urea', category=category, for_sale=True,
+            unit_cost=Decimal('40'), price=Decimal('120'), stock=10)
 
     def _tx_form(self, **overrides):
         data = {

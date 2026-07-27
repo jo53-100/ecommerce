@@ -8,7 +8,9 @@ derivan de estos movimientos (ver models.Transaction y reports.py).
 import datetime as dt
 from django import forms
 from django.db.models import F
-from .models import Transaction, Product, Employee, Expense
+
+from store.models.products import Products
+from .models import Transaction, Employee, Expense
 
 
 _DATE_WIDGET = forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d")
@@ -66,7 +68,7 @@ class TransactionForm(forms.ModelForm):
                 self.add_error("product", "Selecciona el producto que sale del inventario.")
             elif amount is None:
                 # Precio de referencia: venta -> precio de venta; uso -> costo.
-                unit = product.sale_price if kind == "product_sale" else product.unit_cost
+                unit = product.price if kind == "product_sale" else product.unit_cost
                 cleaned["amount"] = unit * qty
         elif amount is None:
             # Servicios y propinas: el monto es obligatorio, no hay como derivarlo.
@@ -76,30 +78,46 @@ class TransactionForm(forms.ModelForm):
 
     def save(self, commit=True):
         tx = super().save(commit=commit)
-        # Descontar inventario en ventas / usos de producto.
+        # Descontar inventario en ventas / usos de producto. Es el mismo stock
+        # que consume la tienda en linea (store.Products), no una copia.
         # F() evita condiciones de carrera sobre el stock.
         if commit and tx.product_id and tx.kind in ("product_sale", "product_use"):
             qty = self.cleaned_data.get("cantidad") or 1
-            Product.objects.filter(pk=tx.product_id).update(stock=F("stock") - qty)
+            Products.objects.filter(pk=tx.product_id).update(stock=F("stock") - qty)
         return tx
 
 
 class ProductForm(forms.ModelForm):
+    """Alta de producto o insumo directo sobre el catalogo de la tienda."""
+
     class Meta:
-        model = Product
-        fields = ["name", "for_sale", "unit_cost", "sale_price", "stock"]
-        labels = {"stock": "Existencia inicial"}
+        model = Products
+        fields = ["name", "category", "price", "unit_cost", "stock",
+                  "track_inventory", "for_sale", "description", "image"]
+        labels = {
+            "name": "Producto", "category": "Categoria",
+            "price": "Precio de venta", "unit_cost": "Costo unitario",
+            "stock": "Existencia inicial",
+            "track_inventory": "Controlar existencias",
+            "for_sale": "Se vende en la tienda",
+            "description": "Descripcion", "image": "Imagen",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Un insumo de uso interno no necesita foto para existir en el sistema.
+        self.fields["image"].required = False
 
 
 class RestockForm(forms.Form):
     """Sumar piezas al stock de un producto existente (entrada de inventario)."""
     product = forms.ModelChoiceField(
-        label="Producto", queryset=Product.objects.all().order_by("name"))
+        label="Producto", queryset=Products.objects.all().order_by("name"))
     units = forms.IntegerField(label="Piezas a agregar", min_value=1)
 
     def save(self):
         p = self.cleaned_data["product"]
-        Product.objects.filter(pk=p.pk).update(stock=F("stock") + self.cleaned_data["units"])
+        Products.objects.filter(pk=p.pk).update(stock=F("stock") + self.cleaned_data["units"])
         return p
 
 

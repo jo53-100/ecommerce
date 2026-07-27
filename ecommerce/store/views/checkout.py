@@ -12,6 +12,7 @@ from store.payments import (
     build_line_items,
     cart_total,
     get_stripe,
+    out_of_stock_items,
 )
 
 # Postal-address fields shared by the checkout form, Customer and Order.
@@ -77,6 +78,17 @@ class CheckOut(View):
         cart_items = build_cart_items(request.session.get('cart', {}))
         if not cart_items:
             return redirect('cart')
+
+        # Refuse before taking any money. Checked on both the Stripe and the
+        # offline path, since both create real orders. Stock is re-checked
+        # atomically at payment time; this is the courteous early exit.
+        unavailable = out_of_stock_items(cart_items)
+        if unavailable:
+            names = ', '.join(item['product'].name for item in unavailable)
+            return self._error(
+                request, cart_items, customer,
+                f'Sin existencias suficientes: {names}. '
+                'Ajusta las cantidades para continuar.')
 
         stripe = get_stripe()
 

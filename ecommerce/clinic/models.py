@@ -10,6 +10,11 @@ que hoy existe entre NOMINA_2026.xlsx y BASE_DE_DATOS_2026.xlsx.
 from decimal import Decimal
 from django.db import models
 
+# store.Products is the single source of truth for the catalogue and for stock.
+# The dependency points this way on purpose: clinic reads store, store never
+# imports clinic, so deleting this app cannot break the shop.
+from store.models.products import Products
+
 
 class Employee(models.Model):
     ROLE_CHOICES = [
@@ -57,25 +62,6 @@ class ServiceType(models.Model):
         return self.name
 
 
-class Product(models.Model):
-    name = models.CharField("Producto", max_length=120, unique=True)
-    # Requisito explicito de la duena: diferenciar vendido vs. usado.
-    for_sale = models.BooleanField(
-        "Es para venta", default=True,
-        help_text="Si = se vende al cliente. No = insumo de uso interno.",
-    )
-    unit_cost = models.DecimalField("Costo unitario", max_digits=10, decimal_places=2, default=0)
-    sale_price = models.DecimalField("Precio de venta", max_digits=10, decimal_places=2, default=0)
-    stock = models.IntegerField("Existencia", default=0)
-
-    class Meta:
-        verbose_name = "Producto / Insumo"
-        verbose_name_plural = "Productos / Insumos"
-
-    def __str__(self):
-        return self.name
-
-
 class Client(models.Model):
     name = models.CharField("Nombre", max_length=120)
     age = models.PositiveIntegerField("Edad", null=True, blank=True)
@@ -110,7 +96,7 @@ class Transaction(models.Model):
     kind = models.CharField("Tipo", max_length=15, choices=KIND_CHOICES)
     employee = models.ForeignKey(Employee, null=True, blank=True, on_delete=models.SET_NULL, related_name="transactions", verbose_name="Atendio")
     service_type = models.ForeignKey(ServiceType, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Servicio")
-    product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Producto")
+    product = models.ForeignKey(Products, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Producto")
     client = models.ForeignKey(Client, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Cliente")
     amount = models.DecimalField("Monto", max_digits=10, decimal_places=2, default=0)
     payment_method = models.CharField("Pago", max_length=10, choices=PAYMENT_CHOICES, default="na")

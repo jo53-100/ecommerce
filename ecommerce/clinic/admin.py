@@ -1,6 +1,5 @@
 from django.contrib import admin
-from django.db.models import Sum, Count
-from .models import Employee, ServiceType, Product, Client, Transaction, Expense
+from .models import Employee, ServiceType, Client, Transaction, Expense
 
 
 @admin.register(Employee)
@@ -16,11 +15,8 @@ class ServiceTypeAdmin(admin.ModelAdmin):
     search_fields = ("name",)
 
 
-@admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "for_sale", "unit_cost", "sale_price", "stock")
-    list_filter = ("for_sale",)
-    search_fields = ("name",)
+# Products are registered by store.admin — this app deliberately does not own
+# a second catalogue. Transaction.product points straight at store.Products.
 
 
 @admin.register(Client)

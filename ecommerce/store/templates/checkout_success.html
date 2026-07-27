@@ -89,12 +89,12 @@
                                 {{ order.product.name }}
                                 <span class="meta">{% trans "Pedido" %} M-{{ order.id|stringformat:"05d" }} · {% trans "Cant" %} {{ order.quantity }}</span>
                             </span>
-                            <span class="amount">${{ order.line_total }}.00</span>
+                            <span class="amount">${{ order.line_total|floatformat:2 }}</span>
                         </div>
                     {% endfor %}
                     <div class="order-total">
                         <span>{% trans "TOTAL" %}</span>
-                        <span class="num">${{ total }}.00</span>
+                        <span class="num">${{ total|floatformat:2 }}</span>
                     </div>
                 </div>
             {% endif %}

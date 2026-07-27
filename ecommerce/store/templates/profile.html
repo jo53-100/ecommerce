@@ -151,7 +151,7 @@
                     <span class="mono" style="color:var(--olive-hi); font-family:'JetBrains Mono',monospace; font-size:11px;">M-{{ order.id|stringformat:"05d" }}</span>
                     <div class="mid">
                         <div class="name">{{ order.product.name }}</div>
-                        <div class="mono">×{{ order.quantity }} · ${{ order.price }}.00 · {{ order.date }}</div>
+                        <div class="mono">×{{ order.quantity }} · ${{ order.price|floatformat:2 }} · {{ order.date }}</div>
                     </div>
                     {% if order.status == 'delivered' %}
                         <span class="status-badge status-delivered">{% trans "DELIVERED" %}</span>

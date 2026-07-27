@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import importlib.util
 import os
 from pathlib import Path
 
@@ -57,9 +58,15 @@ INSTALLED_APPS = [
     # intcomma / naturaltime, used by the clinic dashboard templates.
     'django.contrib.humanize',
     'store',
-    # Back-office: finances, payroll and inventory dashboard.
-    'clinic',
 ]
+
+# The `clinic` back office is an optional add-on: it reads store data to draw
+# the finance and inventory dashboard, and nothing in `store` imports it. Delete
+# the clinic/ directory and the site keeps working — this probe is what makes
+# that true, since a missing app named in INSTALLED_APPS is a startup error.
+CLINIC_INSTALLED = importlib.util.find_spec('clinic') is not None
+if CLINIC_INSTALLED:
+    INSTALLED_APPS.append('clinic')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -168,7 +168,7 @@
                                 
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
                                     <span style="color: var(--text-dim); font-size: 14px;">Cant: <span class="mono" style="color: var(--text);">{{ item.qty }}</span></span>
-                                    <span class="mono" style="color: var(--gold);">${{ item.subtotal }}.00</span>
+                                    <span class="mono" style="color: var(--gold);">${{ item.subtotal|floatformat:2 }}</span>
                                 </div>
                             </div>
                         </div>
@@ -176,9 +176,9 @@
                     
                     <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
                     
-                    <div class="summary-row"><span>{% trans "Subtotal" %}</span><span class="mono">${{ total }}.00</span></div>
+                    <div class="summary-row"><span>{% trans "Subtotal" %}</span><span class="mono">${{ total|floatformat:2 }}</span></div>
                     <div class="summary-row"><span>{% trans "Envío" %}</span><span class="text-gold">{% trans "GRATIS" %}</span></div>
-                    <div class="summary-row total"><span>{% trans "TOTAL" %}</span><span class="num">${{ total }}.00</span></div>
+                    <div class="summary-row total"><span>{% trans "TOTAL" %}</span><span class="num">${{ total|floatformat:2 }}</span></div>
                 </div>
             </aside>
         </div>

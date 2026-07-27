@@ -89,7 +89,7 @@
             <td data-label="{% trans 'MISSION ID' %}"><span class="mission-id">M-{{ order.id|stringformat:"05d" }}</span></td>
             <td data-label="{% trans 'UNIT' %}">{{ order.product.name }}</td>
             <td data-label="{% trans 'QTY' %}" class="mono">×{{ order.quantity }}</td>
-            <td data-label="{% trans 'PRICE' %}" class="mono">${{ order.price }}.00</td>
+            <td data-label="{% trans 'PRICE' %}" class="mono">${{ order.price|floatformat:2 }}</td>
             <td data-label="{% trans 'DROP LOCATION' %}">
                 {{ order.recipient_name }}
                 <span class="mono" style="display:block; font-size:11px; color:var(--text-mute);">{{ order.city_line }}</span>

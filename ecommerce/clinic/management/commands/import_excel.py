@@ -17,7 +17,8 @@ from decimal import Decimal
 import openpyxl
 from django.core.management.base import BaseCommand
 from django.db import transaction as db_transaction
-from clinic.models import Employee, ServiceType, Product, Transaction, Expense
+from clinic.models import Employee, ServiceType, Transaction, Expense
+from store.models.products import Products
 
 YEAR = 2026
 # columna 2 (B) = enero ... columna 13 (M) = diciembre
@@ -91,7 +92,13 @@ class Command(BaseCommand):
                 kind, svc, prod = "tip", None, None
             elif key in PRODUCT_SHEETS:
                 kind = "product_sale"
-                prod, _ = Product.objects.get_or_create(name=title.strip().title())
+                # El catalogo vive en la tienda. Lo historico entra sin
+                # control de existencias (el Excel no traia stock) y fuera
+                # del escaparate; se activa a mano cuando haga falta.
+                prod, _ = Products.objects.get_or_create(
+                    name=title.strip().title(),
+                    defaults={"track_inventory": False, "for_sale": False},
+                )
                 svc = None
             else:
                 kind = "service"
@@ -175,5 +182,5 @@ class Command(BaseCommand):
             f"  Productos:  ${prod:,.2f}\n"
             f"  Propinas:   ${tips:,.2f}\n"
             f"  Gastos:     ${exp:,.2f}\n"
-            f"  Catalogos:  {ServiceType.objects.count()} servicios, {Product.objects.count()} productos"
+            f"  Catalogos:  {ServiceType.objects.count()} servicios, {Products.objects.count()} productos"
         ))
