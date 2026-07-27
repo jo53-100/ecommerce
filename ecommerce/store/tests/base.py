@@ -1,5 +1,7 @@
 """Shared fixtures for the store test suite."""
 
+from decimal import Decimal
+
 from django.test import TestCase
 
 from store.models.categories import Category
@@ -7,6 +9,10 @@ from store.models.customers import Customer
 from store.models.products import Products
 
 PASSWORD = 'testpass123'
+
+# Enough stock that ordinary checkout tests never bump into the inventory gate.
+# Tests that care about running out set the figure themselves.
+DEFAULT_STOCK = 100
 
 
 class StoreTestCase(TestCase):
@@ -19,15 +25,19 @@ class StoreTestCase(TestCase):
 
         self.product = Products.objects.create(
             name='Gorra Naval Oficial',
-            price=400,
+            price=Decimal('400.00'),
+            unit_cost=Decimal('150.00'),
             category=self.category,
             description='Gorra bordada de oficial.',
+            stock=DEFAULT_STOCK,
         )
         self.cheap_product = Products.objects.create(
             name='Pin Ancla Dorada',
-            price=25,
+            price=Decimal('25.00'),
+            unit_cost=Decimal('8.00'),
             category=self.other_category,
             description='Pin de solapa.',
+            stock=DEFAULT_STOCK,
         )
 
         self.customer = Customer(

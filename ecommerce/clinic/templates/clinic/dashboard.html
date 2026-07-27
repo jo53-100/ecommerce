@@ -1,0 +1,184 @@
+{% load humanize %}<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lovefoot — Panel de gestion</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f0f0f0; --surface:#fff; --ink:#1c2733; --accent:#1a4f8a;
+    --success:#1a7a45; --danger:#b03030; --warn:#c07000; --muted:#606060;
+    --line:#e3e6ea; --low-bg:#fff8e1; --low-ink:#7d5c00;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:14px;line-height:1.45}
+  .num{font-variant-numeric:tabular-nums}
+  header{background:var(--accent);color:#fff;padding:14px 22px;display:flex;
+    align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  header h1{font-size:17px;margin:0;font-weight:600;letter-spacing:.2px}
+  header .sub{opacity:.8;font-size:12px;margin-top:2px}
+  header form{display:flex;align-items:center;gap:8px}
+  header select,header a.btn{font-size:13px;padding:6px 10px;border-radius:6px;border:0}
+  header select{background:#15407a;color:#fff;border:1px solid #2f5e96}
+  a.btn{background:#fff;color:var(--accent);text-decoration:none;font-weight:600}
+  nav.tabs{display:flex;gap:6px;flex-wrap:wrap}
+  nav.tabs a{font-size:13px;padding:6px 11px;border-radius:6px;text-decoration:none;
+    background:#15407a;color:#fff;border:1px solid #2f5e96}
+  nav.tabs a.primary{background:#fff;color:var(--accent);font-weight:600;border:0}
+  header .controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  main{padding:22px;max-width:1180px;margin:0 auto}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:22px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+  .card .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .card .value{font-size:26px;font-weight:700;margin-top:6px}
+  .card.income .value{color:var(--accent)}
+  .card.expense .value{color:var(--danger)}
+  .card.profit  .value{color:var(--success)}
+  .card.profit.neg .value{color:var(--danger)}
+  .grid{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-bottom:22px}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+  .panel h2{font-size:14px;margin:0 0 12px;font-weight:600;color:var(--ink)}
+  .chart-box{position:relative;height:300px}
+  .chart-box.tall{height:340px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+  td.r,th.r{text-align:right}
+  tr.low td{background:var(--low-bg);color:var(--low-ink)}
+  .pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+  .pill.sale{background:#e8f1fb;color:var(--accent)}
+  .pill.use{background:#f0ece4;color:var(--warn)}
+  .note{font-size:12px;color:var(--muted);margin-top:10px}
+  .total-row td{font-weight:700;border-top:2px solid var(--line)}
+  @media(max-width:860px){.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Lovefoot · Panel de gestion</h1>
+    <div class="sub">{{ period_label }}</div>
+  </div>
+  <div class="controls">
+    <form method="get">
+      <label for="month" style="font-size:12px;opacity:.85">Periodo</label>
+      <select id="month" name="month" onchange="this.form.submit()">
+        <option value="">Todo el ano {{ year }}</option>
+        {% for n, name in month_choices %}
+          <option value="{{ n }}" {% if month == n %}selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+      </select>
+      <select id="year" name="year" onchange="this.form.submit()">
+        {% for y in year_choices %}
+          <option value="{{ y }}" {% if year == y %}selected{% endif %}>{{ y }}</option>
+        {% endfor %}
+      </select>
+    </form>
+    <nav class="tabs">
+      <a href="{% url 'clinic:movimiento_nuevo' %}">+ Movimiento</a>
+      <a href="{% url 'clinic:inventario' %}">Inventario</a>
+      <a href="{% url 'clinic:empleada_nueva' %}">+ Empleada</a>
+      <a href="{% url 'clinic:gasto_nuevo' %}">+ Gasto</a>
+      <a class="primary" href="/admin/">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="cards">
+    <div class="card income"><div class="label">Ingresos</div><div class="value num">${{ kpi.income|floatformat:0|intcomma }}</div></div>
+    <div class="card expense"><div class="label">Gastos</div><div class="value num">${{ kpi.expenses|floatformat:0|intcomma }}</div></div>
+    <div class="card profit {% if kpi.profit < 0 %}neg{% endif %}"><div class="label">Utilidad</div><div class="value num">${{ kpi.profit|floatformat:0|intcomma }}</div></div>
+    <div class="card"><div class="label">Servicios</div><div class="value num">{{ kpi.services|intcomma }}</div></div>
+    <div class="card income"><div class="label">Tienda en linea</div><div class="value num">${{ kpi.online|floatformat:0|intcomma }}</div></div>
+  </section>
+
+  <section class="grid">
+    <div class="panel"><h2>Ingresos vs. gastos por mes ({{ year }})</h2><div class="chart-box"><canvas id="monthly"></canvas></div></div>
+    <div class="panel"><h2>Ingreso por categoria</h2><div class="chart-box"><canvas id="cats"></canvas></div></div>
+  </section>
+
+  <section class="panel" style="margin-bottom:22px">
+    <h2>Servicios mas vendidos — {{ period_label }}</h2>
+    <div class="chart-box tall"><canvas id="topsrv"></canvas></div>
+  </section>
+
+  <section class="grid">
+    <div class="panel">
+      <h2>Inventario / productos</h2>
+      <table>
+        <thead><tr><th>Producto</th><th>Tipo</th><th class="r">Existencia</th><th class="r">Venta {{ month|default:"ano" }}</th></tr></thead>
+        <tbody>
+          {% for p in products %}
+          <tr class="{% if p.low %}low{% endif %}">
+            <td>{{ p.name }}</td>
+            <td>{% if p.for_sale %}<span class="pill sale">Venta</span>{% else %}<span class="pill use">Insumo</span>{% endif %}</td>
+            <td class="r num">{% if p.tracked %}{{ p.stock|floatformat:0 }}{% else %}—{% endif %}</td>
+            <td class="r num">${{ p.sold|floatformat:0|intcomma }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p class="note">Existencias y catalogo viven en la tienda (store.Products). Se descuentan solas cuando se cobra un pedido en linea o se captura una venta de mostrador.{% if not has_stock_data %} Marca "controlar existencias" en un producto para empezar a seguirlo.{% endif %}</p>
+    </div>
+
+    <div class="panel">
+      <h2>Nomina por empleada — {{ period_label }}</h2>
+      <table>
+        <thead><tr><th>Empleada</th><th class="r">Comision</th><th class="r">Base</th><th class="r">Total</th></tr></thead>
+        <tbody>
+          {% for e in payroll %}
+          <tr>
+            <td>{{ e.name }}<br><span style="font-size:11px;color:var(--muted)">{{ e.role }}</span></td>
+            <td class="r num">${{ e.commission|floatformat:0|intcomma }}</td>
+            <td class="r num">${{ e.base|floatformat:0|intcomma }}</td>
+            <td class="r num">${{ e.total|floatformat:0|intcomma }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p class="note">La comision historica sale en $0 porque el Excel no registraba quien atendio. Se activa con la captura en vivo.</p>
+    </div>
+  </section>
+</main>
+
+{{ months|json_script:"months" }}
+{{ m_income|json_script:"m_income" }}
+{{ m_expense|json_script:"m_expense" }}
+{{ m_profit|json_script:"m_profit" }}
+{{ top_labels|json_script:"top_labels" }}
+{{ top_values|json_script:"top_values" }}
+{{ cat_labels|json_script:"cat_labels" }}
+{{ cat_values|json_script:"cat_values" }}
+<script>
+  const J = id => JSON.parse(document.getElementById(id).textContent);
+  const ACCENT="#1a4f8a", DANGER="#b03030", SUCCESS="#1a7a45";
+  const PALETTE=["#1a4f8a","#1a7a45","#c07000","#7a5ca8","#3b8fb0","#b03030","#9aa0a6","#5a7d3a"];
+  const money = v => "$"+Number(v).toLocaleString("es-MX");
+  Chart.defaults.font.family="-apple-system,Segoe UI,Roboto,sans-serif";
+  Chart.defaults.font.size=12;
+
+  new Chart(document.getElementById("monthly"),{type:"bar",
+    data:{labels:J("months"),datasets:[
+      {label:"Ingresos",data:J("m_income"),backgroundColor:ACCENT,borderRadius:3},
+      {label:"Gastos",data:J("m_expense"),backgroundColor:DANGER,borderRadius:3},
+      {label:"Utilidad",data:J("m_profit"),type:"line",borderColor:SUCCESS,
+        backgroundColor:SUCCESS,tension:.3,borderWidth:2,pointRadius:3}]},
+    options:{maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+": "+money(c.raw)}}},
+      scales:{y:{ticks:{callback:v=>money(v)}}}}});
+
+  new Chart(document.getElementById("cats"),{type:"doughnut",
+    data:{labels:J("cat_labels"),datasets:[{data:J("cat_values"),backgroundColor:PALETTE}]},
+    options:{maintainAspectRatio:false,plugins:{legend:{position:"bottom"},
+      tooltip:{callbacks:{label:c=>c.label+": "+money(c.raw)}}}}});
+
+  new Chart(document.getElementById("topsrv"),{type:"bar",
+    data:{labels:J("top_labels"),datasets:[{label:"Ingreso",data:J("top_values"),backgroundColor:ACCENT,borderRadius:3}]},
+    options:{indexAxis:"y",maintainAspectRatio:false,plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>money(c.raw)}}},scales:{x:{ticks:{callback:v=>money(v)}}}}});
+</script>
+</body>
+</html>

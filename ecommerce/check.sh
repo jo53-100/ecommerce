@@ -39,7 +39,7 @@ $PY manage.py compilemessages > /dev/null 2>&1 || fail "compilemessages failed"
 ok "locale catalogs compiled"
 
 step "5/6  Test suite"
-$PY manage.py test store --verbosity=1 || fail "tests failed"
+$PY manage.py test --verbosity=1 || fail "tests failed"
 ok "all tests passed"
 
 step "6/6  Production-mode render"

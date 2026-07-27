@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 from .products import Products
 from .customers import Customer
@@ -29,7 +31,11 @@ class Order(AddressMixin):
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
-    price = models.IntegerField()
+    # Snapshot of the unit price at purchase time, so later catalogue edits do
+    # not rewrite what the customer actually paid. Decimal for the same reason
+    # as Products.price — see that model's docstring.
+    price = models.DecimalField(max_digits=10, decimal_places=2,
+                                default=Decimal('0.00'))
     phone = models.CharField(max_length=50, default='', blank=True)
     date = models.DateField(default=datetime.date.today)
     status = models.CharField(

@@ -10,6 +10,7 @@ The command is idempotent: running it twice will not create duplicates.
 Generated product images are written to MEDIA_ROOT/uploads/products/.
 """
 import datetime
+from decimal import Decimal
 from io import BytesIO
 
 from django.contrib.auth.hashers import make_password
@@ -184,6 +185,9 @@ class Command(BaseCommand):
                     continue
                 product = Products(
                     name=name, price=price, category=category, description=desc,
+                    # Demo data ships stocked and tracked, so the inventory
+                    # column on the dashboard has something to show.
+                    stock=25, unit_cost=round(Decimal(price) * Decimal('0.4'), 2),
                 )
                 filename = name.lower().replace(" ", "-").replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u") + ".png"
                 product.image.save(filename, _make_image(name, cat_name), save=False)

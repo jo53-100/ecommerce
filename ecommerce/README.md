@@ -315,16 +315,32 @@ What the suite covers:
    reveal + copy the **Secret key** (`sk_test_…`).
 4. Put both in `.env` (never in git).
 
+`.env` lives next to `manage.py` and is read at startup by `settings.py`.
+Start from the template:
+
+```bash
+cp .env.example .env      # then edit in your real keys
+```
+
+Real environment variables take priority over the file, so a `export` in the
+shell or a systemd `Environment=` line overrides it — production sets secrets
+that way and needs no `.env` on disk at all.
+
+> Django does **not** read `.env` on its own; `python-dotenv` (in
+> `requirements.txt`) is what makes it work. If you installed dependencies
+> before it was added, run `pip install -r requirements.txt` again or the file
+> is silently ignored and Stripe stays disabled.
+
 ### 7.2 Test locally
 ```bash
-# terminal 1
-export STRIPE_SECRET_KEY=sk_test_xxx STRIPE_PUBLISHABLE_KEY=pk_test_xxx
+# terminal 1 — keys come from .env; no export needed
 python manage.py runserver
 
 # terminal 2 — forward Stripe's webhooks to your machine
 stripe login
 stripe listen --forward-to localhost:8000/stripe/webhook/
-# copy the whsec_… it prints into STRIPE_WEBHOOK_SECRET, then restart terminal 1
+# copy the whsec_… it prints into STRIPE_WEBHOOK_SECRET in .env,
+# then restart terminal 1 (settings are only read at startup)
 ```
 
 Test cards (any future expiry, any CVC, any ZIP):

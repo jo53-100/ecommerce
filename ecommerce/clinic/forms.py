@@ -1,0 +1,139 @@
+"""
+Formularios de captura en vivo.
+
+Estos formularios son el reemplazo del Excel: la duena / recepcion captura
+aqui cada movimiento del dia. La nomina y los reportes NO se capturan, se
+derivan de estos movimientos (ver models.Transaction y reports.py).
+"""
+import datetime as dt
+from django import forms
+from django.db.models import F
+
+from store.models.products import Products
+from .models import Transaction, Employee, Expense
+
+
+_DATE_WIDGET = forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d")
+
+# Tipos de movimiento que salen del inventario (descuentan stock y su monto
+# se deriva del precio del producto por la cantidad).
+_PRODUCT_KINDS = ("product_sale", "product_use")
+
+
+class TransactionForm(forms.ModelForm):
+    """Un movimiento: servicio realizado, venta o uso de producto, propina.
+
+    Si es servicio y se indica la empleada, alimenta su comision/nomina.
+    Si es venta/uso de producto, descuenta `cantidad` del inventario y el
+    monto se calcula como (precio del producto x cantidad).
+    """
+    cantidad = forms.IntegerField(
+        label="Cantidad (para inventario)", min_value=1, initial=1, required=False,
+        help_text="Solo para venta/uso de producto: cuantas piezas salen del stock.",
+    )
+
+    class Meta:
+        model = Transaction
+        fields = [
+            "date", "kind", "employee", "service_type", "product",
+            "client", "amount", "payment_method", "walk_in", "cantidad", "note",
+        ]
+        widgets = {"date": _DATE_WIDGET}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.is_bound:
+            self.fields["date"].initial = dt.date.today()
+        # En captura en vivo solo se ofrecen catalogos activos.
+        self.fields["service_type"].queryset = self.fields["service_type"].queryset.filter(active=True)
+        self.fields["employee"].queryset = self.fields["employee"].queryset.filter(active=True)
+        # En ventas/usos de producto el monto se puede dejar vacio: se calcula
+        # solo como precio x cantidad. En servicios/propinas sigue siendo obligatorio.
+        self.fields["amount"].required = False
+        self.fields["amount"].help_text = (
+            "Venta/uso de producto: dejalo vacio y se calcula como precio x "
+            "cantidad (o captura un monto para forzar un precio distinto). "
+            "Servicio o propina: captura el monto cobrado."
+        )
+
+    def clean(self):
+        cleaned = super().clean()
+        kind = cleaned.get("kind")
+        product = cleaned.get("product")
+        qty = cleaned.get("cantidad") or 1
+        amount = cleaned.get("amount")
+
+        if kind in _PRODUCT_KINDS:
+            if not product:
+                self.add_error("product", "Selecciona el producto que sale del inventario.")
+            elif amount is None:
+                # Precio de referencia: venta -> precio de venta; uso -> costo.
+                unit = product.price if kind == "product_sale" else product.unit_cost
+                cleaned["amount"] = unit * qty
+        elif amount is None:
+            # Servicios y propinas: el monto es obligatorio, no hay como derivarlo.
+            self.add_error("amount", "Captura el monto cobrado.")
+
+        return cleaned
+
+    def save(self, commit=True):
+        tx = super().save(commit=commit)
+        # Descontar inventario en ventas / usos de producto. Es el mismo stock
+        # que consume la tienda en linea (store.Products), no una copia.
+        # F() evita condiciones de carrera sobre el stock.
+        if commit and tx.product_id and tx.kind in ("product_sale", "product_use"):
+            qty = self.cleaned_data.get("cantidad") or 1
+            Products.objects.filter(pk=tx.product_id).update(stock=F("stock") - qty)
+        return tx
+
+
+class ProductForm(forms.ModelForm):
+    """Alta de producto o insumo directo sobre el catalogo de la tienda."""
+
+    class Meta:
+        model = Products
+        fields = ["name", "category", "price", "unit_cost", "stock",
+                  "track_inventory", "for_sale", "description", "image"]
+        labels = {
+            "name": "Producto", "category": "Categoria",
+            "price": "Precio de venta", "unit_cost": "Costo unitario",
+            "stock": "Existencia inicial",
+            "track_inventory": "Controlar existencias",
+            "for_sale": "Se vende en la tienda",
+            "description": "Descripcion", "image": "Imagen",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Un insumo de uso interno no necesita foto para existir en el sistema.
+        self.fields["image"].required = False
+
+
+class RestockForm(forms.Form):
+    """Sumar piezas al stock de un producto existente (entrada de inventario)."""
+    product = forms.ModelChoiceField(
+        label="Producto", queryset=Products.objects.all().order_by("name"))
+    units = forms.IntegerField(label="Piezas a agregar", min_value=1)
+
+    def save(self):
+        p = self.cleaned_data["product"]
+        Products.objects.filter(pk=p.pk).update(stock=F("stock") + self.cleaned_data["units"])
+        return p
+
+
+class EmployeeForm(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = ["name", "role", "base_salary_weekly", "commission_rate", "active"]
+
+
+class ExpenseForm(forms.ModelForm):
+    class Meta:
+        model = Expense
+        fields = ["date", "category", "amount", "note"]
+        widgets = {"date": _DATE_WIDGET}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.is_bound:
+            self.fields["date"].initial = dt.date.today()

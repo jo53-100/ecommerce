@@ -1,0 +1,17 @@
+{% extends "clinic/_base.html" %}
+{% block title %}{{ title }} · Lovefoot{% endblock %}
+{% block subtitle %}{{ title }}{% endblock %}
+{% block content %}
+<div class="panel" style="max-width:560px">
+  <h2>{{ title }}</h2>
+  {% if subtitle %}<div class="sub">{{ subtitle }}</div>{% endif %}
+  <form class="entry" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="actions">
+      <button class="btn" type="submit">Guardar</button>
+      <a class="cancel" href="{% url 'clinic:dashboard' %}">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

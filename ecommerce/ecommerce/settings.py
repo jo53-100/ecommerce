@@ -10,11 +10,24 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import importlib.util
 import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load BASE_DIR/.env into the environment before anything reads os.environ.
+# Real environment variables always win, so a systemd unit or a `export` in the
+# shell overrides the file rather than the other way round — production sets
+# secrets properly and never needs a .env on disk.
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    # python-dotenv is optional: without it, only real env vars are used.
+    pass
+else:
+    load_dotenv(BASE_DIR / '.env', override=False)
 
 
 def _env_bool(name, default):
@@ -54,8 +67,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # intcomma / naturaltime, used by the clinic dashboard templates.
+    'django.contrib.humanize',
     'store',
 ]
+
+# The `clinic` back office is an optional add-on: it reads store data to draw
+# the finance and inventory dashboard, and nothing in `store` imports it. Delete
+# the clinic/ directory and the site keeps working — this probe is what makes
+# that true, since a missing app named in INSTALLED_APPS is a startup error.
+CLINIC_INSTALLED = importlib.util.find_spec('clinic') is not None
+if CLINIC_INSTALLED:
+    INSTALLED_APPS.append('clinic')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

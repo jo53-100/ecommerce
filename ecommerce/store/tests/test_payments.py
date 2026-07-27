@@ -361,6 +361,42 @@ class WebhookTests(StoreTestCase):
         self.order.refresh_from_db()
         self.assertFalse(self.order.is_paid)
 
+    def _refund_event(self, payment_intent='pi_hook'):
+        """A charge.refunded event — a Charge, not a Session."""
+        return json.dumps({
+            'id': 'evt_refund',
+            'object': 'event',
+            'type': 'charge.refunded',
+            'data': {'object': {
+                'id': 'ch_test',
+                'object': 'charge',
+                'payment_intent': payment_intent,
+                'refunded': True,
+            }},
+        }).encode()
+
+    def test_refund_event_restocks_and_marks_refunded(self):
+        self.product.stock = 10
+        self.product.save()
+        self._post(self._event())          # pay first
+        self.product.refresh_from_db()
+        self.assertEqual(self.product.stock, 9)
+
+        response = self._post(self._refund_event())
+
+        self.assertEqual(response.status_code, 200)
+        self.order.refresh_from_db()
+        self.product.refresh_from_db()
+        self.assertEqual(self.order.payment_status, Order.PAYMENT_REFUNDED)
+        self.assertEqual(self.product.stock, 10)
+
+    def test_refund_for_an_unknown_payment_intent_is_ignored(self):
+        self._post(self._event())
+        response = self._post(self._refund_event(payment_intent='pi_other'))
+        self.assertEqual(response.status_code, 200)
+        self.order.refresh_from_db()
+        self.assertTrue(self.order.is_paid)
+
     def test_expired_session_marks_order_failed(self):
         self._post(self._event(event_type='checkout.session.expired'))
         self.order.refresh_from_db()

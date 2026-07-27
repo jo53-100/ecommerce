@@ -7,9 +7,19 @@ from .models import Category, Customer, Products, Order
 
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'price')
-    list_filter = ('category',)
+    list_display = ('name', 'category', 'price', 'unit_cost',
+                    'stock_badge', 'track_inventory', 'for_sale')
+    list_filter = ('category', 'for_sale', 'track_inventory')
     search_fields = ('name', 'description')
+    list_editable = ('track_inventory', 'for_sale')
+
+    @admin.display(description='Stock', ordering='stock')
+    def stock_badge(self, obj):
+        if not obj.track_inventory:
+            return format_html('<span style="color:#888">not tracked</span>')
+        color = '#63a05a' if obj.stock > 5 else (
+            '#d4a017' if obj.stock > 0 else '#ef4444')
+        return format_html('<b style="color:{}">{}</b>', color, obj.stock)
 
 
 @admin.register(Category)
