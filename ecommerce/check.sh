@@ -52,6 +52,9 @@ else
     export DJANGO_DEBUG=False
     export DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,testserver
     export DJANGO_SECURE_SSL_REDIRECT=False
+    # DEBUG=False refuses to boot on the committed fallback key, exactly as the
+    # VPS should. Throwaway value — the real one lives in the server's .env.
+    export DJANGO_SECRET_KEY=check-sh-throwaway-not-a-production-key
 
     $PY manage.py collectstatic --noinput > /dev/null 2>&1 \
         || fail "collectstatic failed — a {% static %} file is missing"
@@ -61,7 +64,8 @@ else
         || fail "pages do not render with DEBUG=False"
     ok "pages render in production mode"
 
-    unset DJANGO_DEBUG DJANGO_ALLOWED_HOSTS DJANGO_SECURE_SSL_REDIRECT
+    unset DJANGO_DEBUG DJANGO_ALLOWED_HOSTS DJANGO_SECURE_SSL_REDIRECT \
+          DJANGO_SECRET_KEY
 fi
 
 printf "\n${GREEN}════════════════════════════════════════${NC}\n"

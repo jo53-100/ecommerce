@@ -420,6 +420,25 @@ class WebhookTests(StoreTestCase):
             HTTP_STRIPE_SIGNATURE=stripe_signature(payload, WEBHOOK_SECRET))
         self.assertEqual(response.status_code, 200)
 
+    def test_slashless_url_is_accepted(self):
+        """An endpoint configured without the trailing slash must still work.
+
+        APPEND_SLASH cannot redirect a POST without dropping the body, so it
+        raises a 500 rather than reaching the view. That turned a one-character
+        typo in the Stripe endpoint URL into orders that were paid for but
+        never fulfilled, so both spellings are routed.
+        """
+        payload = self._event()
+        response = self.client.post(
+            '/stripe/webhook', data=payload,
+            content_type='application/json',
+            HTTP_STRIPE_SIGNATURE=stripe_signature(payload, WEBHOOK_SECRET))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            Order.objects.get(pk=self.order.pk).payment_status,
+            Order.PAYMENT_PAID)
+
 
 @override_settings(STRIPE_ENABLED=True, STRIPE_SECRET_KEY='sk_test_x',
                    STRIPE_WEBHOOK_SECRET='')

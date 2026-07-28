@@ -14,6 +14,8 @@ import importlib.util
 import os
 from pathlib import Path
 
+from django.core.exceptions import ImproperlyConfigured
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,14 +41,25 @@ def _env_bool(name, default):
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # In production set DJANGO_SECRET_KEY in the environment (see README).
-SECRET_KEY = os.environ.get(
-    'DJANGO_SECRET_KEY',
-    'django-insecure-b=)*#6-kxqv#t#y56=&c(*ur^^s)cc4nstnjv%3q_h5ez(2(vm',
-)
+# This fallback exists so a fresh clone runs without setup. It is committed, so
+# it is public knowledge — the guard below stops it reaching production.
+INSECURE_SECRET_KEY = 'django-insecure-b=)*#6-kxqv#t#y56=&c(*ur^^s)cc4nstnjv%3q_h5ez(2(vm'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', INSECURE_SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Defaults to True for local development; set DJANGO_DEBUG=False on the server.
 DEBUG = _env_bool('DJANGO_DEBUG', True)
+
+# Refuse to boot rather than silently serving with a signing key anyone can read
+# from the repository: SECRET_KEY signs session cookies, so a known one lets an
+# attacker mint a session for any account, including staff.
+if not DEBUG and SECRET_KEY == INSECURE_SECRET_KEY:
+    raise ImproperlyConfigured(
+        'DJANGO_SECRET_KEY must be set when DEBUG is off. The fallback key is '
+        'published in this repository and cannot be used in production. '
+        'Generate one with: python -c '
+        '"from django.core.management.utils import get_random_secret_key as k; print(k())"'
+    )
 
 # Comma-separated list, e.g. DJANGO_ALLOWED_HOSTS="ironhold.example,www.ironhold.example"
 ALLOWED_HOSTS = [h.strip() for h in os.environ.get(

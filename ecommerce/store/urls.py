@@ -28,4 +28,9 @@ urlpatterns = [
          name='checkout_cancel'),
     # Called by Stripe, not by a browser — must stay unauthenticated.
     path('stripe/webhook/', stripe_webhook, name='stripe_webhook'),
+    # Same view without the trailing slash. APPEND_SLASH cannot redirect a POST
+    # without dropping the body, so it raises a 500 instead — which would mean
+    # an endpoint URL configured without the slash silently never fulfils an
+    # order. Accept both spellings rather than depend on getting it right.
+    path('stripe/webhook', stripe_webhook),
 ]
